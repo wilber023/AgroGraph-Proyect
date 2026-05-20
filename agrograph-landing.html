@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AgroGraph-MAS — Inteligencia en el Campo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --green-deep: #0D2B1A;
+    --green-mid: #1A4A2E;
+    --green-bright: #2E7D4F;
+    --green-neon: #4ADE80;
+    --amber: #F59E0B;
+    --amber-light: #FCD34D;
+    --cream: #FAF7F0;
+    --soil: #3D1F0A;
+    --text-main: #E8F4EC;
+    --text-muted: #6B9E7A;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--green-deep);
+    color: var(--text-main);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--green-neon);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: exclusion;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--green-neon);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+    backdrop-filter: blur(12px);
+    background: rgba(13, 43, 26, 0.7);
+    border-bottom: 1px solid rgba(74, 222, 128, 0.1);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+    color: var(--green-neon);
+  }
+  .nav-logo span { color: var(--amber); }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--green-neon); }
+  .nav-cta {
+    background: var(--green-neon);
+    color: var(--green-deep) !important;
+    padding: 0.6rem 1.4rem;
+    border-radius: 100px;
+    font-weight: 500 !important;
+    transition: background 0.3s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--amber-light) !important; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* BG texture */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(46, 125, 79, 0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Grid lines */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(74,222,128,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,222,128,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    color: var(--green-neon);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--green-neon);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 5.5vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .hero-title .accent { color: var(--green-neon); }
+  .hero-title .accent-amber { color: var(--amber); }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .btn-primary {
+    background: var(--green-neon);
+    color: var(--green-deep);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--amber-light); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(74,222,128,0.3); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+  .btn-ghost:hover { border-color: var(--green-neon); color: var(--green-neon); }
+
+  /* PHONE MOCKUP */
+  .hero-visual {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+  }
+
+  .phone-wrapper {
+    position: relative;
+    width: 280px;
+  }
+
+  .phone-frame {
+    width: 280px;
+    height: 560px;
+    background: linear-gradient(160deg, #1e3a2a 0%, #0a1f12 100%);
+    border-radius: 40px;
+    border: 2px solid rgba(74,222,128,0.25);
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.6),
+      0 0 0 1px rgba(74,222,128,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .phone-screen {
+    position: absolute;
+    inset: 16px;
+    background: #0f2a1a;
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phone-status {
+    padding: 12px 16px 6px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+  }
+
+  .phone-app-header {
+    padding: 8px 16px 12px;
+    border-bottom: 1px solid rgba(74,222,128,0.1);
+  }
+  .phone-app-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--green-neon);
+  }
+  .phone-app-subtitle { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  .scan-area {
+    margin: 12px 16px;
+    height: 160px;
+    border-radius: 16px;
+    border: 1.5px dashed rgba(74,222,128,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(74,222,128,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scan-line {
+    position: absolute;
+    left: 8px; right: 8px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green-neon), transparent);
+    animation: scanMove 2.5s ease-in-out infinite;
+  }
+  @keyframes scanMove {
+    0% { top: 10%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 90%; opacity: 0; }
+  }
+
+  .scan-icon { font-size: 28px; margin-bottom: 8px; }
+  .scan-label { font-size: 11px; color: var(--text-muted); }
+
+  .diagnosis-card {
+    margin: 0 16px 10px;
+    background: rgba(74,222,128,0.08);
+    border: 1px solid rgba(74,222,128,0.2);
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .diag-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .diag-disease { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--amber); margin: 3px 0; }
+  .diag-confidence {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .conf-bar-bg { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+  .conf-bar-fill {
+    height: 100%;
+    width: 87%;
+    background: var(--green-neon);
+    border-radius: 2px;
+    animation: fillBar 2s ease forwards 1s;
+    width: 0%;
+  }
+  @keyframes fillBar { to { width: 87%; } }
+  .conf-pct { font-size: 11px; color: var(--green-neon); font-weight: 500; }
+
+  .offline-badge-phone {
+    margin: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 8px;
+    padding: 6px 10px;
+  }
+  .offline-dot { width: 6px; height: 6px; background: var(--amber); border-radius: 50%; }
+  .offline-text { font-size: 10px; color: var(--amber); }
+
+  .sync-status {
+    margin: 8px 16px 0;
+    font-size: 10px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Floating cards around phone */
+  .float-card {
+    position: absolute;
+    background: rgba(13,43,26,0.9);
+    border: 1px solid rgba(74,222,128,0.2);
+    border-radius: 14px;
+    padding: 12px 16px;
+    backdrop-filter: blur(10px);
+    animation: floatAnim 4s ease-in-out infinite;
+  }
+  .float-card-1 {
+    left: -130px;
+    top: 80px;
+    animation-delay: 0s;
+    min-width: 140px;
+  }
+  .float-card-2 {
+    right: -120px;
+    bottom: 120px;
+    animation-delay: 1.5s;
+    min-width: 130px;
+  }
+  @keyframes floatAnim {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  .fc-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .fc-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; color: var(--green-neon); margin-top: 2px; }
+  .fc-sub { font-size: 10px; color: var(--text-muted); }
+
+  /* STATS STRIP */
+  .stats-strip {
+    border-top: 1px solid rgba(74,222,128,0.1);
+    border-bottom: 1px solid rgba(74,222,128,0.1);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+    background: rgba(26, 74, 46, 0.15);
+  }
+
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    letter-spacing: -0.04em;
+    color: var(--green-neon);
+    line-height: 1;
+  }
+  .stat-num sup { font-size: 1.4rem; }
+  .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.4rem; max-width: 180px; line-height: 1.4; }
+
+  /* SECTION BASE */
+  section { padding: 6rem 4rem; }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-neon);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 540px;
+  }
+
+  /* PROBLEM SECTION */
+  .problem-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .problem-cards { display: flex; flex-direction: column; gap: 1rem; }
+
+  .prob-card {
+    background: linear-gradient(135deg, rgba(26,74,46,0.3) 0%, rgba(13,43,26,0.5) 100%);
+    border: 1px solid rgba(74,222,128,0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .prob-card:hover { border-color: rgba(74,222,128,0.35); transform: translateX(6px); }
+
+  .prob-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(74,222,128,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    border: 1px solid rgba(74,222,128,0.15);
+  }
+  .prob-text h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.3rem; }
+  .prob-text p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* SOLUTION / FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .feature-card {
+    background: linear-gradient(160deg, rgba(26,74,46,0.25) 0%, rgba(13,43,26,0.4) 100%);
+    border: 1px solid rgba(74,222,128,0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--green-neon), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  .feature-card:hover::before { transform: translateX(0); }
+  .feature-card:hover {
+    border-color: rgba(74,222,128,0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  }
+
+  .feature-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: var(--green-neon);
+    opacity: 0.5;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.2rem;
+  }
+  .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .feature-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.02em;
+  }
+  .feature-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+  .feature-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: var(--amber);
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.2);
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+  }
+
+  /* ARCHITECTURE */
+  .arch-section { background: rgba(10, 30, 18, 0.5); }
+
+  .arch-diagram {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .arch-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1.5rem;
+  }
+  .arch-col:not(:last-child) {
+    border-right: 1px solid rgba(74,222,128,0.1);
+  }
+
+  .arch-col-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(74,222,128,0.1);
+    width: 100%;
+  }
+
+  .arch-node {
+    background: rgba(26,74,46,0.3);
+    border: 1px solid rgba(74,222,128,0.15);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    text-align: center;
+    width: 100%;
+    transition: all 0.3s;
+  }
+  .arch-node:hover { border-color: var(--green-neon); background: rgba(74,222,128,0.08); }
+  .arch-node-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+  .arch-node-name { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; }
+  .arch-node-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  .arch-arrow {
+    position: absolute;
+    top: 50%;
+    left: 33.33%;
+    right: 33.33%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green-neon), var(--amber));
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  /* BUSINESS MODEL */
+  .biz-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .biz-card {
+    background: linear-gradient(135deg, rgba(26,74,46,0.2) 0%, rgba(13,43,26,0.4) 100%);
+    border: 1px solid rgba(74,222,128,0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s;
+  }
+  .biz-card:hover { border-color: rgba(74,222,128,0.3); transform: translateY(-4px); }
+  .biz-segment {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .biz-icon { font-size: 1.5rem; }
+  .biz-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+  .biz-mechanism { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; line-height: 1.5; }
+  .biz-examples { font-size: 0.8rem; color: var(--green-neon); opacity: 0.8; }
+
+  /* MVP SECTION */
+  .mvp-timeline {
+    margin-top: 3rem;
+    position: relative;
+    padding-left: 2rem;
+  }
+  .mvp-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--green-neon), var(--amber), rgba(74,222,128,0.1));
+  }
+
+  .mvp-item {
+    position: relative;
+    padding: 0 0 2.5rem 2.5rem;
+  }
+  .mvp-item::before {
+    content: '';
+    position: absolute;
+    left: -5px; top: 6px;
+    width: 12px; height: 12px;
+    background: var(--green-neon);
+    border-radius: 50%;
+    border: 2px solid var(--green-deep);
+  }
+  .mvp-item.amber-dot::before { background: var(--amber); }
+
+  .mvp-item h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+  .mvp-item p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.6; }
+  .mvp-phase {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green-neon);
+    margin-bottom: 0.3rem;
+  }
+  .mvp-item.amber-dot .mvp-phase { color: var(--amber); }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 8rem 4rem;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(46,125,79,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section .section-title { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+  .cta-section .section-title .accent { color: var(--green-neon); }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(74,222,128,0.1);
+    padding: 2.5rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 2rem 3rem; }
+    .hero-visual { margin-top: 3rem; }
+    .float-card-1, .float-card-2 { display: none; }
+    .stats-strip { padding: 2rem; flex-wrap: wrap; }
+    section { padding: 4rem 2rem; }
+    .problem-section { grid-template-columns: 1fr; gap: 3rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .arch-diagram { grid-template-columns: 1fr; }
+    .arch-col:not(:last-child) { border-right: none; border-bottom: 1px solid rgba(74,222,128,0.1); padding-bottom: 2rem; }
+    .biz-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Agro<span>Graph</span>-MAS</div>
+  <div class="nav-links">
+    <a href="#problema">Problema</a>
+    <a href="#solucion">Solución</a>
+    <a href="#mvp">MVP</a>
+    <a href="#negocio">Negocio</a>
+    <a href="#contacto" class="nav-cta">Contáctanos</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="grid-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Agricultura de Precisión · México & LATAM</div>
+    <h1 class="hero-title">
+      Inteligencia<br/>
+      <span class="accent">artificial</span><br/>
+      donde no hay <span class="accent-amber">señal</span>
+    </h1>
+    <p class="hero-sub">
+      AgroGraph-MAS lleva diagnóstico fitosanitario con IA a los pequeños productores rurales, sin importar la conectividad. Offline-first, Android, sin depender de la nube.
+    </p>
+    <div class="hero-actions">
+      <a href="#mvp" class="btn-primary">Ver el MVP →</a>
+      <a href="#problema" class="btn-ghost">¿Cómo funciona?</a>
+    </div>
+  </div>
+
+  <div class="hero-visual" id="heroVisual">
+    <div class="phone-wrapper">
+      <!-- Float cards -->
+      <div class="float-card float-card-1">
+        <div class="fc-label">Diagnósticos hoy</div>
+        <div class="fc-val">247</div>
+        <div class="fc-sub">+18% vs ayer</div>
+      </div>
+      <div class="float-card float-card-2">
+        <div class="fc-label">Precisión CNN</div>
+        <div class="fc-val">94<sup>%</sup></div>
+        <div class="fc-sub">validado por agrónomos</div>
+      </div>
+
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-status">
+            <span>9:41</span>
+            <span>📵 Sin señal</span>
+          </div>
+          <div class="phone-app-header">
+            <div class="phone-app-title">AgroGraph-MAS</div>
+            <div class="phone-app-subtitle">Módulo de Diagnóstico Fitosanitario</div>
+          </div>
+          <div class="scan-area">
+            <div class="scan-line"></div>
+            <div class="scan-icon">🌿</div>
+            <div class="scan-label">Apunta al cultivo afectado</div>
+          </div>
+          <div class="diagnosis-card">
+            <div class="diag-label">Enfermedad detectada</div>
+            <div class="diag-disease">Roya del Maíz</div>
+            <div class="diag-confidence">
+              <div class="conf-bar-bg"><div class="conf-bar-fill"></div></div>
+              <span class="conf-pct">87%</span>
+            </div>
+          </div>
+          <div class="offline-badge-phone">
+            <div class="offline-dot"></div>
+            <div class="offline-text">Modo offline activo · Datos guardados</div>
+          </div>
+          <div class="sync-status">⟳ Se sincronizará al recuperar señal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item reveal">
+    <div class="stat-num">470<sup>M</sup></div>
+    <div class="stat-label">pequeños productores sin asesoría agronómica oportuna a nivel global</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">4</div>
+    <div class="stat-label">cultivos clave cubiertos: maíz, frijol, jitomate y chile</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">0</div>
+    <div class="stat-label">dependencia de internet para diagnóstico en campo</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">3</div>
+    <div class="stat-label">perfiles de usuario integrados: agricultor, agrónomo, gestor</div>
+  </div>
+</div>
+
+<!-- PROBLEMA -->
+<section id="problema">
+  <div class="problem-section">
+    <div>
+      <span class="section-tag">El problema</span>
+      <h2 class="section-title reveal">El agricultor decide<br/>a ciegas, todos los días</h2>
+      <p class="section-desc reveal">
+        Las soluciones tecnológicas actuales asumen WiFi estable e infraestructura IoT. En el campo real de México y América Latina, eso simplemente no existe. El resultado: decisiones tardías, pérdidas evitables, exceso de agroquímicos.
+      </p>
+    </div>
+    <div class="problem-cards">
+      <div class="prob-card reveal">
+        <div class="prob-icon">📡</div>
+        <div class="prob-text">
+          <h4>Conectividad inexistente</h4>
+          <p>Las zonas rurales productivas carecen de señal estable. Las apps en la nube simplemente no funcionan donde más se necesitan.</p>
+        </div>
+      </div>
+      <div class="prob-card reveal">
+        <div class="prob-icon">🔬</div>
+        <div class="prob-text">
+          <h4>Diagnóstico empírico y tardío</h4>
+          <p>Sin herramientas de detección temprana, las plagas y enfermedades se identifican cuando el daño ya es irreversible.</p>
+        </div>
+      </div>
+      <div class="prob-card reveal">
+        <div class="prob-icon">💸</div>
+        <div class="prob-text">
+          <h4>Pérdidas masivas evitables</h4>
+          <p>Millones de pequeños productores pierden cosechas completas por falta de acceso a asesoría agronómica especializada y oportuna.</p>
+        </div>
+      </div>
+      <div class="prob-card reveal">
+        <div class="prob-icon">☁️</div>
+        <div class="prob-text">
+          <h4>Tecnología diseñada para la ciudad</h4>
+          <p>El 95% de los sistemas AgTech requieren subscripciones costosas, hardware especial o conexión permanente. Inasequibles para el productor rural.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUCIÓN -->
+<section id="solucion" style="background: rgba(10,28,18,0.4);">
+  <span class="section-tag">La solución</span>
+  <h2 class="section-title reveal">Tres módulos de IA,<br/>un solo dispositivo Android</h2>
+  <p class="section-desc reveal">AgroGraph-MAS integra visión por computadora, procesamiento de lenguaje natural y aprendizaje automático en una aplicación que funciona sin internet, en dispositivos de gama media.</p>
+
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-num">01</div>
+      <div class="feature-icon">👁️</div>
+      <h3>Visión por Computadora</h3>
+      <p>Red neuronal convolucional (CNN) entrenada con PlantVillage detecta enfermedades fúngicas y deficiencias nutricionales en maíz, frijol, jitomate y chile directamente desde la cámara del teléfono.</p>
+      <span class="feature-tag">MVP · Fase 1</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-num">02</div>
+      <div class="feature-icon">💬</div>
+      <h3>NLP Agronómico Local</h3>
+      <p>LLM de código abierto, ajustado con literatura fitosanitaria, interpreta notas de campo en lenguaje natural y genera recomendaciones claras y contextualizadas. Sin OpenAI, sin Gemini, sin costo por uso.</p>
+      <span class="feature-tag">Fase 2</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-num">03</div>
+      <div class="feature-icon">📈</div>
+      <h3>Predicción de Rendimiento ML</h3>
+      <p>Algoritmos de regresión y árboles de decisión analizan historial de cultivos, clima reportado y eventos de plaga para proyectar rendimiento por parcela, mejorando la planificación del ciclo productivo.</p>
+      <span class="feature-tag">Fase 2</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-num">04</div>
+      <div class="feature-icon">📵</div>
+      <h3>Offline-First</h3>
+      <p>Toda la funcionalidad operativa reside en el dispositivo Android. Los datos se capturan sin conexión y sincronizan automáticamente al recuperar señal. Diseñado para zonas sin infraestructura IoT.</p>
+      <span class="feature-tag">MVP · Fase 1</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-num">05</div>
+      <div class="feature-icon">🧑‍🌾</div>
+      <h3>Tres Perfiles de Usuario</h3>
+      <p>Agricultor (captura y diagnóstico), Agrónomo validador (revisión, retroalimentación y observaciones remotas) y Gestor logístico (reportes agregados de rendimiento por zona).</p>
+      <span class="feature-tag">MVP · Fase 1</span>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-num">06</div>
+      <div class="feature-icon">🖥️</div>
+      <h3>Panel Web para Agrónomos</h3>
+      <p>Plataforma de supervisión exclusiva para agrónomos validadores y gestores logísticos: revisión de diagnósticos, generación de observaciones y retroalimentación al agricultor sin presencia física en campo.</p>
+      <span class="feature-tag">MVP · Fase 1</span>
+    </div>
+  </div>
+</section>
+
+<!-- ARQUITECTURA -->
+<section class="arch-section" id="arquitectura">
+  <span class="section-tag">Arquitectura</span>
+  <h2 class="section-title reveal">Cómo fluye la información</h2>
+  <p class="section-desc reveal">Un sistema asincrónico que conecta al agricultor, al agrónomo y al gestor sin necesidad de conexión permanente.</p>
+
+  <div class="arch-diagram reveal" style="margin-top: 3rem;">
+    <div class="arch-col">
+      <div class="arch-col-title">Usuarios · App Android</div>
+      <div class="arch-node">
+        <div class="arch-node-icon">🧑‍🌾</div>
+        <div class="arch-node-name">Agricultor</div>
+        <div class="arch-node-detail">Captura fotos y notas en campo</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-node-icon">👨‍💼</div>
+        <div class="arch-node-name">Agrónomo</div>
+        <div class="arch-node-detail">Valida diagnósticos remotamente</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-node-icon">📊</div>
+        <div class="arch-node-name">Gestor Logístico</div>
+        <div class="arch-node-detail">Consulta reportes agregados</div>
+      </div>
+    </div>
+    <div class="arch-col">
+      <div class="arch-col-title">Módulos de IA · On-device</div>
+      <div class="arch-node">
+        <div class="arch-node-icon">👁️</div>
+        <div class="arch-node-name">CNN · Visión</div>
+        <div class="arch-node-detail">Diagnóstico fitosanitario local</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-node-icon">💬</div>
+        <div class="arch-node-name">LLM · NLP</div>
+        <div class="arch-node-detail">Recomendaciones agronómicas</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-node-icon">📈</div>
+        <div class="arch-node-name">ML · Predicción</div>
+        <div class="arch-node-detail">Rendimiento por parcela</div>
+      </div>
+    </div>
+    <div class="arch-col">
+      <div class="arch-col-title">Backend · Asincrónico</div>
+      <div class="arch-node">
+        <div class="arch-node-icon">🔄</div>
+        <div class="arch-node-name">Sincronización</div>
+        <div class="arch-node-detail">Offline → Sync cuando hay red</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-node-icon">🗄️</div>
+        <div class="arch-node-name">Base de Datos</div>
+        <div class="arch-node-detail">Diagnósticos, parcelas, usuarios</div>
+      </div>
+      <div class="arch-node">
+        <div class="arch-node-icon">🌐</div>
+        <div class="arch-node-name">Panel Web</div>
+        <div class="arch-node-detail">Admin y validación para agrónomos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MVP -->
+<section id="mvp">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start;">
+    <div>
+      <span class="section-tag">Producto Mínimo Viable</span>
+      <h2 class="section-title reveal">Lo que entregamos<br/>en la primera fase</h2>
+      <p class="section-desc reveal">El MVP valida la necesidad de diagnóstico en campo y la viabilidad de operar sin conexión. Enfocado en tres componentes críticos que generan valor inmediato.</p>
+
+      <div class="mvp-timeline" style="margin-top: 2.5rem;">
+        <div class="mvp-item reveal">
+          <div class="mvp-phase">Componente 1</div>
+          <h4>App Android · Diagnóstico CNN</h4>
+          <p>El agricultor fotografía el cultivo y obtiene diagnóstico instantáneo de enfermedades y plagas en maíz, frijol, jitomate y chile. Sin internet. Sin esperar.</p>
+        </div>
+        <div class="mvp-item reveal">
+          <div class="mvp-phase">Componente 2</div>
+          <h4>Registro Offline y Sincronización</h4>
+          <p>Geolocalización, fotografías y observaciones se almacenan localmente y sincronizan automáticamente al recuperar conectividad. Datos íntegros siempre.</p>
+        </div>
+        <div class="mvp-item amber-dot reveal">
+          <div class="mvp-phase">Componente 3</div>
+          <h4>Panel Web para Agrónomos</h4>
+          <p>Los agrónomos validadores revisan diagnósticos, añaden observaciones y envían retroalimentación al agricultor desde cualquier lugar, sin visita de campo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class="section-tag">Métricas de éxito</span>
+      <h2 class="section-title reveal" style="font-size: 2rem;">Así medimos<br/>el impacto</h2>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;">
+        <div class="biz-card reveal" style="padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-family:'Syne',sans-serif; font-weight:700;">Adopción de agricultores</span>
+            <span style="color:var(--green-neon); font-size:1.5rem; font-family:'Syne',sans-serif; font-weight:800;">↑</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">Usuarios activos y frecuencia de diagnósticos generados por semana.</p>
+        </div>
+        <div class="biz-card reveal" style="padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-family:'Syne',sans-serif; font-weight:700;">Precisión del diagnóstico</span>
+            <span style="color:var(--green-neon); font-size:1.5rem; font-family:'Syne',sans-serif; font-weight:800;">%</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">Porcentaje de diagnósticos correctos validados por los agrónomos del panel.</p>
+        </div>
+        <div class="biz-card reveal" style="padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-family:'Syne',sans-serif; font-weight:700;">Efectividad offline</span>
+            <span style="color:var(--amber); font-size:1.5rem; font-family:'Syne',sans-serif; font-weight:800;">∞</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">Tasa de sincronización exitosa sin pérdida de datos en entornos sin señal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEGOCIO -->
+<section id="negocio" style="background: rgba(10,28,18,0.4);">
+  <span class="section-tag">Modelo de negocio</span>
+  <h2 class="section-title reveal">B2B & B2G: escalable<br/>sin cobrar al agricultor</h2>
+  <p class="section-desc reveal">AgroGraph-MAS opera con modelo institucional. El agricultor accede gratis a través de sus cooperativas, ministerios o corporaciones de agroinsumos.</p>
+
+  <div class="biz-grid">
+    <div class="biz-card reveal">
+      <div class="biz-segment">
+        <span class="biz-icon">🤝</span>
+        <span class="biz-name">Cooperativas Agrícolas</span>
+      </div>
+      <p class="biz-mechanism">Licencia anual de software para toda la cooperativa. Escala con el número de parcelas y agricultores registrados.</p>
+      <p class="biz-examples">Uniones de ejidatarios · Sociedades de producción rural</p>
+    </div>
+    <div class="biz-card reveal">
+      <div class="biz-segment">
+        <span class="biz-icon">🏛️</span>
+        <span class="biz-name">Gobierno & Ministerios</span>
+      </div>
+      <p class="biz-mechanism">Contratos gubernamentales de despliegue masivo regional. Integración con programas de desarrollo agropecuario.</p>
+      <p class="biz-examples">SADER (México) · MAGA (Guatemala)</p>
+    </div>
+    <div class="biz-card reveal">
+      <div class="biz-segment">
+        <span class="biz-icon">🌱</span>
+        <span class="biz-name">Corporaciones de Agroinsumos</span>
+      </div>
+      <p class="biz-mechanism">Pólizas de mantenimiento y actualización periódica de modelos de IA adaptados a sus líneas de productos y regiones.</p>
+      <p class="biz-examples">Distribuidoras de fertilizantes y agroquímicos</p>
+    </div>
+    <div class="biz-card reveal">
+      <div class="biz-segment">
+        <span class="biz-icon">🌍</span>
+        <span class="biz-name">Organismos Internacionales</span>
+      </div>
+      <p class="biz-mechanism">Proyectos de cooperación técnica con financiamiento multilateral para despliegue en regiones de alta vulnerabilidad alimentaria.</p>
+      <p class="biz-examples">FAO · IICA · Banco Mundial</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contacto">
+  <span class="section-tag">Únete al proyecto</span>
+  <h2 class="section-title reveal">
+    ¿Listo para llevar<br/>
+    <span class="accent">inteligencia artificial</span><br/>
+    al campo?
+  </h2>
+  <p class="section-desc reveal" style="margin: 1.5rem auto 0; text-align:center;">
+    Buscamos cooperativas, instituciones de gobierno y organizaciones internacionales para el piloto del MVP. El campo no puede esperar.
+  </p>
+  <div class="cta-actions reveal">
+    <a 
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=231176@ids.upchiapas.edu.mx&su=Solicitud%20de%20Demo&body=Hola,%20quiero%20más%20información."
+  class="btn-primary"
+  style="font-size:1rem; padding: 1.1rem 2.2rem;"
+>
+  Solicitar demo →
+</a>
+    <a href="#solucion" class="btn-ghost" style="font-size:1rem; padding: 1.1rem 2.2rem;">Ver la tecnología</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="nav-logo" style="font-size:1rem;">Agro<span style="color:var(--amber)">Graph</span>-MAS</div>
+  <div>Agricultura de Precisión · Soberanía Alimentaria · México & LATAM</div>
+  <div>© 2024 AgroGraph-MAS</div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  (function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) *.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      ring.style.width = '56px';
+      ring.style.height = '56px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // HERO ANIMATIONS
+  window.addEventListener('load', () => {
+    const badge = document.querySelector('.hero-badge');
+    const title = document.querySelector('.hero-title');
+    const sub = document.querySelector('.hero-sub');
+    const actions = document.querySelector('.hero-actions');
+    const visual = document.getElementById('heroVisual');
+
+    setTimeout(() => { badge.style.cssText += 'opacity:1; transition: opacity 0.6s'; }, 200);
+    setTimeout(() => { title.style.cssText += 'opacity:1; transform:translateY(0); transition: all 0.8s cubic-bezier(0.16,1,0.3,1)'; }, 400);
+    setTimeout(() => { sub.style.cssText += 'opacity:1; transform:translateY(0); transition: all 0.8s cubic-bezier(0.16,1,0.3,1)'; }, 600);
+    setTimeout(() => { actions.style.cssText += 'opacity:1; transform:translateY(0); transition: all 0.8s cubic-bezier(0.16,1,0.3,1)'; }, 750);
+    setTimeout(() => { visual.style.cssText += 'opacity:1; transition: opacity 1.2s 0.3s'; }, 300);
+  });
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // COUNTER ANIMATION
+  function animateCounter(el, target, suffix = '') {
+    let start = 0;
+    const duration = 1800;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const val = Math.floor(progress * target);
+      el.textContent = val + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const statNums = document.querySelectorAll('.stat-num');
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const text = el.textContent;
+        if (text.includes('470')) animateCounter(el, 470, 'M');
+        else if (text.includes('4')) { /* static */ }
+        else if (text.includes('0')) { /* static */ }
+        else if (text.includes('3')) { /* static */ }
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  statNums.forEach(el => statObserver.observe(el));
+</script>
+</body>
+</html>
