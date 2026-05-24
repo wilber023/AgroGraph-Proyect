@@ -6,297 +6,310 @@
 <title>AgroGraph-MAS — Plataforma de Diagnóstico Agronómico</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════
-   TOKENS
+   DESIGN TOKENS
 ═══════════════════════════════════ */
 :root{
-  --bg:       #F8F5EF;
-  --bg2:      #F1EDE4;
-  --bg3:      #E9E3D7;
-  --ink:      #1A1916;
-  --ink2:     #3D3C38;
-  --ink3:     #7A7870;
-  --green:    #2C5F2E;
-  --green2:   #3E7D41;
-  --green3:   #6FAD72;
-  --green4:   #B8D4B9;
-  --earth:    #7C5C3A;
-  --earth2:   #B08A65;
-  --earth3:   #D4B896;
-  --line:     rgba(26,25,22,.1);
-  --line2:    rgba(26,25,22,.05);
-  --r-sm:     8px;
-  --r-md:     14px;
-  --r-lg:     20px;
+  --bg:        #F9F6F0;
+  --bg2:       #F2EDE4;
+  --bg3:       #EAE3D8;
+  --ink:       #1B1A17;
+  --ink2:      #3C3A35;
+  --ink3:      #787468;
+  --ink4:      #A8A49C;
+  --green:     #2A5C2C;
+  --green2:    #3A7A3D;
+  --green3:    #5FA363;
+  --green4:    #9DC9A0;
+  --green5:    #D4EACC;
+  --earth:     #7A5832;
+  --earth2:    #A87A50;
+  --earth3:    #D4B080;
+  --earth4:    #EDD9C0;
+  --line:      rgba(27,26,23,.09);
+  --line2:     rgba(27,26,23,.05);
+  --line-g:    rgba(42,92,44,.15);
+  --shadow:    0 2px 12px rgba(27,26,23,.06);
+  --shadow-md: 0 8px 32px rgba(27,26,23,.09);
+  --r:         10px;
+  --r-lg:      18px;
 }
 
 /* ═══════════════════════════════════
-   RESET & BASE
+   BASE
 ═══════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:16px;scroll-behavior:smooth;}
 body{
   background:var(--bg);
   color:var(--ink);
-  font-family:'DM Sans',sans-serif;
+  font-family:'Inter',sans-serif;
   font-weight:400;
   line-height:1.6;
   overflow-x:hidden;
 }
 a{text-decoration:none;color:inherit;}
-img{display:block;max-width:100%;}
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--green3);border-radius:2px;}
+::-webkit-scrollbar-thumb{background:var(--green4);border-radius:2px;}
 
 /* ═══════════════════════════════════
-   TYPOGRAPHY
+   BEAN PLANT — FIXED BACKGROUND SVG
+   Crece conforme el usuario scrollea.
+   Frijol con guías trepando por la
+   pantalla — de abajo hacia arriba.
 ═══════════════════════════════════ */
-.f-display{font-family:'Cormorant Garamond',serif;}
-.f-mono   {font-family:'DM Mono',monospace;}
+#plant-bg{
+  position:fixed;
+  right:0; top:0;
+  width:min(480px, 46vw);
+  height:100vh;
+  pointer-events:none;
+  z-index:0;
+  overflow:visible;
+}
+#plant-bg svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+/* All drawn strokes default hidden */
+.bp{
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
 
 /* ═══════════════════════════════════
    PROGRESS BAR
 ═══════════════════════════════════ */
 #pbar{
-  position:fixed;top:0;left:0;height:2px;z-index:999;
+  position:fixed;top:0;left:0;height:2px;z-index:900;
   background:linear-gradient(90deg,var(--green),var(--green3));
   width:0%;pointer-events:none;
-  transition:width .06s linear;
 }
 
 /* ═══════════════════════════════════
    NAV
 ═══════════════════════════════════ */
 #nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  height:56px;display:flex;align-items:center;
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  height:58px;display:flex;align-items:center;
   padding:0 2.5rem;justify-content:space-between;
   border-bottom:1px solid transparent;
   transition:background .35s,border-color .35s,backdrop-filter .35s;
 }
 #nav.s{
-  background:rgba(248,245,239,.94);
+  background:rgba(249,246,240,.94);
   backdrop-filter:blur(18px);
   border-color:var(--line);
 }
 .nav-brand{display:flex;align-items:center;gap:10px;}
 .nav-mark{
   width:30px;height:30px;border-radius:7px;
-  background:var(--green);display:flex;align-items:center;justify-content:center;
+  background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-.nav-mark svg{display:block;}
 .nav-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.05rem;font-weight:600;letter-spacing:-.01em;
-  color:var(--ink);
+  font-family:'DM Serif Display',serif;
+  font-size:1rem;font-weight:600;letter-spacing:-.01em;color:var(--ink);
 }
-.nav-links{display:flex;align-items:center;gap:1.8rem;}
+.nav-links{display:flex;align-items:center;gap:2rem;}
 .nav-a{
-  font-size:.75rem;font-weight:500;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--ink2);
-  transition:color .2s;
+  font-size:.72rem;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink3);transition:color .2s;
 }
 .nav-a:hover,.nav-a.act{color:var(--green);}
 .nav-cta{
-  font-size:.73rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
-  color:#fff;background:var(--green);
-  padding:8px 20px;border-radius:40px;
-  transition:background .2s,transform .15s;
+  font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;background:var(--green);padding:9px 22px;border-radius:40px;
+  transition:background .2s,transform .15s;display:inline-block;
 }
 .nav-cta:hover{background:var(--green2);transform:translateY(-1px);}
-
-/* hamburger */
 .ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
 .ham span{display:block;width:20px;height:1.5px;background:var(--ink);border-radius:2px;transition:all .28s;}
 #mob{
-  display:none;flex-direction:column;gap:0;
-  position:fixed;top:56px;left:0;right:0;z-index:490;
-  background:rgba(248,245,239,.97);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--line);padding:1rem 2rem 1.5rem;
+  display:none;flex-direction:column;
+  position:fixed;top:58px;left:0;right:0;z-index:790;
+  background:rgba(249,246,240,.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+  padding:1rem 2rem 1.6rem;
 }
 #mob.o{display:flex;}
-#mob a{font-size:.88rem;font-weight:500;color:var(--ink2);padding:.65rem 0;border-bottom:1px solid var(--line2);}
-#mob a:last-child{border:none;color:var(--green);font-weight:600;}
+#mob a{
+  font-size:.88rem;font-weight:500;color:var(--ink2);
+  padding:.62rem 0;border-bottom:1px solid var(--line2);
+}
+#mob a:last-child{border:none;color:var(--green);font-weight:700;}
+
+/* ═══════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════ */
+.sec{padding:6rem 4rem;position:relative;z-index:1;}
+.inn{max-width:960px;margin:0 auto;}
+.rule{border:none;border-top:1px solid var(--line);position:relative;z-index:1;}
+
+/* Content overlay so it reads over the plant bg */
+.sec-content-bg{
+  background:rgba(249,246,240,.82);
+  backdrop-filter:blur(2px);
+  border-radius:var(--r-lg);
+  padding:3rem;
+}
+
+/* ═══════════════════════════════════
+   TYPOGRAPHY SYSTEM
+   DM Serif Display — editorial, alto
+   Inter — legible, neutral, versátil
+   DM Mono — código, etiquetas
+═══════════════════════════════════ */
+.t-display{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.9rem,5.2vw,4.6rem);
+  font-weight:400;line-height:1.08;letter-spacing:-.02em;
+  color:var(--ink);
+}
+.t-display em{font-style:italic;color:var(--green);}
+
+.t-h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3.2vw,2.8rem);
+  font-weight:400;line-height:1.14;letter-spacing:-.015em;
+  color:var(--ink);
+}
+.t-h2 em{font-style:italic;color:var(--green);}
+
+.t-h3{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(1.35rem,2.1vw,1.65rem);
+  font-weight:400;line-height:1.22;letter-spacing:-.008em;
+}
+
+.t-label{
+  font-family:'Inter',sans-serif;
+  font-size:.65rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--green);display:flex;align-items:center;gap:10px;margin-bottom:1.2rem;
+}
+.t-label::after{content:'';width:24px;height:1px;background:var(--green);}
+
+.t-body{font-family:'Inter',sans-serif;font-size:.9rem;font-weight:400;color:var(--ink2);line-height:1.8;}
+.t-body-sm{font-family:'Inter',sans-serif;font-size:.82rem;font-weight:400;color:var(--ink2);line-height:1.72;}
+.t-mono{font-family:'DM Mono',monospace;}
+
+/* ═══════════════════════════════════
+   BUTTONS
+═══════════════════════════════════ */
+.btn-p{
+  font-family:'Inter',sans-serif;font-size:.76rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;background:var(--green);
+  padding:13px 30px;border-radius:40px;border:none;cursor:pointer;
+  transition:background .2s,transform .15s,box-shadow .2s;display:inline-block;
+}
+.btn-p:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(42,92,44,.22);}
+.btn-o{
+  font-family:'Inter',sans-serif;font-size:.76rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--green);background:transparent;
+  padding:12px 30px;border-radius:40px;
+  border:1.5px solid rgba(42,92,44,.32);cursor:pointer;
+  transition:border-color .2s,background .2s,transform .15s;display:inline-block;
+}
+.btn-o:hover{border-color:var(--green);background:rgba(42,92,44,.05);transform:translateY(-2px);}
+
+/* ═══════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════ */
+.rv {opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+.rvl{opacity:0;transform:translateX(-20px);transition:opacity .65s ease,transform .65s ease;}
+.rvr{opacity:0;transform:translateX(20px);transition:opacity .65s ease,transform .65s ease;}
+.rv.i,.rvl.i,.rvr.i{opacity:1;transform:translate(0);}
+.d1{transition-delay:.07s;}.d2{transition-delay:.14s;}.d3{transition-delay:.22s;}
+.d4{transition-delay:.30s;}.d5{transition-delay:.38s;}.d6{transition-delay:.46s;}
 
 /* ═══════════════════════════════════
    HERO
 ═══════════════════════════════════ */
 #hero{
   min-height:100vh;
-  display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;
-  padding:72px 4rem 4rem;gap:4rem;
-  position:relative;overflow:hidden;
+  display:flex;align-items:center;
+  padding:80px 4rem 4rem;
+  position:relative;z-index:1;
 }
-/* subtle warm grain */
-#hero::after{
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23g)' opacity='.03'/%3E%3C/svg%3E");
-  opacity:.6;
-}
-.hero-l{position:relative;z-index:1;}
+.hero-inner{max-width:600px;}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:9px;
-  font-size:.7rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--green);margin-bottom:1.7rem;
+  font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--green);margin-bottom:1.6rem;
 }
 .hero-eyebrow::before{content:'';width:22px;height:1.5px;background:var(--green);display:block;}
-.hero-h1{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(3rem,5vw,4.6rem);
-  font-weight:500;line-height:1.1;
-  letter-spacing:-.02em;
-  color:var(--ink);margin-bottom:1.3rem;
-}
-.hero-h1 em{font-style:italic;color:var(--green);}
-.hero-sub{
-  font-size:.97rem;color:var(--ink2);line-height:1.75;
-  max-width:420px;margin-bottom:2.2rem;
-}
 .hero-btns{display:flex;gap:.85rem;flex-wrap:wrap;margin-bottom:3rem;}
-
-.btn-primary{
-  font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
-  color:#fff;background:var(--green);
-  padding:13px 28px;border-radius:40px;border:none;cursor:pointer;
-  transition:background .2s,transform .15s,box-shadow .2s;display:inline-block;
+.hero-stats{
+  display:flex;gap:2.5rem;
+  padding-top:2rem;border-top:1px solid var(--line);flex-wrap:wrap;
 }
-.btn-primary:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 8px 22px rgba(44,95,46,.2);}
-.btn-outline{
-  font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
-  color:var(--green);background:transparent;
-  padding:12px 28px;border-radius:40px;
-  border:1.5px solid rgba(44,95,46,.3);cursor:pointer;
-  transition:border-color .2s,background .2s,transform .15s;display:inline-block;
+.hs-num{
+  font-family:'DM Serif Display',serif;font-size:2.3rem;font-weight:500;
+  color:var(--green);line-height:1;
 }
-.btn-outline:hover{border-color:var(--green);background:rgba(44,95,46,.04);transform:translateY(-2px);}
-
-.hero-stats{display:flex;gap:2.5rem;padding-top:2rem;border-top:1px solid var(--line);flex-wrap:wrap;}
-.hs-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:500;color:var(--green);line-height:1;}
-.hs-lbl{font-size:.72rem;color:var(--ink3);margin-top:3px;}
-
-/* PLANT / SEED canvas area */
-.hero-r{
-  position:sticky;top:0;height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  z-index:1;
-}
-#plant-svg{width:min(340px,88%);height:auto;overflow:visible;}
-.p-path{fill:none;stroke-linecap:round;stroke-linejoin:round;}
-
-/* ═══════════════════════════════════
-   SHARED SECTION
-═══════════════════════════════════ */
-.sec{padding:6rem 4rem;}
-.inn{max-width:1040px;margin:0 auto;}
-.inn-n{max-width:680px;margin:0 auto;}
-
-.sec-tag{
-  font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--green);display:flex;align-items:center;gap:9px;margin-bottom:1.2rem;
-}
-.sec-tag::after{content:'';flex:0 0 28px;height:1px;background:var(--green);}
-
-.sec-h{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2rem,3.5vw,2.9rem);
-  font-weight:500;letter-spacing:-.015em;line-height:1.15;
-  margin-bottom:1rem;
-}
-.sec-h em{font-style:italic;color:var(--green);}
-
-.rule{border:none;border-top:1px solid var(--line);}
-
-/* ═══════════════════════════════════
-   REVEAL
-═══════════════════════════════════ */
-.rv {opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
-.rvl{opacity:0;transform:translateX(-22px);transition:opacity .7s ease,transform .7s ease;}
-.rvr{opacity:0;transform:translateX(22px);transition:opacity .7s ease,transform .7s ease;}
-.rv.i,.rvl.i,.rvr.i{opacity:1;transform:translate(0);}
-.d1{transition-delay:.07s;}.d2{transition-delay:.15s;}.d3{transition-delay:.23s;}
-.d4{transition-delay:.31s;}.d5{transition-delay:.39s;}
+.hs-lbl{font-size:.7rem;font-weight:600;color:var(--ink3);margin-top:4px;letter-spacing:.03em;}
 
 /* ═══════════════════════════════════
    PROBLEMA
 ═══════════════════════════════════ */
 #problema{background:var(--bg2);}
-
 .prob-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;
-  margin-top:3.2rem;
+  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-top:3rem;
 }
 .prob-card{background:var(--bg);padding:2.2rem 1.8rem;transition:background .3s;}
-.prob-card:hover{background:var(--bg2);}
+.prob-card:hover{background:var(--bg3);}
 .prob-n{
-  font-family:'Cormorant Garamond',serif;
-  font-size:3.8rem;font-weight:300;
-  color:rgba(44,95,46,.1);line-height:1;margin-bottom:.5rem;
+  font-family:'DM Serif Display',serif;font-size:4rem;font-weight:400;
+  color:rgba(42,92,44,.09);line-height:1;margin-bottom:.4rem;
 }
-.prob-ico{
-  width:38px;height:38px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:1.1rem;
-}
-.prob-t{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.15rem;font-weight:500;margin-bottom:.55rem;
-}
-.prob-b{font-size:.84rem;color:var(--ink2);line-height:1.7;}
+.prob-ico{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
+.prob-t{font-family:'DM Serif Display',serif;font-size:1.1rem;font-weight:500;margin-bottom:.5rem;letter-spacing:-.01em;}
+.prob-b{font-size:.83rem;color:var(--ink2);line-height:1.72;}
 
-/* comparison table */
-.cmp-wrap{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;margin-top:2rem;}
+/* compare table */
+.cmp-wrap{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:2rem;}
 .cmp-inner{overflow-x:auto;}
 .cmp{width:100%;border-collapse:collapse;min-width:480px;}
 .cmp th{
-  font-size:.63rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   color:var(--green);background:var(--bg2);
   padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);
 }
-.cmp td{font-size:.82rem;color:var(--ink2);padding:10px 14px;border-bottom:1px solid var(--line2);vertical-align:top;}
+.cmp td{font-size:.82rem;color:var(--ink2);padding:10px 14px;border-bottom:1px solid var(--line2);}
 .cmp tr:last-child td{border-bottom:none;}
-.cmp .bad{color:#9B4444;font-family:'DM Mono',monospace;font-size:.74rem;}
-.cmp .good{color:var(--green);font-family:'DM Mono',monospace;font-size:.74rem;font-weight:500;}
-.cmp td strong{color:var(--ink);font-weight:500;}
+.cmp .bad{color:#8B3A3A;font-family:'DM Mono',monospace;font-size:.72rem;}
+.cmp .good{color:var(--green);font-family:'DM Mono',monospace;font-size:.72rem;font-weight:600;}
+.cmp td strong{color:var(--ink);font-weight:600;}
 
 /* ═══════════════════════════════════
    SOLUCIÓN
 ═══════════════════════════════════ */
 #solucion{background:var(--bg);}
-
-.sol-row{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:4.5rem;align-items:center;margin-bottom:5rem;
-}
+.sol-row{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-bottom:5rem;}
 .sol-row:last-child{margin-bottom:0;}
-
 .sol-vis{
   aspect-ratio:1;background:var(--bg2);
   border-radius:var(--r-lg);
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
 }
 .sol-badge{
   display:inline-flex;align-items:center;gap:6px;
-  font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  padding:5px 12px;border-radius:40px;margin-bottom:1.4rem;
+  font-size:.63rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  padding:5px 13px;border-radius:40px;margin-bottom:1.3rem;
 }
-.sol-h{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.6rem,2.5vw,2.1rem);
-  font-weight:500;margin-bottom:.9rem;line-height:1.22;
-}
-.sol-p{font-size:.88rem;color:var(--ink2);line-height:1.76;margin-bottom:1.6rem;}
-.tags{display:flex;flex-wrap:wrap;gap:.5rem;}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.5rem;}
 .tag{
-  font-size:.68rem;font-weight:500;
-  color:var(--green);background:rgba(44,95,46,.07);
-  border:1px solid rgba(44,95,46,.15);border-radius:40px;
+  font-size:.68rem;font-weight:600;
+  color:var(--green);background:rgba(42,92,44,.07);
+  border:1px solid rgba(42,92,44,.16);border-radius:40px;
   padding:4px 12px;
 }
 
@@ -304,164 +317,177 @@ img{display:block;max-width:100%;}
    ARQUITECTURA
 ═══════════════════════════════════ */
 #arquitectura{background:var(--bg2);}
-
-.arch-diagram{
+.arch-box{
   background:var(--bg);border:1px solid var(--line);
-  border-radius:var(--r-lg);padding:2.5rem;margin-top:3rem;
+  border-radius:var(--r-lg);padding:2.5rem;margin-top:2.8rem;
+  box-shadow:var(--shadow);
 }
-.arch-layer-lbl{
-  font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink3);margin-bottom:.9rem;
+.arch-lbl{
+  font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink4);margin-bottom:.8rem;
 }
-.arch-row{display:grid;gap:1rem;margin-bottom:1.5rem;}
-.arch-row-3{grid-template-columns:repeat(3,1fr);}
-.arch-row-4{grid-template-columns:repeat(4,1fr);}
-.arch-node{
+.arch-row{display:grid;gap:.9rem;margin-bottom:1.2rem;}
+.arch-3{grid-template-columns:repeat(3,1fr);}
+.arch-4{grid-template-columns:repeat(4,1fr);}
+.arch-nd{
   background:var(--bg2);border:1px solid var(--line);
-  border-radius:var(--r-sm);padding:1rem 1.1rem;
+  border-radius:var(--r);padding:.95rem 1.1rem;
   transition:border-color .25s,background .25s;
 }
-.arch-node:hover{border-color:rgba(44,95,46,.3);background:var(--bg3);}
-.arch-node.green{border-color:rgba(44,95,46,.25);background:rgba(44,95,46,.05);}
-.arch-node-title{font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:.25rem;}
-.arch-node-sub{font-size:.68rem;color:var(--ink3);line-height:1.5;}
-.arch-arrow{
-  display:flex;justify-content:center;margin:.3rem 0;
-}
-.arch-arrow svg{color:var(--green3);}
-.arch-connector{
-  display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;
-}
-.arch-conn-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);}
-.arch-conn-lbl{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);}
+.arch-nd:hover{border-color:var(--line-g);background:var(--bg3);}
+.arch-nd.g{border-color:rgba(42,92,44,.22);background:rgba(42,92,44,.05);}
+.arch-nd-t{font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:.2rem;display:flex;align-items:center;gap:5px;}
+.arch-nd-s{font-size:.67rem;color:var(--ink3);line-height:1.5;}
+.arch-arr{display:flex;justify-content:center;margin:.25rem 0;}
 
 /* ═══════════════════════════════════
    ALCANCES
 ═══════════════════════════════════ */
 #alcances{background:var(--bg);}
-.alc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:3rem;}
+.alc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:2.8rem;}
 .alc-card{
-  border:1px solid var(--line);border-radius:var(--r-md);padding:1.8rem;
-  transition:border-color .3s,transform .3s,box-shadow .3s;background:var(--bg);
+  border:1px solid var(--line);border-radius:var(--r);padding:1.7rem;
+  background:var(--bg);transition:border-color .3s,transform .3s,box-shadow .3s;
 }
-.alc-card:hover{border-color:rgba(44,95,46,.22);transform:translateY(-3px);box-shadow:0 12px 32px rgba(44,95,46,.07);}
-.alc-card-ico{width:36px;height:36px;border-radius:8px;background:rgba(44,95,46,.07);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
-.alc-card-t{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-weight:500;margin-bottom:.45rem;}
-.alc-card-b{font-size:.82rem;color:var(--ink2);line-height:1.7;}
-/* limitations card */
-.lim-wrap{
-  grid-column:1/-1;
-  border:1px solid rgba(155,68,68,.2);
-  border-radius:var(--r-md);background:var(--bg);overflow:hidden;
-}
-.lim-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:1.4rem 1.8rem;cursor:pointer;
-}
-.lim-title{
-  display:flex;align-items:center;gap:8px;
-  font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9B4444;
-}
+.alc-card:hover{border-color:var(--line-g);transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.alc-ico{width:34px;height:34px;border-radius:7px;background:rgba(42,92,44,.07);display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;}
+.alc-t{font-family:'DM Serif Display',serif;font-size:1rem;font-weight:500;margin-bottom:.4rem;}
+.alc-b{font-size:.81rem;color:var(--ink2);line-height:1.7;}
+
+/* limitations */
+.lim{border:1px solid rgba(139,58,58,.2);border-radius:var(--r);background:var(--bg);grid-column:1/-1;overflow:hidden;}
+.lim-head{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 1.6rem;cursor:pointer;}
+.lim-title{display:flex;align-items:center;gap:8px;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8B3A3A;}
 .lim-chev{transition:transform .3s;flex-shrink:0;}
 .lim-body{max-height:0;overflow:hidden;transition:max-height .42s ease;}
 .lim-body.o{max-height:600px;}
-.lim-inner{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:1rem;padding:0 1.8rem 1.8rem;
-}
-.lim-item{display:flex;gap:.8rem;}
+.lim-inner{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;padding:0 1.6rem 1.6rem;}
+.lim-item{display:flex;gap:.75rem;}
 .lim-bar{width:2px;border-radius:2px;background:#C08080;flex-shrink:0;}
-.lim-t{font-size:.78rem;font-weight:600;color:var(--ink);margin-bottom:.25rem;}
-.lim-b{font-size:.78rem;color:var(--ink2);line-height:1.65;}
+.lim-t{font-size:.77rem;font-weight:600;color:var(--ink);margin-bottom:.2rem;}
+.lim-b{font-size:.77rem;color:var(--ink2);line-height:1.65;}
 
 /* ═══════════════════════════════════
-   USUARIOS
+   USUARIOS — 2 ROLES
 ═══════════════════════════════════ */
 #usuarios{background:var(--bg2);}
-.usr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.usr-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.8rem;}
 .usr-card{
   background:var(--bg);border:1px solid var(--line);
-  border-radius:var(--r-md);padding:2rem 1.8rem;
-  transition:border-color .3s,transform .3s;
+  border-radius:var(--r-lg);padding:2.4rem 2rem;
+  transition:border-color .3s,transform .3s,box-shadow .3s;
 }
-.usr-card:hover{border-color:rgba(44,95,46,.22);transform:translateY(-3px);}
-.usr-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:3.2rem;font-weight:300;color:rgba(44,95,46,.12);
-  line-height:1;margin-bottom:.4rem;
-}
-.usr-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;}
+.usr-card:hover{border-color:var(--line-g);transform:translateY(-3px);box-shadow:var(--shadow-md);}
 .usr-role{
-  font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  font-size:.63rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
   color:var(--green);margin-bottom:.5rem;
 }
-.usr-t{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;margin-bottom:.6rem;}
-.usr-b{font-size:.83rem;color:var(--ink2);line-height:1.7;}
-.usr-chips{display:flex;flex-direction:column;gap:.45rem;margin-top:1.2rem;}
-.usr-chip{
-  display:flex;align-items:center;gap:.5rem;
-  font-size:.76rem;color:var(--ink2);
+.usr-t{font-family:'DM Serif Display',serif;font-size:1.5rem;font-weight:500;margin-bottom:.5rem;letter-spacing:-.01em;}
+.usr-desc{font-size:.86rem;color:var(--ink2);line-height:1.74;margin-bottom:1.4rem;}
+.usr-ico-wrap{
+  width:52px;height:52px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.4rem;
 }
-.usr-chip-dot{width:5px;height:5px;border-radius:50%;background:var(--green3);flex-shrink:0;}
+.usr-accesos{
+  background:var(--bg2);border-radius:8px;padding:1rem 1.1rem;
+  margin-bottom:1.2rem;
+}
+.usr-accesos-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:.55rem;}
+.usr-chips{display:flex;flex-direction:column;gap:.4rem;}
+.usr-chip{display:flex;align-items:flex-start;gap:.5rem;font-size:.8rem;color:var(--ink2);}
+.usr-dot{width:5px;height:5px;border-radius:50%;background:var(--green3);flex-shrink:0;margin-top:5px;}
 
 /* ═══════════════════════════════════
-   MONETIZACIÓN
+   MONETIZACIÓN — PLANES CLAROS
 ═══════════════════════════════════ */
 #monetizacion{background:var(--ink);}
-#monetizacion .sec-tag{color:var(--green3);}
-#monetizacion .sec-tag::after{background:var(--green3);}
-#monetizacion .sec-h{color:#fff;}
-#monetizacion .sec-h em{color:var(--green3);}
-#monetizacion .rule{border-color:rgba(255,255,255,.07);}
+#monetizacion .t-label{color:var(--green3);}
+#monetizacion .t-label::after{background:var(--green3);}
+#monetizacion .t-h2{color:#fff;}
+#monetizacion .t-h2 em{color:var(--green3);}
 
-.mon-intro{font-size:.92rem;color:rgba(255,255,255,.5);max-width:480px;margin-top:.7rem;line-height:1.75;}
+.mon-intro{font-size:.9rem;color:rgba(255,255,255,.45);max-width:500px;margin-top:.6rem;line-height:1.78;}
 
-.mon-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-md);overflow:hidden;margin-top:3rem;}
-.mon-card{background:var(--ink);padding:2.2rem 2rem;transition:background .3s;}
-.mon-card:hover{background:rgba(255,255,255,.03);}
-.mon-seg{font-size:.63rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--green3);margin-bottom:.9rem;}
-.mon-t{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#fff;margin-bottom:.6rem;}
-.mon-b{font-size:.82rem;color:rgba(255,255,255,.42);line-height:1.7;margin-bottom:1.2rem;}
-.mon-mech{
-  font-family:'DM Mono',monospace;font-size:.68rem;
+/* Model highlight banner */
+.mon-banner{
+  background:rgba(42,92,44,.18);
+  border:1px solid rgba(42,92,44,.35);
+  border-radius:var(--r-lg);padding:1.8rem 2rem;
+  display:flex;align-items:flex-start;gap:1.2rem;
+  margin-top:2.5rem;
+}
+.mon-banner-ico{
+  width:40px;height:40px;border-radius:9px;
+  background:rgba(42,92,44,.25);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.mon-banner-t{font-family:'DM Serif Display',serif;font-size:1.15rem;color:#fff;margin-bottom:.35rem;}
+.mon-banner-b{font-size:.83rem;color:rgba(255,255,255,.45);line-height:1.72;}
+
+/* Pricing plans */
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-lg);overflow:hidden;margin-top:2rem;}
+.plan{background:var(--ink);padding:2rem 1.8rem;transition:background .3s;display:flex;flex-direction:column;}
+.plan:hover{background:rgba(255,255,255,.04);}
+.plan.featured{background:rgba(42,92,44,.14);border:1px solid rgba(42,92,44,.3);}
+.plan-seg{font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--green3);margin-bottom:.8rem;}
+.plan-who{font-family:'DM Serif Display',serif;font-size:1.15rem;color:#fff;margin-bottom:.5rem;}
+.plan-desc{font-size:.8rem;color:rgba(255,255,255,.4);line-height:1.68;margin-bottom:1.4rem;flex:1;}
+.plan-price-wrap{margin-bottom:1.4rem;}
+.plan-price{
+  font-family:'DM Serif Display',serif;font-size:2rem;color:var(--green3);line-height:1;
+}
+.plan-price-unit{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.25rem;font-family:'Inter',sans-serif;}
+.plan-mechanism{
+  font-family:'DM Mono',monospace;font-size:.67rem;
   color:var(--green3);background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.07);
-  border-radius:6px;padding:.65rem .9rem;line-height:1.9;
+  border-radius:6px;padding:.6rem .85rem;line-height:1.85;
+}
+.plan-badge{
+  display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;background:var(--green);color:#fff;
+  padding:3px 9px;border-radius:40px;margin-bottom:.8rem;
 }
 
-.mon-saas{
-  background:rgba(44,95,46,.1);border:1px solid rgba(44,95,46,.2);
-  border-radius:var(--r-md);padding:2rem;margin-top:1.5rem;
-  display:flex;align-items:flex-start;gap:1rem;
+/* Segments table */
+.segs-wrap{border:1px solid rgba(255,255,255,.07);border-radius:var(--r);overflow:hidden;margin-top:2rem;}
+.segs-inner{overflow-x:auto;}
+.segs{width:100%;border-collapse:collapse;min-width:460px;}
+.segs th{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green3);background:rgba(255,255,255,.04);padding:10px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);}
+.segs td{font-size:.81rem;color:rgba(255,255,255,.42);padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);}
+.segs tr:last-child td{border-bottom:none;}
+.segs td strong{color:rgba(255,255,255,.78);font-weight:600;}
+.segs td .tag-dark{
+  display:inline-block;font-size:.63rem;font-weight:600;
+  color:var(--green3);background:rgba(42,92,44,.2);
+  border:1px solid rgba(42,92,44,.3);border-radius:40px;padding:2px 8px;
 }
-.mon-saas-ico{flex-shrink:0;width:38px;height:38px;border-radius:8px;background:rgba(44,95,46,.2);display:flex;align-items:center;justify-content:center;}
-.mon-saas-t{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#fff;margin-bottom:.4rem;}
-.mon-saas-b{font-size:.82rem;color:rgba(255,255,255,.42);line-height:1.7;}
 
-/* biz table (dark) */
-.biz-wrap{border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);overflow:hidden;margin-top:2rem;}
-.biz-inner{overflow-x:auto;}
-.biz{width:100%;border-collapse:collapse;min-width:460px;}
-.biz th{font-size:.62rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--green3);background:rgba(255,255,255,.04);padding:10px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);}
-.biz td{font-size:.82rem;color:rgba(255,255,255,.45);padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);}
-.biz tr:last-child td{border-bottom:none;}
-.biz td strong{color:rgba(255,255,255,.8);font-weight:500;}
+/* Callout */
+.callout{
+  border:1px solid rgba(42,92,44,.3);border-radius:var(--r);
+  background:rgba(42,92,44,.08);padding:1.3rem 1.5rem;
+  display:flex;align-items:flex-start;gap:.9rem;margin-top:1.5rem;
+}
+.callout-t{font-size:.83rem;color:rgba(255,255,255,.42);line-height:1.72;}
+.callout-t strong{color:var(--green3);font-weight:600;}
 
 /* ═══════════════════════════════════
    FOOTER
 ═══════════════════════════════════ */
-footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
-.ft-inner{max-width:1040px;margin:0 auto;}
+footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;position:relative;z-index:1;}
+.ft-inner{max-width:960px;margin:0 auto;}
 .ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem;}
-.ft-brand{font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;margin-bottom:.55rem;}
-.ft-sub{font-size:.78rem;line-height:1.65;}
-.ft-col-t{font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:1rem;}
+.ft-brand{font-family:'DM Serif Display',serif;font-size:1rem;color:#fff;margin-bottom:.5rem;}
+.ft-sub{font-size:.77rem;line-height:1.65;}
+.ft-col-t{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:1rem;}
 .ft-links{display:flex;flex-direction:column;gap:.6rem;}
-.ft-a{font-size:.78rem;color:rgba(255,255,255,.38);transition:color .2s;}
+.ft-a{font-size:.77rem;color:rgba(255,255,255,.36);transition:color .2s;}
 .ft-a:hover{color:#fff;}
 .ft-bot{border-top:1px solid rgba(255,255,255,.06);padding-top:1.8rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
-.ft-copy{font-size:.72rem;}
-.ft-live{display:flex;align-items:center;gap:6px;font-size:.7rem;font-family:'DM Mono',monospace;}
+.ft-copy{font-size:.7rem;}
+.ft-live{display:flex;align-items:center;gap:6px;font-size:.68rem;font-family:'DM Mono',monospace;}
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--green3);}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 .live-dot{animation:blink 2.5s ease-in-out infinite;}
@@ -470,33 +496,239 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
    RESPONSIVE
 ═══════════════════════════════════ */
 @media(max-width:1024px){
-  #hero{grid-template-columns:1fr;padding:80px 2rem 3rem;gap:2.5rem;}
-  .hero-r{position:relative;height:300px;top:auto;}
+  #plant-bg{width:min(360px,40vw);}
   .sol-row{grid-template-columns:1fr;gap:2.5rem;}
   .sol-row .rvr{order:1;}.sol-row .rvl{order:2;}
-  .arch-row-4{grid-template-columns:repeat(2,1fr);}
+  .arch-4{grid-template-columns:repeat(2,1fr);}
   .ft-top{grid-template-columns:1fr 1fr;gap:2rem;}
 }
 @media(max-width:768px){
   .sec{padding:4rem 1.5rem;}
-  #hero{padding:74px 1.5rem 2.5rem;}
+  #hero{padding:72px 1.5rem 2.5rem;}
+  #plant-bg{width:min(260px,55vw);opacity:.5;}
   .nav-links{display:none;}.ham{display:flex;}
-  .prob-grid{grid-template-columns:1fr;}
-  .arch-row-3,.arch-row-4{grid-template-columns:1fr;}
-  .alc-grid,.mon-grid,.usr-grid{grid-template-columns:1fr;}
+  .prob-grid,.arch-3,.arch-4{grid-template-columns:1fr;}
+  .alc-grid,.usr-grid,.plans-grid{grid-template-columns:1fr;}
   .lim-inner{grid-template-columns:1fr;}
   .ft-top{grid-template-columns:1fr;}
   .ft-bot{flex-direction:column;align-items:flex-start;}
+  .hero-stats{gap:1.4rem;}
 }
 @media(max-width:480px){
-  .hero-h1{font-size:2.6rem;}
+  .t-display{font-size:2.4rem;}
   .hero-btns{flex-direction:column;}
-  .hero-stats{gap:1.5rem;}
-  .hero-r{height:240px;}
+  #plant-bg{display:none;}
 }
 </style>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════════
+     BEAN PLANT BACKGROUND — fixed, full page
+══════════════════════════════════════════ -->
+<div id="plant-bg" aria-hidden="true">
+  <svg id="bp-svg" viewBox="0 0 460 900" preserveAspectRatio="xMidYMax meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- BEAN SEED — bottom center -->
+    <ellipse id="bseed" cx="230" cy="878" rx="14" ry="10"
+      fill="#7A5832" opacity=".8"/>
+    <!-- seed hilum -->
+    <line id="bhilum" x1="222" y1="878" x2="238" y2="878"
+      stroke="#5A3A1A" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+
+    <!-- GROUND -->
+    <ellipse id="bgnd" cx="230" cy="886" rx="70" ry="9"
+      fill="#2A5C2C" opacity="0" style="transition:opacity .8s;"/>
+
+    <!-- ── MAIN STEM — central twining vine ── -->
+    <!-- Primary stem rises and twists -->
+    <path id="bs0" class="bp" stroke="#2A5C2C" stroke-width="2.8"
+      d="M230 875 C228 855 226 830 228 808"/>
+    <path id="bs1" class="bp" stroke="#2A5C2C" stroke-width="2.8"
+      d="M228 808 C232 785 226 762 230 740"/>
+    <path id="bs2" class="bp" stroke="#2A5C2C" stroke-width="2.5"
+      d="M230 740 C234 718 228 695 232 672"/>
+    <path id="bs3" class="bp" stroke="#2A5C2C" stroke-width="2.5"
+      d="M232 672 C236 650 230 626 234 603"/>
+    <path id="bs4" class="bp" stroke="#3A7A3D" stroke-width="2.2"
+      d="M234 603 C238 580 232 556 236 532"/>
+    <path id="bs5" class="bp" stroke="#3A7A3D" stroke-width="2.2"
+      d="M236 532 C240 508 234 484 238 460"/>
+    <path id="bs6" class="bp" stroke="#3A7A3D" stroke-width="2"
+      d="M238 460 C242 436 236 412 240 388"/>
+    <path id="bs7" class="bp" stroke="#5FA363" stroke-width="1.8"
+      d="M240 388 C244 364 238 340 242 316"/>
+    <path id="bs8" class="bp" stroke="#5FA363" stroke-width="1.6"
+      d="M242 316 C246 292 240 268 244 244"/>
+    <path id="bs9" class="bp" stroke="#5FA363" stroke-width="1.4"
+      d="M244 244 C248 220 242 196 246 172"/>
+    <path id="bs10" class="bp" stroke="#9DC9A0" stroke-width="1.2"
+      d="M246 172 C250 148 244 124 248 100"/>
+    <path id="bs11" class="bp" stroke="#9DC9A0" stroke-width="1"
+      d="M248 100 C252 76 246 52 250 30"/>
+
+    <!-- ── TENDRILS / GUÍAS (spiraling curls) ── -->
+    <!-- Tendril 1 — low right -->
+    <path id="bt1" class="bp" stroke="#5FA363" stroke-width="1.1"
+      d="M229 830 C245 822 260 820 272 826 C284 832 286 844 278 850 C270 856 258 852 252 844"/>
+    <!-- Tendril 2 — low left -->
+    <path id="bt2" class="bp" stroke="#5FA363" stroke-width="1.1"
+      d="M228 800 C212 792 198 792 186 800 C174 808 174 820 184 824 C194 828 206 822 210 812"/>
+    <!-- Tendril 3 — mid right -->
+    <path id="bt3" class="bp" stroke="#5FA363" stroke-width="1"
+      d="M232 720 C250 710 268 712 280 720 C292 728 292 742 282 746 C272 750 260 744 256 734"/>
+    <!-- Tendril 4 — mid left -->
+    <path id="bt4" class="bp" stroke="#5FA363" stroke-width="1"
+      d="M230 680 C212 670 196 672 184 682 C172 692 174 706 186 708 C198 710 210 702 212 690"/>
+    <!-- Tendril 5 — upper right -->
+    <path id="bt5" class="bp" stroke="#5FA363" stroke-width=".9"
+      d="M236 560 C254 550 272 552 284 562 C296 572 294 586 284 588 C274 590 262 582 260 570"/>
+    <!-- Tendril 6 — upper left -->
+    <path id="bt6" class="bp" stroke="#5FA363" stroke-width=".9"
+      d="M234 520 C216 510 200 514 190 524 C180 534 182 548 194 548 C206 548 216 538 216 526"/>
+    <!-- Tendril 7 — high right -->
+    <path id="bt7" class="bp" stroke="#9DC9A0" stroke-width=".8"
+      d="M240 400 C258 390 276 394 286 404 C296 414 292 428 282 428 C272 428 262 418 262 406"/>
+    <!-- Tendril 8 — high left -->
+    <path id="bt8" class="bp" stroke="#9DC9A0" stroke-width=".8"
+      d="M238 360 C220 352 204 356 196 368 C188 380 192 394 204 392 C216 390 224 378 222 366"/>
+    <!-- Tendril 9 — top right -->
+    <path id="bt9" class="bp" stroke="#9DC9A0" stroke-width=".7"
+      d="M244 230 C262 222 278 228 286 240 C294 252 288 264 278 262 C268 260 260 248 264 236"/>
+    <!-- Tendril 10 — top left -->
+    <path id="bt10" class="bp" stroke="#9DC9A0" stroke-width=".7"
+      d="M242 190 C224 184 210 190 204 202 C198 214 204 226 216 224 C228 222 234 210 230 198"/>
+
+    <!-- ── LEAVES — trifoliate bean leaves ── -->
+
+    <!-- Leaf set A — bottom right (compound) -->
+    <!-- petiole A -->
+    <path id="blpa" class="bp" stroke="#2A5C2C" stroke-width="1.3"
+      d="M229 808 C238 800 248 794 258 790"/>
+    <!-- leaflet A-center -->
+    <path id="bla1" class="bp" stroke="#3A7A3D" stroke-width="1.4"
+      d="M258 790 C270 778 278 762 274 750 C270 738 258 734 248 740 C238 746 234 760 240 772 C246 784 258 790 258 790Z"/>
+    <!-- leaflet A-right -->
+    <path id="bla2" class="bp" stroke="#3A7A3D" stroke-width="1.2"
+      d="M262 788 C276 780 284 766 278 756 C272 746 260 744 252 752 C244 760 246 774 258 780"/>
+    <!-- leaflet A-left -->
+    <path id="bla3" class="bp" stroke="#3A7A3D" stroke-width="1.2"
+      d="M254 792 C240 786 232 772 238 762 C244 752 256 752 262 762 C268 772 264 786 254 792"/>
+    <!-- vein A -->
+    <path id="blav" class="bp" stroke="#5FA363" stroke-width=".7"
+      d="M258 790 C262 776 266 762 270 750"/>
+
+    <!-- Leaf set B — bottom left -->
+    <path id="blpb" class="bp" stroke="#2A5C2C" stroke-width="1.3"
+      d="M228 762 C218 754 208 750 198 748"/>
+    <path id="blb1" class="bp" stroke="#3A7A3D" stroke-width="1.4"
+      d="M198 748 C186 736 180 720 186 708 C192 696 204 694 212 702 C220 710 218 726 210 736 C202 746 198 748 198 748Z"/>
+    <path id="blb2" class="bp" stroke="#3A7A3D" stroke-width="1.2"
+      d="M196 746 C182 740 174 726 180 716 C186 706 198 706 204 716 C210 726 206 742 196 746"/>
+    <path id="blbv" class="bp" stroke="#5FA363" stroke-width=".7"
+      d="M198 748 C194 734 190 720 188 708"/>
+
+    <!-- Leaf set C — mid right -->
+    <path id="blpc" class="bp" stroke="#2A5C2C" stroke-width="1.3"
+      d="M232 672 C244 662 256 656 268 654"/>
+    <path id="blc1" class="bp" stroke="#3A7A3D" stroke-width="1.4"
+      d="M268 654 C280 642 286 626 280 614 C274 602 262 600 254 608 C246 616 246 632 254 642 C262 652 268 654 268 654Z"/>
+    <path id="blc2" class="bp" stroke="#3A7A3D" stroke-width="1.2"
+      d="M270 652 C284 644 290 630 284 620 C278 610 266 610 260 620 C254 630 258 646 270 652"/>
+    <path id="blc3" class="bp" stroke="#3A7A3D" stroke-width="1.2"
+      d="M266 656 C252 652 246 638 254 628 C262 618 274 620 278 630 C282 640 276 654 266 656"/>
+    <path id="blcv" class="bp" stroke="#5FA363" stroke-width=".7"
+      d="M268 654 C272 640 274 626 272 614"/>
+
+    <!-- Leaf set D — mid left -->
+    <path id="blpd" class="bp" stroke="#2A5C2C" stroke-width="1.2"
+      d="M230 630 C218 622 206 618 194 618"/>
+    <path id="bld1" class="bp" stroke="#3A7A3D" stroke-width="1.3"
+      d="M194 618 C182 606 178 590 186 578 C194 566 206 566 212 578 C218 590 214 606 206 614 C198 622 194 618 194 618Z"/>
+    <path id="bld2" class="bp" stroke="#3A7A3D" stroke-width="1.1"
+      d="M192 616 C178 612 172 598 180 588 C188 578 200 580 204 592 C208 604 200 616 192 616"/>
+    <path id="bldv" class="bp" stroke="#5FA363" stroke-width=".65"
+      d="M194 618 C190 604 188 590 188 578"/>
+
+    <!-- Leaf set E — upper right -->
+    <path id="blpe" class="bp" stroke="#3A7A3D" stroke-width="1.2"
+      d="M236 532 C248 522 260 518 272 518"/>
+    <path id="ble1" class="bp" stroke="#3A7A3D" stroke-width="1.3"
+      d="M272 518 C284 506 288 490 282 480 C276 470 264 470 258 480 C252 490 254 506 264 514 C274 522 272 518 272 518Z"/>
+    <path id="ble2" class="bp" stroke="#3A7A3D" stroke-width="1.1"
+      d="M274 516 C288 510 294 496 288 486 C282 476 270 478 266 490 C262 502 268 516 274 516"/>
+    <path id="blev" class="bp" stroke="#5FA363" stroke-width=".65"
+      d="M272 518 C274 504 274 490 270 480"/>
+
+    <!-- Leaf set F — upper left -->
+    <path id="blpf" class="bp" stroke="#3A7A3D" stroke-width="1.1"
+      d="M234 490 C222 482 210 480 200 482"/>
+    <path id="blf1" class="bp" stroke="#3A7A3D" stroke-width="1.2"
+      d="M200 482 C188 472 184 456 192 446 C200 436 212 438 216 450 C220 462 216 478 206 484 C196 490 200 482 200 482Z"/>
+    <path id="blf2" class="bp" stroke="#3A7A3D" stroke-width="1"
+      d="M198 480 C186 476 180 462 188 452 C196 442 208 446 210 458 C212 470 206 480 198 480"/>
+    <path id="blfv" class="bp" stroke="#9DC9A0" stroke-width=".6"
+      d="M200 482 C196 468 194 454 194 446"/>
+
+    <!-- Leaf set G — high right -->
+    <path id="blpg" class="bp" stroke="#3A7A3D" stroke-width="1"
+      d="M240 388 C252 380 264 378 274 380"/>
+    <path id="blg1" class="bp" stroke="#5FA363" stroke-width="1.1"
+      d="M274 380 C284 370 286 356 280 348 C274 340 264 342 260 352 C256 362 260 376 270 380Z"/>
+    <path id="blgv" class="bp" stroke="#9DC9A0" stroke-width=".55"
+      d="M274 380 C274 366 272 352 268 346"/>
+
+    <!-- Leaf set H — high left -->
+    <path id="blph" class="bp" stroke="#3A7A3D" stroke-width="1"
+      d="M238 350 C226 344 214 344 206 348"/>
+    <path id="blh1" class="bp" stroke="#5FA363" stroke-width="1.1"
+      d="M206 348 C196 338 196 324 204 318 C212 312 222 316 224 328 C226 340 218 350 206 348Z"/>
+    <path id="blhv" class="bp" stroke="#9DC9A0" stroke-width=".55"
+      d="M206 348 C204 334 204 320 206 316"/>
+
+    <!-- Leaf set I — very top right -->
+    <path id="blpi" class="bp" stroke="#5FA363" stroke-width=".9"
+      d="M244 244 C254 238 264 238 272 242"/>
+    <path id="bli1" class="bp" stroke="#5FA363" stroke-width="1"
+      d="M272 242 C280 234 280 222 274 218 C268 214 260 218 258 228 C256 238 264 244 272 242Z"/>
+    <path id="bliv" class="bp" stroke="#9DC9A0" stroke-width=".5"
+      d="M272 242 C270 230 268 220 268 216"/>
+
+    <!-- Leaf set J — very top left -->
+    <path id="blpj" class="bp" stroke="#5FA363" stroke-width=".9"
+      d="M242 200 C232 196 222 198 216 204"/>
+    <path id="blj1" class="bp" stroke="#5FA363" stroke-width="1"
+      d="M216 204 C208 196 210 184 218 180 C226 176 234 182 234 192 C234 202 226 208 216 204Z"/>
+    <path id="bljv" class="bp" stroke="#9DC9A0" stroke-width=".5"
+      d="M216 204 C216 192 218 182 220 178"/>
+
+    <!-- TERMINAL BUD / small leaves at tip -->
+    <path id="bbud1" class="bp" stroke="#9DC9A0" stroke-width=".9"
+      d="M250 30 C256 22 260 16 258 10 C256 4 250 4 248 10 C246 16 248 24 250 30Z"/>
+    <path id="bbud2" class="bp" stroke="#9DC9A0" stroke-width=".9"
+      d="M250 30 C244 22 240 16 242 10 C244 4 250 4 250 10"/>
+    <circle id="bbud-tip" cx="250" cy="8" r="3"
+      fill="none" stroke="#9DC9A0" stroke-width=".8"
+      style="opacity:0;transition:opacity .4s;"/>
+
+    <!-- BEAN PODS — appear near end of scroll -->
+    <!-- Pod 1 — right side -->
+    <path id="bpod1" class="bp" stroke="#5FA363" stroke-width="1.4"
+      d="M264 640 C270 628 274 614 272 602 C270 590 262 584 254 590 C246 596 244 610 248 622 C252 634 264 640 264 640Z"
+      style="opacity:0;transition:opacity .5s;"/>
+    <!-- Pod 2 — left side -->
+    <path id="bpod2" class="bp" stroke="#5FA363" stroke-width="1.4"
+      d="M196 560 C190 548 188 534 192 522 C196 510 206 506 214 512 C222 518 222 532 218 544 C214 556 196 560 196 560Z"
+      style="opacity:0;transition:opacity .5s .1s;"/>
+    <!-- Pod bumps (seeds inside) -->
+    <path id="bpod1b" class="bp" stroke="#9DC9A0" stroke-width=".7"
+      d="M258 630 Q259 622 260 614 Q261 606 260 598"
+      style="opacity:0;transition:opacity .4s .2s;"/>
+    <path id="bpod2b" class="bp" stroke="#9DC9A0" stroke-width=".7"
+      d="M202 550 Q201 542 202 534 Q203 526 202 518"
+      style="opacity:0;transition:opacity .4s .25s;"/>
+  </svg>
+</div>
 
 <div id="pbar"></div>
 
@@ -507,20 +739,22 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
   <a href="#" class="nav-brand">
     <div class="nav-mark">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 14C8 14 3 10.2 3 6.5C3 4.1 5.2 2.2 8 2.2C10.8 2.2 13 4.1 13 6.5C13 10.2 8 14 8 14Z" fill="rgba(248,245,239,.88)"/>
-        <line x1="8" y1="6" x2="8" y2="11" stroke="rgba(44,95,46,.4)" stroke-width="1" stroke-linecap="round"/>
+        <ellipse cx="8" cy="10" rx="5" ry="3.5" fill="rgba(248,245,239,.85)"/>
+        <line x1="8" y1="10" x2="8" y2="4" stroke="rgba(42,92,44,.5)" stroke-width="1" stroke-linecap="round"/>
+        <path d="M8 7 C10 5 12 5 13 7" stroke="rgba(42,92,44,.5)" stroke-width=".9" stroke-linecap="round" fill="none"/>
+        <path d="M8 7 C6 5 4 5 3 7" stroke="rgba(42,92,44,.5)" stroke-width=".9" stroke-linecap="round" fill="none"/>
       </svg>
     </div>
     <span class="nav-name">AgroGraph-MAS</span>
   </a>
   <div class="nav-links">
-    <a href="#problema"      class="nav-a">Problema</a>
-    <a href="#solucion"      class="nav-a">Solución</a>
-    <a href="#arquitectura"  class="nav-a">Arquitectura</a>
-    <a href="#alcances"      class="nav-a">Alcances</a>
-    <a href="#usuarios"      class="nav-a">Usuarios</a>
-    <a href="#monetizacion"  class="nav-a">Modelo</a>
-    <a href="#solucion"      class="nav-cta">Demo</a>
+    <a href="#problema"     class="nav-a">Problema</a>
+    <a href="#solucion"     class="nav-a">Solución</a>
+    <a href="#arquitectura" class="nav-a">Arquitectura</a>
+    <a href="#alcances"     class="nav-a">Alcances</a>
+    <a href="#usuarios"     class="nav-a">Usuarios</a>
+    <a href="#monetizacion" class="nav-a">Modelo</a>
+    <a href="#solucion"     class="nav-cta">Ver demo</a>
   </div>
   <button class="ham" id="ham" aria-label="Menú">
     <span></span><span></span><span></span>
@@ -540,141 +774,40 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
      HERO
 ══════════════════════════════════════════ -->
 <section id="hero">
-  <!-- LEFT -->
-  <div class="hero-l">
+  <div class="hero-inner">
     <div class="hero-eyebrow rv">Proyecto Integrador · MVP v2.0</div>
-    <h1 class="hero-h1 rv d1">
+
+    <h1 class="t-display rv d1" style="margin-bottom:1.2rem;">
       Diagnóstico<br/>agronómico<br/><em>en la nube</em>
     </h1>
-    <p class="hero-sub rv d2">
+
+    <p class="t-body rv d2" style="max-width:420px;margin-bottom:2.2rem;">
       Plataforma de microservicios que lleva inteligencia artificial —
-      visión por computadora, NLP y predicción de rendimiento —
-      al alcance de cualquier agricultor con un smartphone Android.
+      visión por computadora, NLP y predicción ML —
+      al alcance de cualquier productor con un Android de gama media.
     </p>
+
     <div class="hero-btns rv d3">
-      <a href="#solucion"     class="btn-primary">Ver solución</a>
-      <a href="#monetizacion" class="btn-outline">Modelo de negocio</a>
+      <a href="#solucion"     class="btn-p">Ver solución</a>
+      <a href="#monetizacion" class="btn-o">Modelo de negocio</a>
     </div>
+
     <div class="hero-stats rv d4">
       <div>
         <div class="hs-num">470M</div>
-        <div class="hs-lbl">agricultores sin asesoría</div>
+        <div class="hs-lbl">sin asesoría agronómica</div>
       </div>
-      <div style="width:1px;height:36px;background:var(--line);"></div>
+      <div style="width:1px;height:34px;background:var(--line);"></div>
       <div>
         <div class="hs-num">3</div>
         <div class="hs-lbl">microservicios de IA</div>
       </div>
-      <div style="width:1px;height:36px;background:var(--line);"></div>
+      <div style="width:1px;height:34px;background:var(--line);"></div>
       <div>
         <div class="hs-num">SaaS</div>
         <div class="hs-lbl">modelo B2B · B2G</div>
       </div>
     </div>
-  </div>
-
-  <!-- RIGHT: Animated plant SVG -->
-  <div class="hero-r">
-    <svg id="plant-svg" viewBox="0 0 300 460" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-      <!-- Ground -->
-      <ellipse id="gnd" cx="150" cy="432" rx="85" ry="13"
-        fill="#2C5F2E" opacity="0" style="transition:opacity .8s ease;"/>
-
-      <!-- SEED (visible at start) -->
-      <ellipse id="seed" cx="150" cy="422" rx="9" ry="6.5"
-        fill="#7C5C3A" opacity="1" style="transition:opacity .5s;"/>
-
-      <!-- ROOTS -->
-      <path id="r0" class="p-path" stroke="#7C5C3A" stroke-width="2.5"
-        d="M150 425 C150 412 150 398 150 386"/>
-      <path id="r1" class="p-path" stroke="#7C5C3A" stroke-width="1.5"
-        d="M150 414 C139 410 126 412 116 416"/>
-      <path id="r2" class="p-path" stroke="#7C5C3A" stroke-width="1.5"
-        d="M150 414 C161 410 174 412 184 416"/>
-      <path id="r3" class="p-path" stroke="#7C5C3A" stroke-width="1"
-        d="M124 413 C115 404 106 401 97 403"/>
-      <path id="r4" class="p-path" stroke="#7C5C3A" stroke-width="1"
-        d="M176 413 C185 404 194 401 203 403"/>
-
-      <!-- STEM -->
-      <path id="stem" class="p-path" stroke="#2C5F2E" stroke-width="4"
-        d="M150 386 C149 358 148 318 148 280 C147 242 148 202 149 168 C150 138 151 108 152 82"/>
-      <path id="stem2" class="p-path" stroke="#2C5F2E" stroke-width="3"
-        d="M152 82 C152 65 153 48 154 34"/>
-
-      <!-- LEAF 1 (low-left) -->
-      <path id="la1" class="p-path" stroke="#3E7D41" stroke-width="2"
-        d="M149 328 C135 313 114 307 98 311"/>
-      <path id="lb1" class="p-path" stroke="#3E7D41" stroke-width="1.2"
-        d="M98 311 C112 320 132 326 149 328"/>
-
-      <!-- LEAF 2 (low-right) -->
-      <path id="la2" class="p-path" stroke="#3E7D41" stroke-width="2"
-        d="M149 284 C164 268 186 263 202 267"/>
-      <path id="lb2" class="p-path" stroke="#3E7D41" stroke-width="1.2"
-        d="M202 267 C187 277 166 283 149 284"/>
-
-      <!-- LEAF 3 (mid-left) -->
-      <path id="la3" class="p-path" stroke="#3E7D41" stroke-width="2"
-        d="M149 242 C132 226 110 221 94 225"/>
-      <path id="lb3" class="p-path" stroke="#3E7D41" stroke-width="1.2"
-        d="M94 225 C109 234 130 240 149 242"/>
-
-      <!-- LEAF 4 (mid-right) -->
-      <path id="la4" class="p-path" stroke="#3E7D41" stroke-width="2"
-        d="M150 200 C166 183 188 178 204 182"/>
-      <path id="lb4" class="p-path" stroke="#3E7D41" stroke-width="1.2"
-        d="M204 182 C188 192 168 198 150 200"/>
-
-      <!-- LEAF 5 (upper-left) -->
-      <path id="la5" class="p-path" stroke="#6FAD72" stroke-width="1.8"
-        d="M151 158 C136 141 114 136 98 140"/>
-      <path id="lb5" class="p-path" stroke="#6FAD72" stroke-width="1.1"
-        d="M98 140 C113 150 134 156 151 158"/>
-
-      <!-- LEAF 6 (upper-right small) -->
-      <path id="la6" class="p-path" stroke="#6FAD72" stroke-width="1.5"
-        d="M152 114 C165 100 184 97 197 101"/>
-      <path id="lb6" class="p-path" stroke="#6FAD72" stroke-width=".9"
-        d="M197 101 C184 110 166 114 152 114"/>
-
-      <!-- SEPALS -->
-      <path id="sep1" class="p-path" stroke="#3E7D41" stroke-width="1.1"
-        d="M154 32 C152 21 150 13 150 7"/>
-      <path id="sep2" class="p-path" stroke="#3E7D41" stroke-width="1.1"
-        d="M154 32 C163 23 169 15 171 9"/>
-      <path id="sep3" class="p-path" stroke="#3E7D41" stroke-width="1.1"
-        d="M154 32 C145 23 138 15 136 9"/>
-
-      <!-- PETALS -->
-      <ellipse id="pt1" cx="150" cy="12" rx="6" ry="10.5"
-        fill="none" stroke="#6FAD72" stroke-width="1.3"
-        style="opacity:0;transform-origin:150px 34px;transform:rotate(0deg);transition:opacity .45s;"/>
-      <ellipse id="pt2" cx="150" cy="12" rx="6" ry="10.5"
-        fill="none" stroke="#6FAD72" stroke-width="1.3"
-        style="opacity:0;transform-origin:150px 34px;transform:rotate(60deg);transition:opacity .45s .06s;"/>
-      <ellipse id="pt3" cx="150" cy="12" rx="6" ry="10.5"
-        fill="none" stroke="#6FAD72" stroke-width="1.3"
-        style="opacity:0;transform-origin:150px 34px;transform:rotate(120deg);transition:opacity .45s .12s;"/>
-      <ellipse id="pt4" cx="150" cy="12" rx="6" ry="10.5"
-        fill="none" stroke="#6FAD72" stroke-width="1.3"
-        style="opacity:0;transform-origin:150px 34px;transform:rotate(180deg);transition:opacity .45s .18s;"/>
-      <ellipse id="pt5" cx="150" cy="12" rx="6" ry="10.5"
-        fill="none" stroke="#6FAD72" stroke-width="1.3"
-        style="opacity:0;transform-origin:150px 34px;transform:rotate(240deg);transition:opacity .45s .24s;"/>
-      <ellipse id="pt6" cx="150" cy="12" rx="6" ry="10.5"
-        fill="none" stroke="#6FAD72" stroke-width="1.3"
-        style="opacity:0;transform-origin:150px 34px;transform:rotate(300deg);transition:opacity .45s .30s;"/>
-
-      <!-- Flower center -->
-      <circle id="fc" cx="154" cy="28" r="7"
-        fill="none" stroke="#2C5F2E" stroke-width="1.6"
-        style="opacity:0;transition:opacity .4s .35s;"/>
-      <circle id="fc2" cx="154" cy="28" r="3"
-        fill="#B8D4B9"
-        style="opacity:0;transition:opacity .35s .5s;"/>
-    </svg>
   </div>
 </section>
 
@@ -685,11 +818,11 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
 ══════════════════════════════════════════ -->
 <section id="problema" class="sec" style="background:var(--bg2);">
   <div class="inn">
-    <div class="sec-tag rv">01 — Planteamiento del problema</div>
-    <h2 class="sec-h rv d1" style="max-width:520px;">
+    <div class="t-label rv">01 — Planteamiento del problema</div>
+    <h2 class="t-h2 rv d1" style="max-width:520px;">
       Millones de decisiones críticas<br/>tomadas <em>sin información</em>
     </h2>
-    <p class="rv d2" style="font-size:.9rem;color:var(--ink2);max-width:500px;margin-top:.5rem;line-height:1.75;">
+    <p class="t-body rv d2" style="max-width:500px;margin-top:.5rem;">
       Las comunidades agrícolas rurales de México y América Latina enfrentan pérdidas masivas
       por falta de asesoría agronómica oportuna. Dos causas estructurales explican el problema.
     </p>
@@ -697,49 +830,47 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
     <div class="prob-grid rv d3">
       <div class="prob-card">
         <div class="prob-n">01</div>
-        <div class="prob-ico" style="background:rgba(155,68,68,.07);">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9B4444" stroke-width="1.8" stroke-linecap="round">
-            <path d="M8.111 16.404a5.5 5.5 0 0 1 7.778 0M12 20h.01"/><circle cx="12" cy="12" r="10"/>
-            <path d="M12 8v4"/><path d="M12 16h.01"/>
+        <div class="prob-ico" style="background:rgba(139,58,58,.07);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B3A3A" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
         </div>
         <h3 class="prob-t">Conectividad inexistente</h3>
-        <p class="prob-b">60% de zonas rurales sin cobertura 3G estable. Las plataformas cloud son inoperables. Los agricultores no pueden acceder a diagnósticos en tiempo real.</p>
+        <p class="prob-b">60% de zonas rurales sin cobertura 3G estable. Las plataformas cloud son inoperables. El agricultor no puede acceder a diagnósticos en tiempo real.</p>
       </div>
       <div class="prob-card">
         <div class="prob-n">02</div>
-        <div class="prob-ico" style="background:rgba(124,92,58,.07);">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#7C5C3A" stroke-width="1.8" stroke-linecap="round">
+        <div class="prob-ico" style="background:rgba(122,88,50,.07);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A5832" stroke-width="1.8" stroke-linecap="round">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
             <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
           </svg>
         </div>
         <h3 class="prob-t">Escasez de especialistas</h3>
-        <p class="prob-b">Menos del 5% de parcelas recibe visita de agrónomo certificado al año. Imposible escalar la asesoría presencial a 470 millones de productores.</p>
+        <p class="prob-b">Menos del 5% de parcelas recibe visita de agrónomo certificado al año. Es imposible escalar la asesoría presencial a 470 millones de productores.</p>
       </div>
       <div class="prob-card">
         <div class="prob-n">03</div>
-        <div class="prob-ico" style="background:rgba(44,95,46,.07);">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#2C5F2E" stroke-width="1.8" stroke-linecap="round">
+        <div class="prob-ico" style="background:rgba(42,92,44,.07);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A5C2C" stroke-width="1.8" stroke-linecap="round">
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
           </svg>
         </div>
         <h3 class="prob-t">Decisiones sin datos</h3>
-        <p class="prob-b">El agricultor decide cuándo y cómo intervenir basándose en experiencia empírica. Resultado: sobredosis de agroquímicos, pérdidas evitables, suelos degradados.</p>
+        <p class="prob-b">El agricultor decide cuándo intervenir basándose en experiencia empírica. Resultado: sobredosis de agroquímicos, pérdidas evitables, suelos degradados.</p>
       </div>
     </div>
 
-    <!-- Comparison table -->
     <div class="cmp-wrap rv d4">
       <div class="cmp-inner">
         <table class="cmp">
           <thead>
-            <tr><th>Solución existente</th><th>Restricción en campo</th><th>Resultado</th></tr>
+            <tr><th>Solución existente</th><th>Restricción crítica</th><th>Impacto real</th></tr>
           </thead>
           <tbody>
             <tr><td><strong>Plantix / PEAT (cloud)</strong></td><td>API REST requiere 3G continuo</td><td class="bad">60% sin cobertura</td></tr>
-            <tr><td><strong>SOTA académico (CVPR)</strong></td><td>GPU servidor ≥8GB VRAM</td><td class="bad">No desplegable en campo</td></tr>
-            <tr><td><strong>Asesoría SADER presencial</strong></td><td>Agrónomo in-situ certificado</td><td class="bad">&lt;5% parcelas/año</td></tr>
+            <tr><td><strong>SOTA académico CVPR</strong></td><td>GPU servidor ≥8 GB VRAM</td><td class="bad">No desplegable en campo</td></tr>
+            <tr><td><strong>Asesoría SADER presencial</strong></td><td>Agrónomo certificado in-situ</td><td class="bad">&lt;5% parcelas/año</td></tr>
             <tr><td><strong>AgroGraph-MAS</strong></td><td>Android + sync asincrónica</td><td class="good">470M productores alcanzables</td></tr>
           </tbody>
         </table>
@@ -755,38 +886,35 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
 ══════════════════════════════════════════ -->
 <section id="solucion" class="sec" style="background:var(--bg);">
   <div class="inn">
-    <div class="sec-tag rv">02 — Propuesta de solución</div>
-    <h2 class="sec-h rv d1" style="max-width:500px;">
-     <!-- Tres microservicios de --> IA<br/><em>accesibles desde Android</em>
+    <div class="t-label rv">02 — Propuesta de solución</div>
+    <h2 class="t-h2 rv d1" style="max-width:500px;">
+      Tres microservicios de IA<br/><em>accesibles desde Android</em>
     </h2>
 
-    <!-- MS 1: CNN -->
+    <!-- MS 1 -->
     <div class="sol-row" style="margin-top:4rem;">
       <div class="rvl">
         <div class="sol-vis">
           <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
-            <rect x="16" y="52" width="26" height="96" rx="4" fill="#2C5F2E" opacity=".12"/>
-            <rect x="52" y="33" width="26" height="134" rx="4" fill="#2C5F2E" opacity=".24"/>
-            <rect x="88" y="43" width="26" height="114" rx="4" fill="#2C5F2E" opacity=".42"/>
-            <rect x="124" y="28" width="26" height="144" rx="4" fill="#2C5F2E" opacity=".62"/>
-            <rect x="160" y="62" width="20" height="76" rx="4" fill="#2C5F2E" opacity=".88"/>
-            <line x1="42" y1="100" x2="52" y2="100" stroke="#6FAD72" stroke-width=".9" opacity=".4"/>
-            <line x1="78" y1="100" x2="88" y2="100" stroke="#6FAD72" stroke-width=".9" opacity=".4"/>
-            <line x1="114" y1="100" x2="124" y2="100" stroke="#6FAD72" stroke-width=".9" opacity=".4"/>
-            <line x1="150" y1="100" x2="160" y2="100" stroke="#6FAD72" stroke-width=".9" opacity=".4"/>
-            <circle cx="101" cy="100" r="5" fill="#2C5F2E" opacity=".8"/>
-            <circle cx="101" cy="100" r="10" fill="none" stroke="#6FAD72" stroke-width="1" opacity=".3"/>
-            <text x="29" y="165" font-family="DM Mono" font-size="7.5" fill="#7C5C3A" text-anchor="middle" opacity=".7">Input</text>
-            <text x="101" y="165" font-family="DM Mono" font-size="7.5" fill="#2C5F2E" text-anchor="middle" opacity=".7">Conv</text>
-            <text x="170" y="165" font-family="DM Mono" font-size="7.5" fill="#7C5C3A" text-anchor="middle" opacity=".7">Out</text>
-            <text x="100" y="184" font-family="DM Mono" font-size="8" fill="#3E7D41" text-anchor="middle">CNN · PlantVillage · Docker</text>
+            <rect x="16" y="52" width="24" height="96" rx="4" fill="#2A5C2C" opacity=".12"/>
+            <rect x="50" y="33" width="24" height="134" rx="4" fill="#2A5C2C" opacity=".24"/>
+            <rect x="84" y="43" width="24" height="114" rx="4" fill="#2A5C2C" opacity=".42"/>
+            <rect x="118" y="28" width="24" height="144" rx="4" fill="#2A5C2C" opacity=".62"/>
+            <rect x="152" y="62" width="20" height="76" rx="4" fill="#2A5C2C" opacity=".88"/>
+            <line x1="40" y1="100" x2="50" y2="100" stroke="#5FA363" stroke-width=".9" opacity=".4"/>
+            <line x1="74" y1="100" x2="84" y2="100" stroke="#5FA363" stroke-width=".9" opacity=".4"/>
+            <line x1="108" y1="100" x2="118" y2="100" stroke="#5FA363" stroke-width=".9" opacity=".4"/>
+            <line x1="142" y1="100" x2="152" y2="100" stroke="#5FA363" stroke-width=".9" opacity=".4"/>
+            <circle cx="96" cy="100" r="5" fill="#2A5C2C" opacity=".8"/>
+            <circle cx="96" cy="100" r="10" fill="none" stroke="#5FA363" stroke-width="1" opacity=".3"/>
+            <text x="100" y="186" font-family="DM Mono" font-size="8" fill="#3A7A3D" text-anchor="middle">CNN · PlantVillage · Docker</text>
           </svg>
         </div>
       </div>
       <div class="rvr">
         <div class="sol-badge" style="background:var(--green);color:#fff;">Microservicio 01 · Diagnóstico</div>
-        <h3 class="sol-h">Visión por computadora para diagnóstico fitopatológico</h3>
-        <p class="sol-p">Red neuronal convolucional entrenada con PlantVillage, empaquetada en contenedor Docker y expuesta vía FastAPI. Analiza fotografías capturadas con el smartphone Android del agricultor e identifica enfermedades fúngicas y deficiencias nutricionales en maíz, frijol, jitomate y chile.</p>
+        <h3 class="t-h3">Visión por computadora para diagnóstico fitopatológico</h3>
+        <p class="t-body" style="margin-top:.7rem;">Red neuronal convolucional (CNN) entrenada con PlantVillage, empaquetada en Docker y expuesta vía FastAPI. Analiza fotografías del smartphone Android e identifica enfermedades fúngicas y deficiencias en maíz, frijol, jitomate y chile.</p>
         <div class="tags">
           <span class="tag">CNN</span><span class="tag">FastAPI</span>
           <span class="tag">Docker</span><span class="tag">PlantVillage</span><span class="tag">REST API</span>
@@ -794,12 +922,12 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
       </div>
     </div>
 
-    <!-- MS 2: NLP -->
+    <!-- MS 2 -->
     <div class="sol-row">
       <div class="rvl" style="order:2;">
         <div class="sol-badge" style="background:var(--earth);color:#fff;">Microservicio 02 · NLP</div>
-        <h3 class="sol-h">Recomendaciones agronómicas en lenguaje natural</h3>
-        <p class="sol-p">Modelo de lenguaje open-source ajustado finamente con literatura agronómica y fitosanitaria. Interpreta las notas de campo del agricultor y genera recomendaciones claras y contextualizadas. Se actualiza de forma independiente sin afectar los demás microservicios.</p>
+        <h3 class="t-h3">Recomendaciones en lenguaje natural</h3>
+        <p class="t-body" style="margin-top:.7rem;">Modelo de lenguaje open-source ajustado finamente con literatura agronómica. Interpreta las notas de campo y genera recomendaciones claras. Se actualiza de forma independiente sin afectar los demás microservicios.</p>
         <div class="tags">
           <span class="tag">LLM fine-tuned</span><span class="tag">FastAPI</span>
           <span class="tag">Docker</span><span class="tag">NLP agronómico</span>
@@ -808,42 +936,40 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
       <div class="rvr" style="order:1;">
         <div class="sol-vis" style="background:var(--bg3);">
           <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
-            <rect x="18" y="28" width="66" height="32" rx="5" fill="none" stroke="#7C5C3A" stroke-width="1.1" opacity=".45"/>
-            <text x="51" y="49" font-family="DM Mono" font-size="7.5" fill="#7C5C3A" text-anchor="middle" opacity=".8">Notas campo</text>
-            <rect x="116" y="28" width="66" height="32" rx="5" fill="none" stroke="#7C5C3A" stroke-width="1.1" opacity=".45"/>
-            <text x="149" y="49" font-family="DM Mono" font-size="7.5" fill="#7C5C3A" text-anchor="middle" opacity=".8">Literatura</text>
-            <path d="M84 44 L116 44" stroke="#7C5C3A" stroke-width=".9" stroke-dasharray="3 3" opacity=".4"/>
-            <path d="M100 60 L100 82" stroke="#6FAD72" stroke-width="1.1" stroke-dasharray="3 3" opacity=".4"/>
-            <rect x="52" y="82" width="96" height="42" rx="7" fill="none" stroke="#2C5F2E" stroke-width="1.3" opacity=".65"/>
-            <text x="100" y="108" font-family="DM Mono" font-size="8" fill="#2C5F2E" text-anchor="middle" opacity=".9">LLM Agronómico</text>
-            <path d="M100 124 L100 146" stroke="#6FAD72" stroke-width="1.1" opacity=".4"/>
-            <text x="100" y="162" font-family="DM Mono" font-size="8" fill="#3E7D41" text-anchor="middle">Recomendación contextualizada</text>
+            <rect x="18" y="28" width="64" height="30" rx="5" fill="none" stroke="#7A5832" stroke-width="1.1" opacity=".45"/>
+            <text x="50" y="48" font-family="DM Mono" font-size="7.5" fill="#7A5832" text-anchor="middle" opacity=".75">Notas campo</text>
+            <rect x="118" y="28" width="64" height="30" rx="5" fill="none" stroke="#7A5832" stroke-width="1.1" opacity=".45"/>
+            <text x="150" y="48" font-family="DM Mono" font-size="7.5" fill="#7A5832" text-anchor="middle" opacity=".75">Literatura</text>
+            <path d="M82 43 L118 43" stroke="#7A5832" stroke-width=".9" stroke-dasharray="3 3" opacity=".4"/>
+            <path d="M100 58 L100 82" stroke="#5FA363" stroke-width="1.1" stroke-dasharray="3 3" opacity=".4"/>
+            <rect x="50" y="82" width="100" height="42" rx="7" fill="none" stroke="#2A5C2C" stroke-width="1.3" opacity=".65"/>
+            <text x="100" y="108" font-family="DM Mono" font-size="8" fill="#2A5C2C" text-anchor="middle" opacity=".9">LLM Agronómico</text>
+            <path d="M100 124 L100 148" stroke="#5FA363" stroke-width="1.1" opacity=".4"/>
+            <text x="100" y="163" font-family="DM Mono" font-size="8" fill="#3A7A3D" text-anchor="middle">Recomendación contextualizada</text>
           </svg>
         </div>
       </div>
     </div>
 
-    <!-- MS 3: ML -->
+    <!-- MS 3 -->
     <div class="sol-row">
       <div class="rvl">
         <div class="sol-vis">
           <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
-            <rect x="26" y="125" width="18" height="56" rx="3" fill="#2C5F2E" opacity=".18"/>
-            <rect x="54" y="102" width="18" height="79" rx="3" fill="#2C5F2E" opacity=".32"/>
-            <rect x="82" y="82"  width="18" height="99" rx="3" fill="#2C5F2E" opacity=".5"/>
-            <rect x="110" y="60" width="18" height="121" rx="3" fill="#2C5F2E" opacity=".66"/>
-            <rect x="138" y="42" width="18" height="139" rx="3" fill="#2C5F2E" opacity=".88"/>
-            <path d="M35 125 C63 102 91 82 119 60 L147 42" stroke="#6FAD72" stroke-width="1.3" stroke-dasharray="4 3" fill="none" opacity=".6"/>
-            <text x="35" y="196" font-family="DM Mono" font-size="7" fill="#7C5C3A" text-anchor="middle" opacity=".6">T1</text>
-            <text x="147" y="196" font-family="DM Mono" font-size="7" fill="#7C5C3A" text-anchor="middle" opacity=".6">T5</text>
-            <text x="100" y="208" font-family="DM Mono" font-size="8" fill="#3E7D41" text-anchor="middle">Predicción rendimiento/parcela</text>
+            <rect x="24" y="126" width="17" height="55" rx="3" fill="#2A5C2C" opacity=".18"/>
+            <rect x="51" y="103" width="17" height="78" rx="3" fill="#2A5C2C" opacity=".32"/>
+            <rect x="78" y="82"  width="17" height="99" rx="3" fill="#2A5C2C" opacity=".5"/>
+            <rect x="105" y="60" width="17" height="121" rx="3" fill="#2A5C2C" opacity=".66"/>
+            <rect x="132" y="42" width="17" height="139" rx="3" fill="#2A5C2C" opacity=".88"/>
+            <path d="M32 126 C60 103 88 82 114 60 L140 42" stroke="#5FA363" stroke-width="1.3" stroke-dasharray="4 3" fill="none" opacity=".6"/>
+            <text x="100" y="188" font-family="DM Mono" font-size="8" fill="#3A7A3D" text-anchor="middle">Rendimiento/parcela</text>
           </svg>
         </div>
       </div>
       <div class="rvr">
-        <div class="sol-badge" style="background:rgba(44,95,46,.1);color:var(--green);">Microservicio 03 · ML</div>
-        <h3 class="sol-h">Predicción de rendimiento por parcela</h3>
-        <p class="sol-p">Algoritmos supervisados (regresión y árboles de decisión) analizan variables registradas por el agricultor — tipo de cultivo, clima reportado, historial de plagas — para generar proyecciones de rendimiento. El microservicio recibe solicitudes REST y devuelve estimaciones consultables desde Android.</p>
+        <div class="sol-badge" style="background:rgba(42,92,44,.1);color:var(--green);">Microservicio 03 · ML</div>
+        <h3 class="t-h3">Predicción de rendimiento por parcela</h3>
+        <p class="t-body" style="margin-top:.7rem;">Algoritmos supervisados (regresión y árboles de decisión) analizan cultivo, clima y plagas para proyectar rendimiento por parcela. El microservicio recibe solicitudes REST y devuelve estimaciones consultables desde Android.</p>
         <div class="tags">
           <span class="tag">Regresión</span><span class="tag">Árboles decisión</span>
           <span class="tag">FastAPI</span><span class="tag">Docker</span><span class="tag">REST</span>
@@ -860,117 +986,92 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
 ══════════════════════════════════════════ -->
 <section id="arquitectura" class="sec" style="background:var(--bg2);">
   <div class="inn">
-    <div class="sec-tag rv">03 — Arquitectura del sistema</div>
-    <h2 class="sec-h rv d1" style="max-width:480px;">
+    <div class="t-label rv">03 — Arquitectura del sistema</div>
+    <h2 class="t-h2 rv d1" style="max-width:480px;">
       Microservicios en contenedores<br/><em>independientes y escalables</em>
     </h2>
-    <p class="rv d2" style="font-size:.88rem;color:var(--ink2);max-width:480px;margin-top:.5rem;line-height:1.75;">
-      Cada componente de IA corre en su propio contenedor Docker, se comunica únicamente via REST
+    <p class="t-body rv d2" style="max-width:480px;margin-top:.5rem;">
+      Cada componente de IA corre en su propio contenedor Docker, se comunica únicamente vía REST
       y puede actualizarse sin interrumpir los demás servicios.
     </p>
 
-    <div class="arch-diagram rv d3">
+    <div class="arch-box rv d3">
 
-      <!-- Layer 1: Clientes -->
-      <div class="arch-layer-lbl">Capa de clientes</div>
-      <div class="arch-row arch-row-3">
-        <div class="arch-node">
-          <div class="arch-node-title">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" style="display:inline;margin-right:5px;vertical-align:middle;"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            Agricultor · App Android
+      <div class="arch-lbl">Capa de clientes</div>
+      <div class="arch-row arch-3">
+        <div class="arch-nd">
+          <div class="arch-nd-t">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            Agricultor · Android
           </div>
-          <div class="arch-node-sub">Captura fotos y notas de campo. Opera offline con sync asincrónica.</div>
+          <div class="arch-nd-s">Captura fotos y notas offline. Sincronización asincrónica al recuperar red.</div>
         </div>
-        <div class="arch-node">
-          <div class="arch-node-title">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" style="display:inline;margin-right:5px;vertical-align:middle;"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            Agrónomo · App Android
+        <div class="arch-nd">
+          <div class="arch-nd-t">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            Gestor · Android
           </div>
-          <div class="arch-node-sub">Revisa diagnósticos, añade observaciones y retroalimenta al agricultor.</div>
+          <div class="arch-nd-s">Administra parcelas, consulta diagnósticos y supervisa el sistema.</div>
         </div>
-        <div class="arch-node">
-          <div class="arch-node-title">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--earth)" stroke-width="2" stroke-linecap="round" style="display:inline;margin-right:5px;vertical-align:middle;"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
-            Gestor · Android + Web
+        <div class="arch-nd">
+          <div class="arch-nd-t">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--earth)" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+            Gestor · Portal Web
           </div>
-          <div class="arch-node-sub">Consulta reportes agregados de rendimiento por zona desde el portal web.</div>
+          <div class="arch-nd-s">Reportes agregados de rendimiento por zona, análisis institucional.</div>
         </div>
       </div>
 
-      <div class="arch-arrow">
-        <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><line x1="9" y1="0" x2="9" y2="16" stroke="var(--green3)" stroke-width="1.3" stroke-dasharray="3 3"/><polygon points="4,16 14,16 9,22" fill="var(--green3)" opacity=".5"/></svg>
+      <div class="arch-arr">
+        <svg width="16" height="20" viewBox="0 0 16 20"><line x1="8" y1="0" x2="8" y2="14" stroke="var(--green3)" stroke-width="1.2" stroke-dasharray="3 3"/><polygon points="3,14 13,14 8,20" fill="var(--green3)" opacity=".55"/></svg>
       </div>
 
-      <!-- Layer 2: Gateway -->
-      <div class="arch-layer-lbl">Capa de entrada</div>
-      <div class="arch-row arch-row-3">
-        <div class="arch-node green">
-          <div class="arch-node-title">API Gateway · REST/HTTPS</div>
-          <div class="arch-node-sub">Centraliza enrutamiento y control de acceso entre Android, web y microservicios.</div>
-        </div>
-        <div class="arch-node green">
-          <div class="arch-node-title">Auth · JWT + OAuth 2.0</div>
-          <div class="arch-node-sub">Ningún servicio queda expuesto directamente a internet.</div>
-        </div>
-        <div class="arch-node green">
-          <div class="arch-node-title">Cloud Load Balancer</div>
-          <div class="arch-node-sub">Distribuye tráfico entre instancias. Escala bajo demanda.</div>
-        </div>
+      <div class="arch-lbl">Capa de entrada</div>
+      <div class="arch-row arch-3">
+        <div class="arch-nd g"><div class="arch-nd-t">API Gateway · REST/HTTPS</div><div class="arch-nd-s">Enrutamiento y control de acceso centralizado</div></div>
+        <div class="arch-nd g"><div class="arch-nd-t">Auth · JWT + OAuth 2.0</div><div class="arch-nd-s">Ningún servicio expuesto directamente a internet</div></div>
+        <div class="arch-nd g"><div class="arch-nd-t">Cloud Load Balancer</div><div class="arch-nd-s">Distribuye tráfico, escala bajo demanda</div></div>
       </div>
 
-      <div class="arch-arrow">
-        <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><line x1="9" y1="0" x2="9" y2="16" stroke="var(--green3)" stroke-width="1.3" stroke-dasharray="3 3"/><polygon points="4,16 14,16 9,22" fill="var(--green3)" opacity=".5"/></svg>
+      <div class="arch-arr">
+        <svg width="16" height="20" viewBox="0 0 16 20"><line x1="8" y1="0" x2="8" y2="14" stroke="var(--green3)" stroke-width="1.2" stroke-dasharray="3 3"/><polygon points="3,14 13,14 8,20" fill="var(--green3)" opacity=".55"/></svg>
       </div>
 
-      <!-- Layer 3: Microservices -->
-      <div class="arch-layer-lbl">Microservicios de IA · Docker containers</div>
-      <div class="arch-row arch-row-3">
-        <div class="arch-node" style="border-color:rgba(44,95,46,.2);">
-          <div class="arch-node-title" style="color:var(--green);">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:inline;margin-right:4px;vertical-align:middle;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      <div class="arch-lbl">Microservicios de IA · Docker containers</div>
+      <div class="arch-row arch-3">
+        <div class="arch-nd" style="border-color:rgba(42,92,44,.22);">
+          <div class="arch-nd-t" style="color:var(--green);">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
             Diagnóstico · CNN
           </div>
-          <div class="arch-node-sub">FastAPI · Docker · PlantVillage<br/>Actualizable sin downtime</div>
+          <div class="arch-nd-s">FastAPI · Docker · PlantVillage · Actualizable sin downtime</div>
         </div>
-        <div class="arch-node" style="border-color:rgba(44,95,46,.2);">
-          <div class="arch-node-title" style="color:var(--green);">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:inline;margin-right:4px;vertical-align:middle;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div class="arch-nd" style="border-color:rgba(42,92,44,.22);">
+          <div class="arch-nd-t" style="color:var(--green);">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             Recomendaciones · LLM
           </div>
-          <div class="arch-node-sub">FastAPI · Docker · NLP<br/>Fine-tuning agronómico</div>
+          <div class="arch-nd-s">FastAPI · Docker · Fine-tuning agronómico</div>
         </div>
-        <div class="arch-node" style="border-color:rgba(44,95,46,.2);">
-          <div class="arch-node-title" style="color:var(--green);">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:inline;margin-right:4px;vertical-align:middle;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <div class="arch-nd" style="border-color:rgba(42,92,44,.22);">
+          <div class="arch-nd-t" style="color:var(--green);">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
             Predicción · ML
           </div>
-          <div class="arch-node-sub">FastAPI · Docker · Sklearn<br/>Regresión + árboles decisión</div>
+          <div class="arch-nd-s">FastAPI · Docker · Regresión + árboles</div>
         </div>
       </div>
 
-      <div class="arch-arrow">
-        <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><line x1="9" y1="0" x2="9" y2="16" stroke="var(--green3)" stroke-width="1.3" stroke-dasharray="3 3"/><polygon points="4,16 14,16 9,22" fill="var(--green3)" opacity=".5"/></svg>
+      <div class="arch-arr">
+        <svg width="16" height="20" viewBox="0 0 16 20"><line x1="8" y1="0" x2="8" y2="14" stroke="var(--green3)" stroke-width="1.2" stroke-dasharray="3 3"/><polygon points="3,14 13,14 8,20" fill="var(--green3)" opacity=".55"/></svg>
       </div>
 
-      <!-- Layer 4: Storage -->
-      <div class="arch-layer-lbl">Almacenamiento y mensajería</div>
-      <div class="arch-row arch-row-4">
-        <div class="arch-node">
-          <div class="arch-node-title">Object Storage · S3</div>
-          <div class="arch-node-sub">Imágenes y notas de campo</div>
-        </div>
-        <div class="arch-node">
-          <div class="arch-node-title">PostgreSQL</div>
-          <div class="arch-node-sub">Parcelas y diagnósticos</div>
-        </div>
-        <div class="arch-node">
-          <div class="arch-node-title">RabbitMQ / SQS</div>
-          <div class="arch-node-sub">Cola mensajes · sync offline</div>
-        </div>
-        <div class="arch-node">
-          <div class="arch-node-title">API Gateway Logs</div>
-          <div class="arch-node-sub">Auditoría y métricas</div>
-        </div>
+      <div class="arch-lbl">Almacenamiento y mensajería</div>
+      <div class="arch-row arch-4">
+        <div class="arch-nd"><div class="arch-nd-t">Object Storage · S3</div><div class="arch-nd-s">Imágenes y notas de campo</div></div>
+        <div class="arch-nd"><div class="arch-nd-t">PostgreSQL</div><div class="arch-nd-s">Parcelas y diagnósticos</div></div>
+        <div class="arch-nd"><div class="arch-nd-t">RabbitMQ / SQS</div><div class="arch-nd-s">Cola mensajes · sync offline</div></div>
+        <div class="arch-nd"><div class="arch-nd-t">API Gateway Logs</div><div class="arch-nd-s">Auditoría y métricas</div></div>
       </div>
     </div>
   </div>
@@ -983,76 +1084,58 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
 ══════════════════════════════════════════ -->
 <section id="alcances" class="sec" style="background:var(--bg);">
   <div class="inn">
-    <div class="sec-tag rv">04 — Alcances y limitaciones</div>
-    <h2 class="sec-h rv d1" style="max-width:480px;">
+    <div class="t-label rv">04 — Alcances y limitaciones</div>
+    <h2 class="t-h2 rv d1" style="max-width:460px;">
       Alcance definido.<br/><em>Expectativas realistas.</em>
     </h2>
 
     <div class="alc-grid">
-      <!-- Alcance 1 -->
       <div class="alc-card rv d1">
-        <div class="alc-card-ico">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-        </div>
-        <h3 class="alc-card-t">Tres perfiles de usuario</h3>
-        <p class="alc-card-b">Agricultor (Android), agrónomo validador (Android + web), gestor logístico (portal web). Cada perfil con flujos de trabajo diferenciados y permisos específicos.</p>
+        <div class="alc-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <h3 class="alc-t">Dos perfiles de usuario</h3>
+        <p class="alc-b">Agricultor (Android) y Gestor/Administrador (Android + portal web). Flujos de trabajo diferenciados con permisos específicos por rol.</p>
       </div>
-      <!-- Alcance 2 -->
       <div class="alc-card rv d2">
-        <div class="alc-card-ico">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        </div>
-        <h3 class="alc-card-t">Sincronización asincrónica</h3>
-        <p class="alc-card-b">Las fotos y notas se almacenan localmente en el dispositivo y se envían al servidor mediante cola de mensajes en cuanto se restablece la conexión. Sin pérdida de datos.</p>
+        <div class="alc-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <h3 class="alc-t">Sincronización asincrónica</h3>
+        <p class="alc-b">Las fotos y notas se almacenan localmente y se envían al servidor por cola de mensajes al recuperar red. Sin pérdida de datos.</p>
       </div>
-      <!-- Alcance 3 -->
       <div class="alc-card rv d3">
-        <div class="alc-card-ico">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        </div>
-        <h3 class="alc-card-t">Escalabilidad independiente</h3>
-        <p class="alc-card-b">Cada microservicio escala de forma autónoma según demanda. Costos operativos reducidos en periodos de baja actividad. Arquitectura SaaS lista para producción.</p>
+        <div class="alc-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3 class="alc-t">Escalabilidad independiente</h3>
+        <p class="alc-b">Cada microservicio escala de forma autónoma según demanda. Costos reducidos en periodos de baja actividad. Arquitectura SaaS lista.</p>
       </div>
-      <!-- Alcance 4 -->
       <div class="alc-card rv d4">
-        <div class="alc-card-ico">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        </div>
-        <h3 class="alc-card-t">Gama media sin extras</h3>
-        <p class="alc-card-b">Funcional en dispositivos Android de gama media con cámara estándar. Sin hardware adicional, sin sensores especializados. Accesible para el pequeño productor.</p>
+        <div class="alc-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
+        <h3 class="alc-t">4 cultivos · 12 patologías</h3>
+        <p class="alc-b">Maíz, frijol, jitomate y chile. Los principales cultivos de pequeños productores en México. 12 enfermedades y plagas prioritarias en el MVP.</p>
       </div>
-      <!-- Alcance 5 -->
       <div class="alc-card rv d5">
-        <div class="alc-card-ico">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        </div>
-        <h3 class="alc-card-t">4 cultivos · 12 patologías</h3>
-        <p class="alc-card-b">Maíz, frijol, jitomate y chile — los principales cultivos de pequeños productores en México. Clasificación de 12 enfermedades y plagas prioritarias en el MVP.</p>
+        <div class="alc-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></div>
+        <h3 class="alc-t">Portal web administrativo</h3>
+        <p class="alc-b">El gestor consulta reportes agregados de rendimiento por zona, administra usuarios y supervisa el estado del sistema desde cualquier navegador.</p>
       </div>
-      <!-- Alcance 6 -->
-      <div class="alc-card rv d1">
-        <div class="alc-card-ico">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <h3 class="alc-card-t">Panel de validación web</h3>
-        <p class="alc-card-b">El agrónomo valida diagnósticos, añade observaciones y envía retroalimentación directa al agricultor desde el portal web, sin presencia física en campo.</p>
+      <div class="alc-card rv d6">
+        <div class="alc-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 class="alc-t">Gama media sin extras</h3>
+        <p class="alc-b">Funcional en Android de gama media con cámara estándar. Sin hardware adicional ni sensores especializados. Accesible para el pequeño productor.</p>
       </div>
 
-      <!-- Limitations -->
-      <div class="lim-wrap rv d2">
+      <!-- Limitations accordion -->
+      <div class="lim rv d2">
         <div class="lim-head" onclick="limT(this)">
           <div class="lim-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9B4444" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B3A3A" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Limitaciones declaradas
           </div>
-          <svg class="lim-chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9B4444" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <svg class="lim-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B3A3A" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="lim-body o" id="limb">
           <div class="lim-inner">
-            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">Entrada manual de datos</div><div class="lim-b">La calidad del diagnóstico depende de la información ingresada por el agricultor. Sin sensores IoT automáticos en esta fase.</div></div></div>
+            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">Entrada manual de datos</div><div class="lim-b">La calidad del diagnóstico depende del registro del agricultor. Sin sensores IoT automáticos en esta fase del MVP.</div></div></div>
             <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">Variedades locales no representadas</div><div class="lim-b">El modelo puede fallar con patologías poco frecuentes. Requiere ciclos de reentrenamiento periódicos con datos regionales.</div></div></div>
-            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">Requiere conectividad eventual</div><div class="lim-b">El procesamiento queda pendiente hasta que se restablece la conexión. En ausencia prolongada de señal, los diagnósticos se retrasan.</div></div></div>
-            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">No sustituye al agrónomo</div><div class="lim-b">Herramienta de apoyo a la decisión. La validación final requiere un agrónomo certificado, no reemplaza su criterio profesional.</div></div></div>
+            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">Conectividad eventual requerida</div><div class="lim-b">El procesamiento queda pendiente hasta restablecer la conexión. En ausencia prolongada de señal, los diagnósticos se retrasan.</div></div></div>
+            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">No sustituye al agrónomo</div><div class="lim-b">Herramienta de apoyo a la decisión. La validación crítica requiere un especialista certificado en casos complejos.</div></div></div>
           </div>
         </div>
       </div>
@@ -1063,133 +1146,259 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
 <hr class="rule"/>
 
 <!-- ══════════════════════════════════════════
-     USUARIOS
+     USUARIOS — 2 ROLES
 ══════════════════════════════════════════ -->
 <section id="usuarios" class="sec" style="background:var(--bg2);">
   <div class="inn">
-    <div class="sec-tag rv">05 — Usuarios de la plataforma</div>
-    <h2 class="sec-h rv d1" style="max-width:440px;">
-      Tres perfiles.<br/><em>Un ecosistema integrado.</em>
+    <div class="t-label rv">05 — Perfiles de usuario</div>
+    <h2 class="t-h2 rv d1" style="max-width:460px;">
+      Dos actores.<br/><em>Un flujo sin fricción.</em>
     </h2>
+    <p class="t-body rv d2" style="max-width:500px;margin-top:.6rem;">
+      El MVP concentra la interacción en dos perfiles bien definidos. La figura del agrónomo
+      validador, identificada como no viable en esta fase inicial, queda incorporada en las
+      capacidades del rol de Gestor para iteraciones futuras.
+    </p>
+
+    <!-- Role note pill -->
+    <div class="rv d3" style="margin-top:1.2rem;margin-bottom:2.8rem;">
+      <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Inter',sans-serif;font-size:.7rem;font-weight:500;color:var(--ink3);background:var(--bg3);border:1px solid var(--line);border-radius:40px;padding:6px 14px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Agrónomo validador → absorbido por el Gestor en esta fase del MVP
+      </span>
+    </div>
 
     <div class="usr-grid">
+      <!-- AGRICULTOR -->
       <div class="usr-card rv d1">
-        <div class="usr-num">01</div>
-        <div class="usr-ico" style="background:rgba(44,95,46,.08);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <div class="usr-ico-wrap" style="background:rgba(42,92,44,.08);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
         </div>
-        <div class="usr-role">Perfil principal</div>
+        <div class="usr-role">Rol 01 · Usuario final · Campo</div>
         <h3 class="usr-t">Agricultor</h3>
-        <p class="usr-b">Pequeño productor en zona rural. Accede a la plataforma exclusivamente desde la aplicación Android. Opera con conectividad intermitente o nula.</p>
-        <div class="usr-chips">
-          <div class="usr-chip"><div class="usr-chip-dot"></div><span>Captura fotos de cultivos enfermos</span></div>
-          <div class="usr-chip"><div class="usr-chip-dot"></div><span>Registra notas de campo offline</span></div>
-          <div class="usr-chip"><div class="usr-chip-dot"></div><span>Consulta diagnósticos y recomendaciones</span></div>
-          <!-- <div class="usr-chip"><div class="usr-chip-dot"></div><span>Recibe retroalimentación del agrónomo</span></div> -->
+        <p class="usr-desc">Pequeño productor en zona rural. Opera exclusivamente desde la aplicación Android con conectividad intermitente o nula. Es el beneficiario directo de la plataforma — su experiencia define el diseño de todo el sistema.</p>
+
+        <div class="usr-accesos">
+          <div class="usr-accesos-lbl">Flujo de uso en campo</div>
+          <div class="usr-chips">
+            <div class="usr-chip"><div class="usr-dot"></div><span>Captura fotos de hojas o tallos afectados</span></div>
+            <div class="usr-chip"><div class="usr-dot"></div><span>Registra notas de campo sin conexión a internet</span></div>
+            <div class="usr-chip"><div class="usr-dot"></div><span>Recibe diagnóstico con nombre de la enfermedad</span></div>
+            <div class="usr-chip"><div class="usr-dot"></div><span>Lee recomendación agronómica en lenguaje claro</span></div>
+            <div class="usr-chip"><div class="usr-dot"></div><span>Consulta proyección de rendimiento de su parcela</span></div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;">
+          <span class="tag">Android App</span>
+          <span class="tag">Offline-first</span>
+          <span class="tag">Sync asincrónica</span>
         </div>
       </div>
 
-      <!-- <div class="usr-card rv d2">
-        <div class="usr-num">02</div>
-        <div class="usr-ico" style="background:rgba(44,95,46,.08);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><path d="M16 3.5a2.5 2.5 0 0 1 0 5"/><path d="M21 20c0-3-1.9-5.5-4.7-6.4"/></svg>
+      <!-- GESTOR -->
+      <div class="usr-card rv d2">
+        <div class="usr-ico-wrap" style="background:rgba(122,88,50,.08);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--earth)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
         </div>
-        <div class="usr-role">Validador técnico</div>
-        <h3 class="usr-t">Agrónomo</h3>
-        <p class="usr-b">Especialista certificado. Usa la aplicación Android y/o el portal web para supervisar diagnósticos generados por IA y retroalimentar a los agricultores.</p>
-        <div class="usr-chips">
-          <div class="usr-chip"><div class="usr-chip-dot"></div><span>Revisa diagnósticos generados por CNN</span></div>
-          <div class="usr-chip"><div class="usr-chip-dot"></div><span>Añade observaciones y correcciones</span></div>
-          <div class="usr-chip"><div class="usr-chip-dot"></div><span>Valida recomendaciones NLP</span></div>
-          <div class="usr-chip"><div class="usr-chip-dot"></div><span>Sin necesidad de presencia en campo</span></div>
-        </div>
-      </div> -->
+        <div class="usr-role" style="color:var(--earth);">Rol 02 · Administrador · Gestión</div>
+        <h3 class="usr-t">Gestor / Administrador</h3>
+        <p class="usr-desc">Responsable operativo de la cooperativa, ministerio u organización adoptante. Administra la plataforma, supervisa diagnósticos, gestiona usuarios y analiza indicadores por zona desde Android y el portal web.</p>
 
-      <div class="usr-card rv d3">
-        <div class="usr-num">03</div>
-        <div class="usr-ico" style="background:rgba(124,92,58,.08);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--earth)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
-        </div>
-        <div class="usr-role" style="color:var(--earth);">Operaciones</div>
-        <h3 class="usr-t">Gestor Logístico</h3>
-        <p class="usr-b">Responsable operativo de la cooperativa o institución. Accede principalmente desde el portal web administrativo para análisis estratégico.</p>
-        <div class="usr-chips">
-          <div class="usr-chip"><div class="usr-chip-dot" style="background:var(--earth2);"></div><span>Consulta reportes por zona</span></div>
-          <div class="usr-chip"><div class="usr-chip-dot" style="background:var(--earth2);"></div><span>Analiza predicciones de rendimiento</span></div>
+        <div class="usr-accesos">
+          <div class="usr-accesos-lbl">Capacidades administrativas</div>
+          <div class="usr-chips">
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth2);"></div><span>Gestiona agricultores y parcelas del programa</span></div>
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth2);"></div><span>Revisa y supervisa diagnósticos generados</span></div>
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth2);"></div><span>Consulta reportes de rendimiento por zona</span></div>
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth2);"></div><span>Configura alertas y umbrales del sistema</span></div>
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth2);"></div><span>Accede desde Android y portal web administrativo</span></div>
           </div>
+        </div>
+
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;">
+          <span class="tag" style="color:var(--earth);background:rgba(122,88,50,.07);border-color:rgba(122,88,50,.2);">Android App</span>
+          <span class="tag" style="color:var(--earth);background:rgba(122,88,50,.07);border-color:rgba(122,88,50,.2);">Portal Web</span>
+          <span class="tag" style="color:var(--earth);background:rgba(122,88,50,.07);border-color:rgba(122,88,50,.2);">Reportes</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <hr class="rule"/>
-
 <!-- ══════════════════════════════════════════
      MONETIZACIÓN
 ══════════════════════════════════════════ -->
 <section id="monetizacion" class="sec" style="background:var(--ink);">
   <div class="inn">
-    <div class="sec-tag rv">06 — Modelo de monetización</div>
-    <h2 class="sec-h rv d1" style="max-width:480px;color:#fff;">
-      B2B + B2G.<br/><em>El agricultor nunca paga.</em>
+    <div class="t-label rv">06 — Propuesta de monetización</div>
+    <h2 class="t-h2 rv d1" style="max-width:520px;color:#fff;">
+      SaaS institucional.<br/><em>El agricultor nunca paga.</em>
     </h2>
     <p class="mon-intro rv d2">
-      AgroGraph-MAS opera bajo modelo SaaS dirigido a instituciones del sector agropecuario.
-      La sostenibilidad económica no recae en el usuario más vulnerable de la cadena.
+      AgroGraph-MAS se licencia a instituciones del sector agropecuario bajo suscripción recurrente.
+      El agricultor accede gratuitamente a través de su organización.
     </p>
 
-    <!-- SaaS highlight -->
-    <div class="mon-saas rv d3" style="margin-top:2.5rem;">
-      <div class="mon-saas-ico">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <!-- Principle banner -->
+    <div class="mon-banner rv d3">
+      <div class="mon-banner-ico">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
       </div>
       <div>
-        <div class="mon-saas-t">Software como Servicio (SaaS)</div>
-        <p class="mon-saas-b">La arquitectura de microservicios permite ofrecer la plataforma bajo licencia recurrente proporcional al número de agricultores activos. Los clientes institucionales no requieren infraestructura propia. Ingresos complementados con pólizas de mantenimiento y ajuste fino de modelos por región.</p>
+        <div class="mon-banner-t">Modelo SaaS — Licencia por agricultores activos</div>
+        <p class="mon-banner-b">La institución paga una suscripción proporcional al número de agricultores activos en su programa. Sin infraestructura propia requerida. Los ingresos se complementan con pólizas de mantenimiento anual y ajuste fino de modelos de IA por región.</p>
       </div>
     </div>
 
-    <!-- 4 segments -->
-    <div class="mon-grid rv d4">
-      <div class="mon-card">
-        <div class="mon-seg">Segmento 01</div>
-        <h3 class="mon-t">Cooperativas agrícolas</h3>
-        <p class="mon-b">Uniones de ejidatarios y sociedades de producción rural. Acceso a diagnóstico colectivo para sus asociados.</p>
-        <div class="mon-mech">Mecanismo: Licencia SaaS anual<br/>por agricultor activo</div>
+    <!-- 3 PRICING TIERS — diferenciados visualmente, sin ambigüedad -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.2rem;" class="rv d4">
+
+      <!-- Tier 1: Cooperativas -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-lg);padding:2rem 1.8rem;display:flex;flex-direction:column;gap:1.1rem;">
+        <div>
+          <p style="font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green3);margin-bottom:.65rem;">Cooperativas · Ejidos</p>
+          <h3 style="font-family:'DM Serif Display',serif;font-size:1.28rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:.5rem;">Plan Cooperativo</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:.79rem;color:rgba(255,255,255,.36);line-height:1.68;">Para uniones de ejidatarios y sociedades de producción rural. Hasta 500 agricultores activos.</p>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:1rem;">
+          <p style="font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--green3);line-height:1;">Licencia anual</p>
+          <p style="font-family:'Inter',sans-serif;font-size:.7rem;color:rgba(255,255,255,.26);margin-top:.28rem;">Proporcional a agricultores activos · renovación anual</p>
+        </div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;flex:1;">
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.42);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            3 microservicios incluidos
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.42);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Android App + Portal Web
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.42);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Soporte técnico básico
+          </li>
+        </ul>
       </div>
-      <div class="mon-card">
-        <div class="mon-seg">Segmento 02</div>
-        <h3 class="mon-t">Corporaciones de agroinsumos</h3>
-        <p class="mon-b">Distribuidoras de fertilizantes y agroquímicos que desean ofrecer valor añadido a sus clientes.</p>
-        <div class="mon-mech">Mecanismo: Póliza mantenimiento<br/>+ actualización de modelos</div>
+
+      <!-- Tier 2: Gobierno — highlighted -->
+      <div style="background:rgba(42,92,44,.18);border:1px solid rgba(42,92,44,.45);border-radius:var(--r-lg);padding:2rem 1.8rem;display:flex;flex-direction:column;gap:1.1rem;position:relative;">
+        <div style="position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-family:'Inter',sans-serif;font-size:.56rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--green);color:#fff;padding:4px 14px;border-radius:0 0 8px 8px;white-space:nowrap;">Más adoptado</div>
+        <div>
+          <p style="font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green3);margin-bottom:.65rem;">Gobierno · Ministerios</p>
+          <h3 style="font-family:'DM Serif Display',serif;font-size:1.28rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:.5rem;">Plan Institucional B2G</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:.79rem;color:rgba(255,255,255,.36);line-height:1.68;">Para secretarías de desarrollo rural con despliegue nacional o regional a gran escala.</p>
+        </div>
+        <div style="border-top:1px solid rgba(42,92,44,.38);padding-top:1rem;">
+          <p style="font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--green3);line-height:1;">Contrato B2G</p>
+          <p style="font-family:'Inter',sans-serif;font-size:.7rem;color:rgba(255,255,255,.26);margin-top:.28rem;">Negociado por volumen · plurianual · ajuste fino regional</p>
+        </div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;flex:1;">
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.55);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Despliegue masivo · multi-región
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.55);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Modelos ajustados por región
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.55);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Soporte dedicado + SLA
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.55);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Reportes ejecutivos por zona
+          </li>
+        </ul>
       </div>
-      <div class="mon-card">
-        <div class="mon-seg">Segmento 03</div>
-        <h3 class="mon-t">Ministerios y secretarías</h3>
-        <p class="mon-b">SADER (México), MAGA (Guatemala), ministerios de agricultura de Latinoamérica para despliegue masivo.</p>
-        <div class="mon-mech">Mecanismo: Contratos<br/>gubernamentales B2G</div>
-      </div>
-      <div class="mon-card">
-        <div class="mon-seg">Segmento 04</div>
-        <h3 class="mon-t">Organismos internacionales</h3>
-        <p class="mon-b">FAO, IICA, Banco Mundial y fundaciones de desarrollo rural para proyectos de cooperación técnica.</p>
-        <div class="mon-mech">Mecanismo: Proyectos<br/>cooperación técnica</div>
+
+      <!-- Tier 3: Corporativo -->
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-lg);padding:2rem 1.8rem;display:flex;flex-direction:column;gap:1.1rem;">
+        <div>
+          <p style="font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green3);margin-bottom:.65rem;">Agroinsumos · Corporativo</p>
+          <h3 style="font-family:'DM Serif Display',serif;font-size:1.28rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:.5rem;">Plan Corporativo</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:.79rem;color:rgba(255,255,255,.36);line-height:1.68;">Para distribuidoras de fertilizantes y agroquímicos que integran diagnóstico como valor añadido.</p>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:1rem;">
+          <p style="font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--green3);line-height:1;">Póliza anual</p>
+          <p style="font-family:'Inter',sans-serif;font-size:.7rem;color:rgba(255,255,255,.26);margin-top:.28rem;">Mantenimiento + actualización de modelos por ciclo agrícola</p>
+        </div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;flex:1;">
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.42);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            API whitelabel integrable
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.42);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Modelos actualizados por ciclo
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.5rem;font-family:'Inter',sans-serif;font-size:.78rem;color:rgba(255,255,255,.42);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Dashboard de métricas de uso
+          </li>
+        </ul>
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="biz-wrap rv d5">
-      <div class="biz-inner">
-        <table class="biz">
-          <thead><tr><th>Segmento</th><th>Mecanismo de ingreso</th><th>Ejemplo de cliente</th></tr></thead>
+    <!-- Segments table — simple, no noise -->
+    <div class="segs-wrap rv d5">
+      <div class="segs-inner">
+        <table class="segs">
+          <thead>
+            <tr>
+              <th>Segmento</th>
+              <th>¿Qué paga?</th>
+              <th>¿Quién adopta?</th>
+              <th>Período</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr><td><strong>Cooperativas agrícolas</strong></td><td>Licencia anual SaaS por agricultor activo</td><td>Uniones ejidatarias, SPR</td></tr>
-            <tr><td><strong>Corporaciones agroinsumos</strong></td><td>Pólizas mantenimiento + actualización modelos</td><td>Distribuidoras fertilizantes</td></tr>
-            <tr><td><strong>Ministerios desarrollo rural</strong></td><td>Contratos gubernamentales despliegue masivo</td><td>SADER (MX), MAGA (GT)</td></tr>
-            <tr><td><strong>Organismos internacionales</strong></td><td>Proyectos cooperación técnica</td><td>FAO, IICA, Banco Mundial</td></tr>
+            <tr>
+              <td><strong>Cooperativas y ejidos</strong></td>
+              <td>Licencia SaaS por agricultores activos</td>
+              <td>Uniones ejidatarias, SPR</td>
+              <td><span class="tag-dark">Anual</span></td>
+            </tr>
+            <tr>
+              <td><strong>Ministerios rurales</strong></td>
+              <td>Contrato gubernamental volumen + ajuste fino</td>
+              <td>SADER (MX), MAGA (GT)</td>
+              <td><span class="tag-dark">Plurianual</span></td>
+            </tr>
+            <tr>
+              <td><strong>Distribuidoras agroinsumos</strong></td>
+              <td>Póliza mantenimiento + actualización modelos</td>
+              <td>Distribuidoras fertilizantes</td>
+              <td><span class="tag-dark">Anual</span></td>
+            </tr>
+            <tr>
+              <td><strong>Organismos internacionales</strong></td>
+              <td>Proyecto de cooperación técnica cerrado</td>
+              <td>FAO, IICA, Banco Mundial</td>
+              <td><span class="tag-dark">Por proyecto</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
+    </div>
+
+    <div class="callout rv d6">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green3)" stroke-width="1.8" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <p class="callout-t">
+        El agricultor <strong>nunca paga</strong>. Un solo contrato institucional cubre la operación de miles de usuarios.
+        <strong>La viabilidad no requiere escalar a millones de clientes individuales.</strong>
+      </p>
     </div>
   </div>
 </section>
@@ -1204,14 +1413,10 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
     <div class="ft-top">
       <div>
         <div class="ft-brand">AgroGraph-MAS</div>
-        <p class="ft-sub">
-          Plataforma de diagnóstico agronómico<br/>
-          basada en microservicios.<br/>
-          Ingeniería en Sistemas Computacionales · Proyecto Integrador v2.0
-        </p>
+        <p class="ft-sub">Plataforma de diagnóstico agronómico<br/>basada en microservicios.<br/>Ingeniería en Sistemas Computacionales · MVP v2.0</p>
         <div class="ft-live" style="margin-top:1.2rem;">
           <div class="live-dot"></div>
-          <span>microservicios: online &nbsp;|&nbsp; SaaS ready &nbsp;|&nbsp; B2B+B2G</span>
+          <span>microservicios: online &nbsp;·&nbsp; SaaS &nbsp;·&nbsp; B2B+B2G</span>
         </div>
       </div>
       <div>
@@ -1241,7 +1446,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
           <a href="#" class="ft-a">María López · Android</a>
           <a href="#" class="ft-a">Dr. Rodríguez · Director</a>
         </div>
-        <div style="margin-top:1.2rem;font-size:.68rem;font-family:'DM Mono',monospace;color:rgba(255,255,255,.15);">AGPLv3 · Open Source</div>
+        <div style="margin-top:1.2rem;font-size:.66rem;font-family:'DM Mono',monospace;color:rgba(255,255,255,.14);">AGPLv3 · Open Source</div>
       </div>
     </div>
     <div class="ft-bot">
@@ -1261,35 +1466,32 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);padding:3rem 4rem;}
 (function(){
 'use strict';
 
-/* ── Progress bar & nav ── */
+/* ── Progress bar + nav ── */
 const nav  = document.getElementById('nav');
 const pbar = document.getElementById('pbar');
-
 window.addEventListener('scroll', () => {
-  const s   = window.scrollY;
+  const s = window.scrollY;
   const max = document.body.scrollHeight - window.innerHeight;
   pbar.style.width = (max > 0 ? (s / max) * 100 : 0) + '%';
   nav.classList.toggle('s', s > 20);
 }, { passive: true });
 
-/* ── Active nav links ── */
+/* ── Active nav ── */
 const secIds = ['problema','solucion','arquitectura','alcances','usuarios','monetizacion'];
 const navAs  = document.querySelectorAll('.nav-a');
-function updateNav() {
+function upNav() {
   let cur = '';
   secIds.forEach(id => {
     const el = document.getElementById(id);
     if (el && el.getBoundingClientRect().top <= 80) cur = id;
   });
-  navAs.forEach(a => {
-    a.classList.toggle('act', a.getAttribute('href') === '#' + cur);
-  });
+  navAs.forEach(a => a.classList.toggle('act', a.getAttribute('href') === '#' + cur));
 }
-window.addEventListener('scroll', updateNav, { passive: true });
+window.addEventListener('scroll', upNav, { passive: true });
 
 /* ── Mobile menu ── */
-const ham   = document.getElementById('ham');
-const mob   = document.getElementById('mob');
+const ham    = document.getElementById('ham');
+const mob    = document.getElementById('mob');
 const hSpans = ham.querySelectorAll('span');
 let mOpen = false;
 ham.addEventListener('click', () => {
@@ -1304,111 +1506,108 @@ mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   hSpans.forEach(s => { s.style.transform = ''; s.style.opacity = '1'; });
 }));
 
-/* ── Smooth scroll for anchor links ── */
+/* ── Smooth scroll ── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
 
 /* ── Reveal on scroll ── */
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('i'); io.unobserve(e.target); }
-  });
-}, { threshold: 0.07, rootMargin: '0px 0px -20px 0px' });
-document.querySelectorAll('.rv,.rvl,.rvr').forEach(el => io.observe(el));
+const ioR = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('i'); ioR.unobserve(e.target); } });
+}, { threshold: 0.07, rootMargin: '0px 0px -18px 0px' });
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el => ioR.observe(el));
 
-/* ── Limitations accordion ── */
+/* ── Accordion ── */
 window.limT = function(head) {
   const body = document.getElementById('limb');
   const chev = head.querySelector('.lim-chev');
   const open = body.classList.toggle('o');
   chev.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
 };
-// Start open
 const initChev = document.querySelector('.lim-chev');
 if (initChev) initChev.style.transform = 'rotate(180deg)';
 
 /* ══════════════════════════════════════════
-   PLANT SVG — scroll-driven stroke drawing
+   BEAN PLANT — scroll-driven stroke drawing
+   Fixed background · frijol con guías
    ══════════════════════════════════════════ */
-const plantPaths = [
-  { id:'r0',   s:0.00, e:0.04 },
-  { id:'r1',   s:0.02, e:0.06 },
-  { id:'r2',   s:0.02, e:0.06 },
-  { id:'r3',   s:0.04, e:0.08 },
-  { id:'r4',   s:0.04, e:0.08 },
-  { id:'stem', s:0.07, e:0.36 },
-  { id:'stem2',s:0.34, e:0.42 },
-  { id:'la1',  s:0.11, e:0.19 },
-  { id:'lb1',  s:0.18, e:0.25 },
-  { id:'la2',  s:0.19, e:0.27 },
-  { id:'lb2',  s:0.26, e:0.32 },
-  { id:'la3',  s:0.25, e:0.33 },
-  { id:'lb3',  s:0.32, e:0.38 },
-  { id:'la4',  s:0.31, e:0.39 },
-  { id:'lb4',  s:0.38, e:0.44 },
-  { id:'la5',  s:0.37, e:0.45 },
-  { id:'lb5',  s:0.44, e:0.50 },
-  { id:'la6',  s:0.42, e:0.49 },
-  { id:'lb6',  s:0.48, e:0.54 },
-  { id:'sep1', s:0.50, e:0.55 },
-  { id:'sep2', s:0.51, e:0.56 },
-  { id:'sep3', s:0.51, e:0.56 },
+const PATHS = [
+  { id:'bs0',  s:.00, e:.06 },{ id:'bs1',  s:.05, e:.11 },
+  { id:'bs2',  s:.10, e:.16 },{ id:'bs3',  s:.15, e:.21 },
+  { id:'bs4',  s:.20, e:.26 },{ id:'bs5',  s:.25, e:.31 },
+  { id:'bs6',  s:.30, e:.36 },{ id:'bs7',  s:.35, e:.41 },
+  { id:'bs8',  s:.40, e:.46 },{ id:'bs9',  s:.45, e:.51 },
+  { id:'bs10', s:.50, e:.56 },{ id:'bs11', s:.55, e:.62 },
+  { id:'bt1',  s:.05, e:.12 },{ id:'bt2',  s:.08, e:.15 },
+  { id:'bt3',  s:.16, e:.23 },{ id:'bt4',  s:.19, e:.26 },
+  { id:'bt5',  s:.30, e:.37 },{ id:'bt6',  s:.33, e:.40 },
+  { id:'bt7',  s:.43, e:.50 },{ id:'bt8',  s:.46, e:.53 },
+  { id:'bt9',  s:.56, e:.63 },{ id:'bt10', s:.59, e:.66 },
+  { id:'blpa', s:.07, e:.12 },{ id:'blpb', s:.11, e:.16 },
+  { id:'blpc', s:.20, e:.25 },{ id:'blpd', s:.23, e:.28 },
+  { id:'blpe', s:.32, e:.37 },{ id:'blpf', s:.35, e:.40 },
+  { id:'blpg', s:.45, e:.50 },{ id:'blph', s:.47, e:.52 },
+  { id:'blpi', s:.58, e:.63 },{ id:'blpj', s:.60, e:.65 },
+  { id:'bla1', s:.12, e:.19 },{ id:'bla2', s:.14, e:.20 },
+  { id:'bla3', s:.15, e:.21 },{ id:'blav', s:.17, e:.22 },
+  { id:'blb1', s:.16, e:.23 },{ id:'blb2', s:.18, e:.24 },
+  { id:'blbv', s:.20, e:.25 },{ id:'blc1', s:.25, e:.32 },
+  { id:'blc2', s:.27, e:.33 },{ id:'blc3', s:.28, e:.34 },
+  { id:'blcv', s:.30, e:.35 },{ id:'bld1', s:.28, e:.35 },
+  { id:'bld2', s:.30, e:.36 },{ id:'bldv', s:.32, e:.37 },
+  { id:'ble1', s:.37, e:.44 },{ id:'ble2', s:.39, e:.45 },
+  { id:'blev', s:.41, e:.46 },{ id:'blf1', s:.40, e:.47 },
+  { id:'blf2', s:.42, e:.48 },{ id:'blfv', s:.44, e:.49 },
+  { id:'blg1', s:.50, e:.57 },{ id:'blgv', s:.52, e:.57 },
+  { id:'blh1', s:.52, e:.59 },{ id:'blhv', s:.54, e:.59 },
+  { id:'bli1', s:.63, e:.70 },{ id:'bliv', s:.65, e:.70 },
+  { id:'blj1', s:.65, e:.72 },{ id:'bljv', s:.67, e:.72 },
+  { id:'bbud1',s:.68, e:.74 },{ id:'bbud2',s:.69, e:.75 },
 ];
-
-const flowerIds  = ['pt1','pt2','pt3','pt4','pt5','pt6','fc','fc2'];
-const seedEl     = document.getElementById('seed');
-const gndEl      = document.getElementById('gnd');
-
-function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-
-// Compute path lengths after DOM ready
-const pathData = plantPaths.map(({ id, s, e }) => {
+const APPEAR = [
+  { id:'bbud-tip', s:.74, e:.80 },
+  { id:'bpod1',    s:.75, e:.84 },
+  { id:'bpod2',    s:.77, e:.86 },
+  { id:'bpod1b',   s:.82, e:.90 },
+  { id:'bpod2b',   s:.84, e:.92 },
+];
+function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v));}
+const pathData = PATHS.map(({id,s,e}) => {
   const el = document.getElementById(id);
   let len = 300;
-  if (el) {
-    try { len = el.getTotalLength(); } catch(_) {}
-    el.style.strokeDasharray  = len;
-    el.style.strokeDashoffset = len;
-    el.style.transition = 'none';
-  }
-  return { el, s, e, len };
+  if(el){ try{len=el.getTotalLength();}catch(_){} el.style.strokeDasharray=len; el.style.strokeDashoffset=len; el.style.transition='none'; }
+  return {el,s,e,len};
 });
-
-function drawPlant(pct) {
-  // Seed fades out as roots appear
-  if (seedEl) seedEl.style.opacity = clamp(1 - pct / 0.05, 0, 1);
-  // Ground
-  if (gndEl) gndEl.style.opacity = clamp((pct - 0.01) / 0.05, 0, 0.18);
-
-  pathData.forEach(({ el, s, e, len }) => {
-    if (!el) return;
-    const progress = clamp((pct - s) / (e - s), 0, 1);
-    el.style.strokeDashoffset = len * (1 - progress);
+const seedEl  = document.getElementById('bseed');
+const hilumEl = document.getElementById('bhilum');
+const gndEl   = document.getElementById('bgnd');
+function draw(pct) {
+  const so = clamp(1 - pct/0.08, 0, 1);
+  if(seedEl)  seedEl.style.opacity  = so;
+  if(hilumEl) hilumEl.style.opacity = so;
+  if(gndEl)   gndEl.style.opacity   = clamp((pct-0.01)/0.06, 0, 0.22);
+  pathData.forEach(({el,s,e,len}) => {
+    if(!el) return;
+    el.style.strokeDashoffset = len * (1 - clamp((pct-s)/(e-s),0,1));
   });
-
-  // Flower
-  const fProg = clamp((pct - 0.54) / 0.09, 0, 1);
-  flowerIds.forEach(id => {
+  APPEAR.forEach(({id,s,e}) => {
     const el = document.getElementById(id);
-    if (el) el.style.opacity = fProg;
+    if(el) el.style.opacity = clamp((pct-s)/(e-s),0,1);
   });
 }
-
 let raf = null;
 window.addEventListener('scroll', () => {
-  if (raf) return;
+  if(raf) return;
   raf = requestAnimationFrame(() => {
     const max = document.body.scrollHeight - window.innerHeight;
-    drawPlant(max > 0 ? window.scrollY / max : 0);
+    draw(max > 0 ? window.scrollY/max : 0);
     raf = null;
   });
 }, { passive: true });
-
-window.addEventListener('load', () => drawPlant(0));
+window.addEventListener('load', () => draw(0));
 
 })();
 </script>
