@@ -826,29 +826,303 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
     <h2 class="t-h2 rv d1" style="max-width:480px;">Tres modelos de IA<br/><em>en contenedores independientes</em></h2>
 
     <!-- MS1 -->
-    <div class="sol-row" style="margin-top:4rem;">
-      <div class="rvl">
-        <div class="sol-vis">
-          <svg width="190" height="190" viewBox="0 0 190 190" fill="none">
-            <rect x="12" y="50" width="20" height="90" rx="3" fill="var(--g4)" opacity=".5"/>
-            <rect x="42" y="33" width="20" height="124" rx="3" fill="var(--g3)" opacity=".55"/>
-            <rect x="72" y="43" width="20" height="104" rx="3" fill="var(--g)" opacity=".6"/>
-            <rect x="102" y="27" width="20" height="136" rx="3" fill="var(--g)" opacity=".75"/>
-            <rect x="132" y="57" width="18" height="76" rx="3" fill="var(--g5)" opacity=".8"/>
-            <circle cx="91" cy="95" r="5" fill="var(--g)" opacity=".9"/>
-            <circle cx="91" cy="95" r="13" fill="none" stroke="var(--g3)" stroke-width="1" opacity=".35"/>
-            <circle cx="91" cy="95" r="21" fill="none" stroke="var(--g4)" stroke-width="1" opacity=".18"/>
-            <text x="95" y="178" font-family="DM Mono" font-size="7.5" fill="var(--ink4)" text-anchor="middle">CNN · PlantVillage · Docker</text>
-          </svg>
-        </div>
+    <style>
+/* ── Visual CNN pipeline ── */
+.cnn-vis{
+  background:var(--bg2);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:1.6rem 1.4rem;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  position:relative;
+  overflow:hidden;
+}
+.cnn-vis-header{
+  font-family:'DM Mono',monospace;
+  font-size:.56rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink4);margin-bottom:1.2rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.cnn-vis-header span{
+  display:flex;align-items:center;gap:5px;
+}
+.cnn-live-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--g);
+  animation:blink 2.5s ease-in-out infinite;
+}
+.cnn-pipeline{
+  display:flex;align-items:center;gap:0;
+  margin-bottom:1.2rem;
+}
+.cnn-stage{
+  display:flex;flex-direction:column;align-items:center;gap:.45rem;
+  flex:1;
+}
+.cnn-stage-box{
+  width:100%;border-radius:6px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:.65rem .4rem;gap:.3rem;
+  border:1px solid var(--line);
+  background:var(--bg3);
+  transition:border-color .25s;
+}
+.cnn-stage-box:hover{border-color:rgba(74,140,78,.28);}
+.cnn-stage-box.inp{background:rgba(74,140,78,.05);border-color:rgba(74,140,78,.15);}
+.cnn-stage-box.out{background:rgba(74,140,78,.07);border-color:rgba(74,140,78,.22);}
+.cnn-stage-lbl{
+  font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink4);
+  text-align:center;line-height:1.4;
+}
+.cnn-arrow{
+  flex-shrink:0;padding:0 3px;
+  display:flex;align-items:center;
+}
+.fmap{
+  display:grid;grid-template-columns:repeat(4,7px);
+  grid-template-rows:repeat(4,7px);gap:1px;
+}
+.fmap-cell{border-radius:1px;}
+.cnn-output-bars{
+  display:flex;flex-direction:column;gap:.45rem;
+  width:100%;padding:.2rem 0;
+}
+.cnn-bar-row{
+  display:flex;align-items:center;gap:.5rem;
+}
+.cnn-bar-name{
+  font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink3);
+  width:72px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cnn-bar-track{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.cnn-bar-fill{height:100%;border-radius:2px;}
+.cnn-bar-val{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink3);width:28px;text-align:right;flex-shrink:0;}
+.cnn-bar-fill.hi {background:var(--g);}
+.cnn-bar-fill.mid{background:var(--amber);}
+.cnn-bar-fill.lo {background:var(--ink4);}
+.cnn-stack-row{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.75rem 0 0;
+  border-top:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.cnn-stack-lbl{
+  font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink4);
+}
+.cnn-result-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(74,140,78,.1);border:1px solid rgba(74,140,78,.22);
+  border-radius:40px;padding:3px 10px;
+  font-family:'DM Mono',monospace;font-size:.58rem;color:var(--g5);
+  white-space:nowrap;
+}
+.cnn-result-dot{width:5px;height:5px;border-radius:50%;background:var(--g);}
+</style>
+
+<div class="sol-row" style="margin-top:4rem;">
+
+  <!-- VISUAL — CNN inference pipeline -->
+  <div class="rvl">
+    <div class="cnn-vis">
+      <div class="cnn-vis-header">
+        <span>Pipeline de inferencia · CNN</span>
+        <span><div class="cnn-live-dot"></div>on-device · FastAPI</span>
       </div>
-      <div class="rvr">
-        <div class="sol-badge badge-g">Microservicio 01 — Diagnóstico</div>
-        <h3 class="t-h3">Visión por computadora fitopatológica</h3>
-        <p class="t-body" style="margin-top:.75rem;">Red neuronal CNN con EfficientNetB4 y transfer learning, entrenada con PlantVillage y datasets latinoamericanos. Empaquetada en Docker y expuesta vía FastAPI. Identifica enfermedades en maíz, frijol, jitomate, chile, aguacate, papa y más.</p>
-        <div class="tags"><span class="tag">CNN</span><span class="tag">EfficientNetB4</span><span class="tag">FastAPI</span><span class="tag">Docker</span><span class="tag">PlantVillage</span></div>
+
+      <div class="cnn-pipeline">
+
+        <!-- Input -->
+        <div class="cnn-stage">
+          <div class="cnn-stage-box inp">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <rect x="3" y="3" width="22" height="22" rx="4" fill="var(--bg4)" stroke="rgba(74,140,78,.3)" stroke-width="1"/>
+              <path d="M9 20 C9 14 14 8 20 8 C20 14 16 20 9 20Z" fill="rgba(74,140,78,.35)" stroke="var(--g3)" stroke-width=".8"/>
+              <line x1="14" y1="8" x2="11" y2="19" stroke="var(--g3)" stroke-width=".7" stroke-linecap="round"/>
+            </svg>
+            <span class="cnn-stage-lbl">Imagen<br/>224×224</span>
+          </div>
+        </div>
+
+        <div class="cnn-arrow">
+          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
+        </div>
+
+        <!-- Conv 32ch -->
+        <div class="cnn-stage">
+          <div class="cnn-stage-box">
+            <div class="fmap">
+              <div class="fmap-cell" style="background:rgba(74,140,78,.6)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.3)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.7)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.2)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.4)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.8)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.3)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.5)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.5)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.2)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.9)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.3)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.6)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.4)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.2)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.7)"></div>
+            </div>
+            <span class="cnn-stage-lbl">Conv<br/>32ch</span>
+          </div>
+        </div>
+
+        <div class="cnn-arrow">
+          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
+        </div>
+
+        <!-- Conv 96ch -->
+        <div class="cnn-stage">
+          <div class="cnn-stage-box">
+            <div class="fmap">
+              <div class="fmap-cell" style="background:rgba(176,120,48,.7)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.4)"></div>
+              <div class="fmap-cell" style="background:rgba(176,120,48,.4)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.6)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.3)"></div>
+              <div class="fmap-cell" style="background:rgba(176,120,48,.8)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.5)"></div>
+              <div class="fmap-cell" style="background:rgba(176,120,48,.3)"></div>
+              <div class="fmap-cell" style="background:rgba(176,120,48,.5)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.7)"></div>
+              <div class="fmap-cell" style="background:rgba(176,120,48,.3)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.4)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.6)"></div>
+              <div class="fmap-cell" style="background:rgba(176,120,48,.6)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.2)"></div>
+              <div class="fmap-cell" style="background:rgba(176,120,48,.4)"></div>
+            </div>
+            <span class="cnn-stage-lbl">Conv<br/>96ch</span>
+          </div>
+        </div>
+
+        <div class="cnn-arrow">
+          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
+        </div>
+
+        <!-- MBConv B4 -->
+        <div class="cnn-stage">
+          <div class="cnn-stage-box">
+            <div class="fmap">
+              <div class="fmap-cell" style="background:rgba(74,140,78,.85)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.9)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.95)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.85)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.9)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.8)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.9)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
+              <div class="fmap-cell" style="background:rgba(74,140,78,.85)"></div>
+            </div>
+            <span class="cnn-stage-lbl">MBConv<br/>B4</span>
+          </div>
+        </div>
+
+        <div class="cnn-arrow">
+          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
+        </div>
+
+        <!-- Softmax output -->
+        <div class="cnn-stage">
+          <div class="cnn-stage-box out">
+            <div class="cnn-output-bars">
+              <div class="cnn-bar-row">
+                <span class="cnn-bar-name">Tizón tardío</span>
+                <div class="cnn-bar-track"><div class="cnn-bar-fill hi" style="width:91%"></div></div>
+                <span class="cnn-bar-val" style="color:var(--g5);">91%</span>
+              </div>
+              <div class="cnn-bar-row">
+                <span class="cnn-bar-name">Antracnosis</span>
+                <div class="cnn-bar-track"><div class="cnn-bar-fill mid" style="width:6%"></div></div>
+                <span class="cnn-bar-val">6%</span>
+              </div>
+              <div class="cnn-bar-row">
+                <span class="cnn-bar-name">Sano</span>
+                <div class="cnn-bar-track"><div class="cnn-bar-fill lo" style="width:3%"></div></div>
+                <span class="cnn-bar-val">3%</span>
+              </div>
+            </div>
+            <span class="cnn-stage-lbl">Softmax<br/>output</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Result chip + timing -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.85rem;">
+        <div class="cnn-result-chip">
+          <div class="cnn-result-dot"></div>
+          Diagnóstico: Tizón tardío · 91% confianza
+        </div>
+        <span style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink4);">~1.8s · Snapdragon 665</span>
+      </div>
+
+      <!-- Stack pills -->
+      <div class="cnn-stack-row">
+        <span class="cnn-stack-lbl">Stack:</span>
+        <span class="tag" style="font-size:.54rem;padding:2px 8px;">EfficientNetB4</span>
+        <span class="tag" style="font-size:.54rem;padding:2px 8px;">TFLite</span>
+        <span class="tag" style="font-size:.54rem;padding:2px 8px;">FastAPI</span>
+        <span class="tag" style="font-size:.54rem;padding:2px 8px;">Docker</span>
+        <span class="tag" style="font-size:.54rem;padding:2px 8px;">REST API</span>
       </div>
     </div>
+  </div>
+
+  <!-- TEXT -->
+  <div class="rvr">
+    <div class="sol-badge badge-g">Microservicio 01 — Diagnóstico</div>
+    <h3 class="t-h3">Visión por computadora fitopatológica</h3>
+    <p class="t-body" style="margin-top:.75rem;">
+      Red neuronal convolucional basada en EfficientNetB4 con transfer learning,
+      entrenada con datasets latinoamericanos de campo. Empaquetada en contenedor
+      Docker y expuesta vía FastAPI. Analiza la fotografía capturada desde el
+      smartphone del agricultor e identifica enfermedades fúngicas, bacterianas
+      y deficiencias nutricionales en los cultivos objetivo.
+    </p>
+    <p class="t-body" style="margin-top:.65rem;">
+      El modelo devuelve la enfermedad identificada con su nivel de confianza y
+      alimenta directamente al microservicio de NLP para generar la recomendación contextualizada.
+    </p>
+    <div class="tags">
+      <span class="tag">CNN · EfficientNetB4</span>
+      <span class="tag">Transfer learning</span>
+      <span class="tag">FastAPI</span>
+      <span class="tag">Docker</span>
+      <span class="tag">TFLite</span>
+      <span class="tag">REST API</span>
+      <span class="tag">40+ patologías</span>
+    </div>
+
+    <!-- Cultivos cubiertos -->
+    <div style="margin-top:1.4rem;padding:1.1rem 1.2rem;background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);">
+      <p style="font-family:'DM Mono',monospace;font-size:.56rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:.7rem;">Cultivos cubiertos</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
+        <span class="tag">Jitomate</span>
+        <span class="tag">Maíz</span>
+        <span class="tag">Frijol</span>
+        <span class="tag">Chile</span>
+        <span class="tag">Calabaza</span>
+        <span class="tag">Papa</span>
+        <span class="tag">+ extensible</span>
+      </div>
+    </div>
+  </div>
+
+</div>
 
     <!-- MS2 -->
     <div class="sol-row">
@@ -1151,9 +1425,9 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
     <div class="alc-grid">
       <div class="alc-card rv d1"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><h3 class="alc-t">Dos perfiles de usuario</h3><p class="alc-b">Agricultor (Android) y Gestor (Android + portal web). Flujos diferenciados con permisos específicos por rol.</p></div>
       <div class="alc-card rv d2"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><h3 class="alc-t">Sincronización asincrónica</h3><p class="alc-b">Fotos y notas se almacenan localmente y se envían via cola de mensajes al recuperar red. Sin pérdida de datos.</p></div>
-      <div class="alc-card rv d3"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3 class="alc-t">Seguimiento automático MVP</h3><p class="alc-b">Recordatorios programables, agenda agrícola integrada y seguimiento básico de tratamientos en el MVP inicial.</p></div>
+      <div class="alc-card rv d3"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3 class="alc-t">Seguimiento automático</h3><p class="alc-b">Recordatorios programables, agenda agrícola integrada y seguimiento básico de tratamientos inicial.</p></div>
       <div class="alc-card rv d4"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></div><h3 class="alc-t">Módulo económico básico</h3><p class="alc-b">Comparación de costos aproximados y estimación de impacto. Sin predicción exacta de mercado en esta fase.</p></div>
-      <div class="alc-card rv d5"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><h3 class="alc-t">10+ cultivos soportados</h3><p class="alc-b">Maíz, frijol, jitomate, chile, limón, aguacate, papa, fresa y más. Extensible mediante reentrenamiento incremental.</p></div>
+      <div class="alc-card rv d5"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><h3 class="alc-t">10+ cultivos soportados</h3><p class="alc-b">Maíz, frijol, jitomate, chile, papa,  y más. Extensible mediante reentrenamiento incremental.</p></div>
       <div class="alc-card rv d6"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3 class="alc-t">Gama media sin extras</h3><p class="alc-b">Funcional en Android de gama media con cámara estándar. Sin hardware adicional ni sensores especializados.</p></div>
       <!-- <div class="lim rv d2">
         <div class="lim-head" onclick="limT(this)">
@@ -1196,7 +1470,7 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
             <div class="usr-chip"><div class="usr-dot"></div><span>Ve si conviene económicamente aplicar tratamiento</span></div>
             <div class="usr-chip"><div class="usr-dot"></div><span>Acepta calendario automático de aplicaciones</span></div>
             <div class="usr-chip"><div class="usr-dot"></div><span>Recibe recordatorio antes de cada aplicación</span></div>
-            <div class="usr-chip"><div class="usr-dot"></div><span>Consulta historial para trazabilidad y certificación</span></div>
+            <div class="usr-chip"><div class="usr-dot"></div><span>Consulta historial para trazabilidad</span></div>
           </div>
         </div>
         <div class="tags"><span class="tag">Android App</span><span class="tag">Offline-first</span><span class="tag">Sync asincrónica</span></div>
@@ -1211,12 +1485,10 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
         <div class="usr-acc">
           <div class="usr-acc-lbl">Capacidades administrativas</div>
           <div class="usr-chips">
-            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Gestiona agricultores y parcelas del programa</span></div>
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Gestiona agricultores del programa</span></div>
             <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Supervisa el mapa epidemiológico regional</span></div>
             <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Configura alertas y umbrales del sistema</span></div>
-            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Consulta reportes económicos por zona</span></div>
-            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Exporta registros de trazabilidad para certificación</span></div>
-          </div>
+            </div>
         </div>
         <div class="tags">
           <span class="tag" style="color:var(--earth);border-color:rgba(122,84,56,.25);">Android App</span>
@@ -1374,7 +1646,7 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
           <li>
             <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
             <strong> Microservicios de IA</strong> (Detección avanzada y predicción de cosechas)
-          </li>]
+          </li>
           <li>
             <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
             <strong>Reportes macro</strong> de salud  y alertas de riesgos
