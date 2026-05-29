@@ -4,37 +4,50 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>AgroGraph-MAS — Plataforma de Inteligencia Agrícola</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)"/>
+<link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin/>
+<link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap)" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════
-   TOKENS — paleta cálida oscura sin fosfos
+   TOKENS — paleta acromática premium con toques crema
+   Base: blancos cálidos, grises suaves, crema sutil
 ═══════════════════════════════════════ */
 :root{
-  --bg:    #0C0E0B;
-  --bg2:   #101310;
-  --bg3:   #151816;
-  --bg4:   #1A1D1A;
-  --bg5:   #1F231F;
-  --ink:   #E8E4DC;
-  --ink2:  #A8A49C;
-  --ink3:  #6A6660;
-  --ink4:  #3E3C38;
-  --g:     #4A8C4E;
-  --g2:    #3A7040;
-  --g3:    #2A5430;
-  --g4:    #1A3620;
-  --g5:    #8EC491;      /* antes fosforescente, ahora sage suave */
-  --g6:    #C4DCBC;
-  --amber: #B07830;
-  --amber2:#D4A060;
-  --red:   #8C3C3C;
-  --earth: #7A5438;
-  --line:  rgba(232,228,220,.06);
-  --line2: rgba(232,228,220,.03);
+  /* Fondos — escala clara con temperatura blanco-crema */
+  --bg:    #F8F7F5;
+  --bg2:   #F3F2EF;
+  --bg3:   #EDECEA;
+  --bg4:   #E7E6E3;
+  --bg5:   #E0DFDC;
+
+  /* Texto — escala de negro suave a gris medio */
+  --ink:   #1A1917;
+  --ink2:  #4A4844;
+  --ink3:  #7A7874;
+  --ink4:  #AEACA8;
+
+  /* Acento principal — gris carbón muy sobrio */
+  --g:     #3D3C3A;
+  --g2:    #2E2D2B;
+  --g3:    #1F1E1C;
+  --g4:    #111110;
+  --g5:    #6B6A68;   /* gris medio, tono crema */
+  --g6:    #C8C6C2;
+
+  /* Acento secundario — crema/beige muy sutil */
+  --amber: #9C9080;
+  --amber2:#B8ADA0;
+
+  /* Estados de error/advertencia */
+  --red:   #C0B8B0;
+  --earth: #A09890;
+
+  /* Líneas y bordes — casi invisibles, temperatura crema */
+  --line:  rgba(26,25,23,.07);
+  --line2: rgba(26,25,23,.04);
+
   --r:     8px;
-  --r-lg:  14px;
+  --r-lg:  16px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:16px;scroll-behavior:smooth;}
@@ -42,24 +55,24 @@ body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;overfl
 a{text-decoration:none;color:inherit;}
 ::-webkit-scrollbar{width:2px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--g3);}
+::-webkit-scrollbar-thumb{background:var(--g6);}
 
 /* ═══════════════════════════════════════
-   GRAIN — más sutil
+   GRAIN — sutil, atmosférico
 ═══════════════════════════════════════ */
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
+  opacity:.4;
 }
 
 /* ═══════════════════════════════════════
    PROGRESS
 ═══════════════════════════════════════ */
-#pbar{position:fixed;top:0;left:0;height:1px;z-index:1000;background:var(--g);width:0%;pointer-events:none;}
+#pbar{position:fixed;top:0;left:0;height:1px;z-index:1000;background:var(--g5);width:0%;pointer-events:none;opacity:.5;}
 
 /* ═══════════════════════════════════════
-   NAV
+   NAV — glassmorphism claro
 ═══════════════════════════════════════ */
 #nav{
   position:fixed;top:0;left:0;right:0;z-index:900;
@@ -68,21 +81,47 @@ body::before{
   border-bottom:1px solid transparent;
   transition:background .35s,border-color .35s,backdrop-filter .35s;
 }
-#nav.s{background:rgba(12,14,11,.9);backdrop-filter:blur(20px);border-color:var(--line);}
+#nav.s{
+  background:rgba(248,247,245,.82);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+  border-color:rgba(26,25,23,.07);
+  box-shadow:0 1px 24px rgba(26,25,23,.04);
+}
 .nav-brand{display:flex;align-items:center;gap:9px;}
-.nav-mark{width:26px;height:26px;border-radius:6px;background:var(--g);display:flex;align-items:center;justify-content:center;}
+.nav-mark{
+  width:26px;height:26px;border-radius:6px;
+  background:rgba(61,60,58,.08);
+  border:1px solid rgba(61,60,58,.12);
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(8px);
+}
 .nav-name{font-family:'Fraunces',serif;font-size:.95rem;font-weight:400;color:var(--ink);}
 .nav-links{display:flex;align-items:center;gap:1.6rem;}
 .nav-a{font-size:.65rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);transition:color .2s;}
-.nav-a:hover,.nav-a.act{color:var(--g5);}
-.nav-cta{font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--bg);background:var(--g);padding:8px 20px;border-radius:40px;transition:background .2s,transform .15s;}
-.nav-cta:hover{background:var(--g2);transform:translateY(-1px);}
+.nav-a:hover,.nav-a.act{color:var(--ink);}
+.nav-cta{
+  font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink);background:transparent;
+  padding:7px 20px;border-radius:40px;
+  border:1px solid rgba(26,25,23,.18);
+  transition:background .2s,border-color .2s,transform .15s;
+  backdrop-filter:blur(8px);
+}
+.nav-cta:hover{background:rgba(26,25,23,.06);border-color:rgba(26,25,23,.3);transform:translateY(-1px);}
 .ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
-.ham span{display:block;width:19px;height:1.5px;background:var(--ink2);border-radius:2px;transition:all .28s;}
-#mob{display:none;flex-direction:column;position:fixed;top:58px;left:0;right:0;z-index:800;background:rgba(12,14,11,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);padding:1rem 2rem 1.5rem;}
+.ham span{display:block;width:19px;height:1.5px;background:var(--ink3);border-radius:2px;transition:all .28s;}
+#mob{
+  display:none;flex-direction:column;position:fixed;top:58px;left:0;right:0;z-index:800;
+  background:rgba(248,247,245,.94);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--line);padding:1rem 2rem 1.5rem;
+  box-shadow:0 8px 32px rgba(26,25,23,.06);
+}
 #mob.o{display:flex;}
-#mob a{font-size:.88rem;font-weight:400;color:var(--ink2);padding:.65rem 0;border-bottom:1px solid var(--line2);}
-#mob a:last-child{border:none;color:var(--g5);font-weight:600;}
+#mob a{font-size:.88rem;font-weight:400;color:var(--ink3);padding:.65rem 0;border-bottom:1px solid var(--line2);}
+#mob a:last-child{border:none;color:var(--ink);font-weight:600;}
 
 /* ═══════════════════════════════════════
    LAYOUT
@@ -115,8 +154,9 @@ body::before{
   font-family:'DM Mono',monospace;
   font-size:.6rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
   color:var(--g5);display:flex;align-items:center;gap:10px;margin-bottom:1.3rem;
+  opacity:.85;
 }
-.t-label::after{content:'';width:24px;height:1px;background:var(--g5);}
+.t-label::after{content:'';width:24px;height:1px;background:var(--g5);opacity:.5;}
 .t-body{font-size:.88rem;font-weight:400;color:var(--ink2);line-height:1.82;}
 .t-mono{font-family:'DM Mono',monospace;}
 
@@ -125,19 +165,21 @@ body::before{
 ═══════════════════════════════════════ */
 .btn-p{
   font-family:'Inter',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
-  color:var(--bg);background:var(--g);
+  color:var(--bg);background:var(--ink);
   padding:13px 30px;border-radius:40px;border:none;cursor:pointer;
   transition:background .2s,transform .15s,box-shadow .2s;display:inline-block;
+  box-shadow:0 4px 20px rgba(26,25,23,.12);
 }
-.btn-p:hover{background:var(--g2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(74,140,78,.22);}
+.btn-p:hover{background:var(--g2);transform:translateY(-2px);box-shadow:0 10px 32px rgba(26,25,23,.18);}
 .btn-o{
   font-family:'Inter',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
-  color:var(--g5);background:transparent;
+  color:var(--ink2);background:rgba(248,247,245,.7);
   padding:12px 30px;border-radius:40px;
-  border:1px solid rgba(74,140,78,.28);cursor:pointer;
+  border:1px solid rgba(26,25,23,.14);cursor:pointer;
   transition:border-color .2s,background .2s,transform .15s;display:inline-block;
+  backdrop-filter:blur(12px);
 }
-.btn-o:hover{border-color:var(--g);background:rgba(74,140,78,.06);transform:translateY(-2px);}
+.btn-o:hover{border-color:rgba(26,25,23,.28);background:rgba(248,247,245,.9);transform:translateY(-2px);}
 
 /* ═══════════════════════════════════════
    REVEAL
@@ -155,37 +197,47 @@ body::before{
 #hero{
   min-height:100vh;display:flex;align-items:center;
   padding:80px 4rem 4rem;position:relative;z-index:1;overflow:hidden;
+  background:linear-gradient(160deg,rgba(248,244,236,.6) 0%,var(--bg) 50%,rgba(243,241,237,.8) 100%);
 }
 .hero-glow{
   position:absolute;top:-15%;right:-8%;
   width:min(600px,60vw);height:min(600px,60vw);border-radius:50%;
-  background:radial-gradient(circle,rgba(74,140,78,.09) 0%,transparent 68%);
-  pointer-events:none;animation:breathe 8s ease-in-out infinite;
+  background:radial-gradient(circle,rgba(180,170,155,.12) 0%,transparent 68%);
+  pointer-events:none;animation:breathe 10s ease-in-out infinite;
 }
-@keyframes breathe{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.1);opacity:1}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.08);opacity:1}}
 .hero-grid{
   position:absolute;inset:0;pointer-events:none;
-  background-image:linear-gradient(rgba(74,140,78,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(74,140,78,.025) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(26,25,23,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(26,25,23,.025) 1px,transparent 1px);
   background-size:72px 72px;
   mask-image:radial-gradient(ellipse 75% 75% at 50% 50%,black 0%,transparent 100%);
 }
 .hero-inner{max-width:660px;position:relative;z-index:2;}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:8px;
-  font-family:'DM Mono',monospace;font-size:.62rem;color:var(--ink3);
+  font-family:'DM Mono',monospace;font-size:.62rem;color:var(--ink4);
   margin-bottom:1.8rem;
   opacity:0;animation:fadein .7s .2s forwards;
 }
-.hero-dot{width:5px;height:5px;border-radius:50%;background:var(--g);animation:blink 2.5s ease-in-out infinite;}
+.hero-dot{width:5px;height:5px;border-radius:50%;background:var(--ink3);animation:blink 3s ease-in-out infinite;}
 @keyframes fadein{to{opacity:1}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 .hero-btns{display:flex;gap:.85rem;flex-wrap:wrap;margin-bottom:3rem;}
 .hero-stats{display:flex;gap:2.8rem;padding-top:2.2rem;border-top:1px solid var(--line);flex-wrap:wrap;}
-.hs-num{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;color:var(--g5);line-height:1;letter-spacing:-.02em;}
+.hs-num{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;color:var(--ink);line-height:1;letter-spacing:-.02em;}
 .hs-lbl{font-size:.65rem;font-weight:500;color:var(--ink3);margin-top:5px;letter-spacing:.03em;}
 .hero-chips{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.6rem;}
-.hero-chip{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink3);border:1px solid var(--line);padding:4px 11px;border-radius:40px;}
-.hero-chip.hi{border-color:rgba(74,140,78,.3);color:var(--g5);background:rgba(74,140,78,.06);}
+.hero-chip{
+  font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink3);
+  border:1px solid var(--line);padding:4px 11px;border-radius:40px;
+  background:rgba(248,247,245,.7);
+  backdrop-filter:blur(8px);
+}
+.hero-chip.hi{
+  border-color:rgba(26,25,23,.14);color:var(--ink2);
+  background:rgba(255,253,248,.8);
+  backdrop-filter:blur(8px);
+}
 
 /* ═══════════════════════════════════════
    PROBLEMA
@@ -193,26 +245,39 @@ body::before{
 #problema{background:var(--bg2);}
 .prob-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-top:2.8rem;
+  gap:1px;background:rgba(26,25,23,.06);
+  border:1px solid rgba(26,25,23,.07);border-radius:var(--r-lg);overflow:hidden;margin-top:2.8rem;
 }
-.prob-card{background:var(--bg2);padding:2.2rem 1.8rem;transition:background .3s;}
-.prob-card:hover{background:var(--bg3);}
-.prob-n{font-family:'Fraunces',serif;font-size:4rem;font-weight:300;color:rgba(74,140,78,.07);line-height:1;margin-bottom:.4rem;}
+.prob-card{
+  background:rgba(248,247,245,.75);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  padding:2.2rem 1.8rem;transition:background .3s;
+}
+.prob-card:hover{background:rgba(255,253,250,.9);}
+.prob-n{font-family:'Fraunces',serif;font-size:4rem;font-weight:300;color:rgba(26,25,23,.04);line-height:1;margin-bottom:.4rem;}
 .prob-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;}
 .prob-t{font-family:'Fraunces',serif;font-size:1rem;font-weight:400;margin-bottom:.5rem;color:var(--ink);}
 .prob-b{font-size:.81rem;color:var(--ink2);line-height:1.76;}
 
 /* compare table */
-.cmp-wrap{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:1.8rem;}
+.cmp-wrap{
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:1.8rem;
+  background:rgba(255,254,252,.7);
+  backdrop-filter:blur(16px);
+}
 .cmp-scroll{overflow-x:auto;}
 .cmp{width:100%;border-collapse:collapse;min-width:480px;}
-.cmp th{font-family:'DM Mono',monospace;font-size:.57rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--g5);background:var(--bg3);padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);}
+.cmp th{
+  font-family:'DM Mono',monospace;font-size:.57rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink3);background:rgba(237,236,234,.8);
+  padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);opacity:.9;
+}
 .cmp td{font-size:.8rem;color:var(--ink2);padding:10px 14px;border-bottom:1px solid var(--line2);vertical-align:top;}
 .cmp tr:last-child td{border-bottom:none;}
-.cmp tr:hover td{background:rgba(74,140,78,.03);}
-.bad {color:#A06060;font-family:'DM Mono',monospace;font-size:.7rem;}
-.good{color:var(--g5);font-family:'DM Mono',monospace;font-size:.7rem;}
+.cmp tr:hover td{background:rgba(26,25,23,.02);}
+.bad {color:var(--ink3);font-family:'DM Mono',monospace;font-size:.7rem;}
+.good{color:var(--ink);font-weight:600;font-family:'DM Mono',monospace;font-size:.7rem;}
 
 /* ═══════════════════════════════════════
    CINCO PILARES
@@ -221,43 +286,52 @@ body::before{
 .pilares-intro{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;margin-bottom:3.5rem;}
 .pilares-grid{
   display:grid;grid-template-columns:repeat(5,1fr);
-  gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
+  gap:1px;background:rgba(26,25,23,.06);
+  border:1px solid rgba(26,25,23,.07);border-radius:var(--r-lg);overflow:hidden;
 }
-.pilar{background:var(--bg2);padding:1.7rem 1.3rem;display:flex;flex-direction:column;gap:.6rem;transition:background .3s;}
-.pilar:hover{background:var(--bg3);}
-.pilar.new{border-top:1.5px solid var(--g);}
-.pilar.uniq{border-top:1.5px solid var(--amber);}
+.pilar{
+  background:rgba(248,247,245,.8);
+  backdrop-filter:blur(16px);
+  padding:1.7rem 1.3rem;display:flex;flex-direction:column;gap:.6rem;transition:background .3s;
+}
+.pilar:hover{background:rgba(255,253,250,.95);}
+.pilar.new{border-top:1.5px solid rgba(26,25,23,.18);}
+.pilar.uniq{border-top:1.5px solid rgba(156,144,128,.45);}
 .pilar-num{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink4);margin-bottom:.1rem;}
 .pilar-ico{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:.4rem;}
 .pilar-t{font-family:'Fraunces',serif;font-size:.9rem;font-weight:400;color:var(--ink);line-height:1.3;}
 .pilar-d{font-size:.76rem;color:var(--ink3);line-height:1.65;}
 .pilar-tag{font-size:.58rem;font-weight:500;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:40px;display:inline-block;margin-top:auto;}
 .tag-base{color:var(--ink4);border:1px solid var(--line);}
-.tag-new {color:var(--g5);background:rgba(74,140,78,.08);border:1px solid rgba(74,140,78,.2);}
-.tag-uniq{color:var(--amber2);background:rgba(176,120,48,.08);border:1px solid rgba(176,120,48,.2);}
+.tag-new {color:var(--ink2);background:rgba(26,25,23,.05);border:1px solid rgba(26,25,23,.12);}
+.tag-uniq{color:var(--amber);background:rgba(156,144,128,.07);border:1px solid rgba(156,144,128,.2);}
 
 /* ═══════════════════════════════════════
    FLUJO
 ═══════════════════════════════════════ */
 #flujo{background:var(--bg2);}
-.flow-wrap{display:flex;gap:0;margin-top:2.8rem;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;}
+.flow-wrap{
+  display:flex;gap:0;margin-top:2.8rem;
+  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
+  backdrop-filter:blur(12px);
+}
 .flow-step{
-  flex:1;padding:1.6rem 1.3rem;background:var(--bg3);
+  flex:1;padding:1.6rem 1.3rem;
+  background:rgba(243,242,239,.7);
   display:flex;flex-direction:column;gap:.5rem;
   border-right:1px solid var(--line);
   transition:background .3s;
 }
 .flow-step:last-child{border-right:none;}
-.flow-step:hover{background:var(--bg4);}
-.flow-step.hi{background:rgba(74,140,78,.05);}
-.flow-step.hi:hover{background:rgba(74,140,78,.09);}
+.flow-step:hover{background:rgba(255,254,252,.9);}
+.flow-step.hi{background:rgba(248,246,240,.75);}
+.flow-step.hi:hover{background:rgba(255,253,248,.95);}
 .flow-num{font-family:'DM Mono',monospace;font-size:.57rem;color:var(--ink4);}
 .flow-name{font-family:'Fraunces',serif;font-size:.92rem;font-weight:400;color:var(--ink);line-height:1.25;}
 .flow-sub{font-size:.74rem;color:var(--ink3);line-height:1.55;}
 .flow-chip{font-family:'DM Mono',monospace;font-size:.57rem;padding:3px 8px;border-radius:40px;display:inline-block;margin-top:5px;}
-.chip-g{background:rgba(74,140,78,.1);color:var(--g5);}
-.chip-a{background:rgba(176,120,48,.1);color:var(--amber2);}
+.chip-g{background:rgba(26,25,23,.07);color:var(--ink2);}
+.chip-a{background:rgba(156,144,128,.1);color:var(--amber);}
 
 /* ═══════════════════════════════════════
    MICROSERVICIOS
@@ -266,7 +340,11 @@ body::before{
 .sol-row{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:center;margin-bottom:5.5rem;padding-bottom:5.5rem;border-bottom:1px solid var(--line);}
 .sol-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
 .sol-vis{
-  aspect-ratio:1;background:var(--bg2);border-radius:var(--r-lg);
+  aspect-ratio:1;
+  background:rgba(243,242,239,.6);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-radius:var(--r-lg);
   border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
   overflow:hidden;position:relative;
 }
@@ -275,46 +353,62 @@ body::before{
   font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
   padding:5px 12px;border-radius:40px;margin-bottom:1.2rem;
 }
-.badge-g{background:rgba(74,140,78,.1);color:var(--g5);border:1px solid rgba(74,140,78,.2);}
-.badge-e{background:rgba(122,84,56,.1);color:#C09870;border:1px solid rgba(122,84,56,.2);}
-.badge-m{background:rgba(74,140,78,.06);color:var(--g);border:1px solid var(--line);}
-.badge-alert{background:rgba(176,120,48,.09);color:var(--amber2);border:1px solid rgba(176,120,48,.2);}
-.badge-econ{background:rgba(74,140,78,.06);color:var(--g5);border:1px solid rgba(74,140,78,.18);}
+.badge-g{background:rgba(26,25,23,.06);color:var(--ink2);border:1px solid rgba(26,25,23,.1);}
+.badge-e{background:rgba(156,144,128,.08);color:var(--amber);border:1px solid rgba(156,144,128,.18);}
+.badge-m{background:rgba(26,25,23,.05);color:var(--ink3);border:1px solid var(--line);}
+.badge-alert{background:rgba(156,144,128,.07);color:var(--amber);border:1px solid rgba(156,144,128,.18);}
+.badge-econ{background:rgba(26,25,23,.05);color:var(--ink2);border:1px solid rgba(26,25,23,.09);}
 .tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.3rem;}
-.tag{font-size:.62rem;font-weight:500;font-family:'DM Mono',monospace;color:var(--ink4);background:rgba(232,228,220,.04);border:1px solid var(--line);border-radius:40px;padding:3px 10px;}
+.tag{
+  font-size:.62rem;font-weight:500;font-family:'DM Mono',monospace;
+  color:var(--ink3);background:rgba(26,25,23,.04);
+  border:1px solid var(--line);border-radius:40px;padding:3px 10px;
+}
 
 /* ═══════════════════════════════════════
    ALERTAS
 ═══════════════════════════════════════ */
 #alertas{background:var(--bg2);}
-.alert-demo{background:var(--bg3);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;}
+.alert-demo{
+  background:rgba(248,247,245,.75);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
+  box-shadow:0 4px 32px rgba(26,25,23,.05);
+}
 .alert-demo-header{
   padding:1.2rem 1.8rem;border-bottom:1px solid var(--line);
   display:flex;align-items:center;justify-content:space-between;
+  background:rgba(237,236,234,.6);
 }
-.alert-demo-title{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--g5);}
+.alert-demo-title{font-family:'DM Mono',monospace;font-size:.66rem;color:var(--ink2);opacity:.9;}
 .alert-status{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink3);}
-.sdot{width:5px;height:5px;border-radius:50%;background:var(--g);animation:blink 2.5s ease-in-out infinite;}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--ink3);animation:blink 3s ease-in-out infinite;}
 .alert-demo-body{padding:1.8rem;display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;}
 /* Calendar */
-.cal-header{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink4);margin-bottom:.7rem;}
+.cal-header{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink3);margin-bottom:.7rem;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
 .cal-day-lbl{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--ink4);text-align:center;padding-bottom:4px;}
 .cal-d{
   aspect-ratio:1;border-radius:5px;display:flex;align-items:center;justify-content:center;
   font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink3);
 }
-.cal-d.act{background:rgba(74,140,78,.14);color:var(--g5);}
-.cal-d.today{background:var(--g);color:var(--bg);font-weight:600;}
-.cal-d.alrt{background:rgba(176,120,48,.12);color:var(--amber2);}
+.cal-d.act{background:rgba(26,25,23,.08);color:var(--ink);}
+.cal-d.today{background:var(--ink);color:var(--bg);font-weight:600;}
+.cal-d.alrt{background:rgba(156,144,128,.12);color:var(--amber);}
 /* Notifications */
 .notif-list{display:flex;flex-direction:column;gap:.7rem;}
-.notif-item{display:flex;align-items:flex-start;gap:.7rem;padding:.85rem 1rem;border-radius:var(--r);border:1px solid var(--line);}
-.notif-item.pending{border-color:rgba(176,120,48,.22);background:rgba(176,120,48,.04);}
-.notif-item.active{border-color:rgba(74,140,78,.22);background:rgba(74,140,78,.04);}
-.notif-item.done{opacity:.4;}
+.notif-item{
+  display:flex;align-items:flex-start;gap:.7rem;padding:.85rem 1rem;
+  border-radius:var(--r);border:1px solid var(--line);
+  background:rgba(255,254,252,.6);
+  backdrop-filter:blur(8px);
+}
+.notif-item.pending{border-color:rgba(156,144,128,.22);background:rgba(255,252,248,.7);}
+.notif-item.active{border-color:rgba(26,25,23,.12);background:rgba(248,247,245,.8);}
+.notif-item.done{opacity:.38;}
 .nd{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;}
-.nd-g{background:var(--g);}
+.nd-g{background:var(--ink3);}
 .nd-a{background:var(--amber);}
 .nd-i{background:var(--ink4);}
 .notif-t{font-size:.76rem;font-weight:600;color:var(--ink);margin-bottom:.15rem;}
@@ -325,99 +419,131 @@ body::before{
    MÓDULO ECONÓMICO
 ═══════════════════════════════════════ */
 #economico{background:var(--bg);}
-.econ-demo{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;}
-.econ-header{padding:1.2rem 1.8rem;border-bottom:1px solid var(--line);font-family:'DM Mono',monospace;font-size:.66rem;color:var(--g5);}
+.econ-demo{
+  background:rgba(248,247,245,.75);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
+  box-shadow:0 4px 32px rgba(26,25,23,.05);
+}
+.econ-header{
+  padding:1.2rem 1.8rem;border-bottom:1px solid var(--line);
+  font-family:'DM Mono',monospace;font-size:.66rem;color:var(--ink2);opacity:.9;
+  background:rgba(237,236,234,.6);
+}
 .econ-body{padding:1.8rem;display:grid;grid-template-columns:1.1fr 1fr;gap:1.8rem;}
 .econ-options{display:flex;flex-direction:column;gap:.7rem;}
 .econ-opt-lbl{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink4);margin-bottom:.4rem;}
-.econ-opt{background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);padding:.9rem 1.1rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;transition:border-color .3s;}
-.econ-opt.bad{border-color:rgba(140,60,60,.25);background:rgba(140,60,60,.04);}
-.econ-opt.good{border-color:rgba(74,140,78,.25);background:rgba(74,140,78,.04);}
+.econ-opt{
+  background:rgba(243,242,239,.7);
+  backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:var(--r);padding:.9rem 1.1rem;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;transition:border-color .3s;
+}
+.econ-opt.bad{border-color:rgba(174,172,168,.3);background:rgba(237,236,234,.6);}
+.econ-opt.good{border-color:rgba(26,25,23,.14);background:rgba(255,254,252,.7);}
 .econ-opt-name{font-size:.78rem;color:var(--ink2);margin-bottom:.2rem;}
 .econ-opt-sub{font-size:.68rem;color:var(--ink3);}
 .econ-opt-price{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:300;line-height:1;white-space:nowrap;}
 .econ-opt-cur{font-size:.62rem;color:var(--ink3);margin-top:.15rem;text-align:right;}
-.price-bad{color:#B07070;}
-.price-good{color:var(--g5);}
+.price-bad{color:var(--ink3);}
+.price-good{color:var(--ink);}
 .econ-badge{font-family:'DM Mono',monospace;font-size:.56rem;padding:2px 7px;border-radius:40px;display:inline-block;margin-top:.2rem;}
-.eb-bad{background:rgba(140,60,60,.12);color:#B07070;}
-.eb-good{background:rgba(74,140,78,.12);color:var(--g5);}
+.eb-bad{background:rgba(174,172,168,.12);color:var(--ink3);}
+.eb-good{background:rgba(26,25,23,.07);color:var(--ink2);}
 /* bars */
 .econ-bars{margin-top:.8rem;}
 .econ-bar-lbl{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink4);margin-bottom:.6rem;}
 .ebar-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem;}
 .ebar-name{font-size:.7rem;color:var(--ink3);width:80px;flex-shrink:0;}
-.ebar-track{flex:1;height:4px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.ebar-track{flex:1;height:4px;background:rgba(26,25,23,.07);border-radius:3px;overflow:hidden;}
 .ebar-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.22,1,.36,1);}
-.ebar-fill.red{background:#7A3C3C;}
-.ebar-fill.green{background:var(--g);}
+.ebar-fill.red{background:rgba(174,172,168,.7);}
+.ebar-fill.green{background:var(--ink);}
 .ebar-fill.amber{background:var(--amber);}
 .ebar-val{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--ink3);width:46px;text-align:right;}
 /* metrics */
 .econ-metrics{display:flex;flex-direction:column;gap:.7rem;}
-.econ-metric{background:var(--bg3);border-radius:var(--r);padding:1.1rem;}
+.econ-metric{
+  background:rgba(243,242,239,.7);
+  backdrop-filter:blur(8px);
+  border-radius:var(--r);padding:1.1rem;
+  border:1px solid var(--line);
+}
 .econ-metric-lbl{font-size:.68rem;color:var(--ink3);margin-bottom:.35rem;}
-.econ-metric-val{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:300;color:var(--g5);letter-spacing:-.02em;line-height:1;}
+.econ-metric-val{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:300;color:var(--ink);letter-spacing:-.02em;line-height:1;}
 .econ-metric-sub{font-size:.65rem;color:var(--ink4);margin-top:.25rem;}
 
 /* ═══════════════════════════════════════
    COMPARATIVA
 ═══════════════════════════════════════ */
 #comparativa{background:var(--bg2);}
-.comp-wrap{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-top:2.8rem;}
+.comp-wrap{
+  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-top:2.8rem;
+  background:rgba(255,254,252,.6);
+  backdrop-filter:blur(16px);
+  box-shadow:0 2px 24px rgba(26,25,23,.04);
+}
 .comp-scroll{overflow-x:auto;}
 .comp-table{width:100%;border-collapse:collapse;min-width:560px;}
-/* Header row */
 .comp-table thead tr th{
   font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
-  background:var(--bg3);padding:11px 14px;text-align:center;border-bottom:1px solid var(--line);color:var(--ink3);
+  background:rgba(237,236,234,.8);padding:11px 14px;text-align:center;border-bottom:1px solid var(--line);color:var(--ink3);
 }
 .comp-table thead tr th:first-child{text-align:left;width:34%;}
-.comp-table thead tr th:last-child{color:var(--g5);}
-/* Category separators */
+.comp-table thead tr th:last-child{color:var(--ink);opacity:.9;}
 .comp-table tbody tr.cat-row td{
-  background:var(--bg4);
+  background:rgba(231,230,227,.7);
   font-family:'DM Mono',monospace;font-size:.56rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink4);padding:6px 14px;border-bottom:1px solid var(--line);
 }
-/* Data rows */
 .comp-table tbody tr.data-row td{
   font-size:.79rem;color:var(--ink2);padding:10px 14px;border-bottom:1px solid var(--line2);text-align:center;
 }
 .comp-table tbody tr.data-row td:first-child{text-align:left;color:var(--ink2);}
 .comp-table tbody tr.data-row:last-child td{border-bottom:none;}
-.comp-table tbody tr.data-row:hover td{background:rgba(74,140,78,.025);}
-/* Our column highlight */
+.comp-table tbody tr.data-row:hover td{background:rgba(26,25,23,.02);}
 .comp-table tbody tr.data-row td.ours{
-  background:rgba(74,140,78,.06);border-left:1px solid rgba(74,140,78,.14);border-right:1px solid rgba(74,140,78,.14);
+  background:rgba(26,25,23,.04);border-left:1px solid rgba(26,25,23,.08);border-right:1px solid rgba(26,25,23,.08);
 }
-.comp-table thead tr th.ours{background:rgba(74,140,78,.1);border-left:1px solid rgba(74,140,78,.2);border-right:1px solid rgba(74,140,78,.2);}
-/* Indicators */
-.yes    {display:inline-block;width:18px;height:18px;border-radius:50%;background:rgba(74,140,78,.18);color:var(--g5);font-size:.68rem;line-height:18px;text-align:center;}
-.no     {display:inline-block;width:18px;height:18px;border-radius:50%;background:rgba(140,60,60,.12);color:#9A6060;font-size:.68rem;line-height:18px;text-align:center;}
-.partial{display:inline-block;width:18px;height:18px;border-radius:50%;background:rgba(176,120,48,.12);color:var(--amber2);font-size:.68rem;line-height:18px;text-align:center;}
-/* Score row at bottom */
+.comp-table thead tr th.ours{
+  background:rgba(26,25,23,.06);
+  border-left:1px solid rgba(26,25,23,.1);border-right:1px solid rgba(26,25,23,.1);
+}
+.yes    {display:inline-block;width:18px;height:18px;border-radius:50%;background:rgba(26,25,23,.1);color:var(--ink);font-size:.68rem;line-height:18px;text-align:center;}
+.no     {display:inline-block;width:18px;height:18px;border-radius:50%;background:rgba(174,172,168,.1);color:var(--ink4);font-size:.68rem;line-height:18px;text-align:center;}
+.partial{display:inline-block;width:18px;height:18px;border-radius:50%;background:rgba(156,144,128,.1);color:var(--amber);font-size:.68rem;line-height:18px;text-align:center;}
 .score-row td{
-  background:var(--bg4);padding:10px 14px;text-align:center;
+  background:rgba(231,230,227,.7);padding:10px 14px;text-align:center;
   font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;color:var(--ink3);
 }
 .score-row td:first-child{text-align:left;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);}
-.score-row td.ours{color:var(--g5);background:rgba(74,140,78,.08);}
+.score-row td.ours{color:var(--ink);background:rgba(26,25,23,.05);}
 
 /* ═══════════════════════════════════════
    ARQUITECTURA
 ═══════════════════════════════════════ */
 #arquitectura{background:var(--bg);}
-.arch-box{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-lg);padding:2.2rem;margin-top:2.8rem;}
+.arch-box{
+  background:rgba(248,247,245,.7);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--line);border-radius:var(--r-lg);padding:2.2rem;margin-top:2.8rem;
+  box-shadow:0 4px 40px rgba(26,25,23,.04);
+}
 .arch-lbl{font-family:'DM Mono',monospace;font-size:.56rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:.7rem;}
 .arch-row{display:grid;gap:.7rem;margin-bottom:.9rem;}
 .arch-3{grid-template-columns:repeat(3,1fr);}
 .arch-4{grid-template-columns:repeat(4,1fr);}
 .arch-2{grid-template-columns:repeat(2,1fr);}
-.arch-nd{background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);padding:.9rem 1.1rem;transition:border-color .25s,background .25s;}
-.arch-nd:hover{border-color:rgba(74,140,78,.25);background:var(--bg4);}
-.arch-nd.g{border-color:rgba(74,140,78,.18);background:rgba(74,140,78,.04);}
-.arch-nd.hi{border-color:rgba(176,120,48,.18);background:rgba(176,120,48,.04);}
+.arch-nd{
+  background:rgba(243,242,239,.8);
+  backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:var(--r);padding:.9rem 1.1rem;transition:border-color .25s,background .25s;
+}
+.arch-nd:hover{border-color:rgba(26,25,23,.16);background:rgba(255,254,252,.9);}
+.arch-nd.g{border-color:rgba(26,25,23,.1);background:rgba(248,246,242,.8);}
+.arch-nd.hi{border-color:rgba(156,144,128,.2);background:rgba(252,250,246,.8);}
 .arch-nd-t{font-size:.76rem;font-weight:600;color:var(--ink);margin-bottom:.2rem;display:flex;align-items:center;gap:5px;}
 .arch-nd-s{font-size:.65rem;color:var(--ink3);line-height:1.5;}
 .arch-arr{display:flex;justify-content:center;margin:.25rem 0;}
@@ -427,20 +553,25 @@ body::before{
 ═══════════════════════════════════════ */
 #alcances{background:var(--bg2);}
 .alc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:2.8rem;}
-.alc-card{border:1px solid var(--line);border-radius:var(--r);padding:1.6rem;background:var(--bg3);transition:border-color .3s,transform .3s;}
-.alc-card:hover{border-color:rgba(74,140,78,.22);transform:translateY(-2px);}
-.alc-ico{width:32px;height:32px;border-radius:7px;background:rgba(74,140,78,.07);display:flex;align-items:center;justify-content:center;margin-bottom:.85rem;}
+.alc-card{
+  border:1px solid var(--line);border-radius:var(--r);padding:1.6rem;
+  background:rgba(248,247,245,.7);
+  backdrop-filter:blur(16px);
+  transition:border-color .3s,transform .3s,box-shadow .3s;
+}
+.alc-card:hover{border-color:rgba(26,25,23,.16);transform:translateY(-2px);box-shadow:0 8px 28px rgba(26,25,23,.06);}
+.alc-ico{width:32px;height:32px;border-radius:7px;background:rgba(26,25,23,.05);display:flex;align-items:center;justify-content:center;margin-bottom:.85rem;border:1px solid var(--line);}
 .alc-t{font-family:'Fraunces',serif;font-size:.95rem;font-weight:400;margin-bottom:.4rem;color:var(--ink);}
 .alc-b{font-size:.79rem;color:var(--ink2);line-height:1.72;}
-.lim{border:1px solid rgba(140,60,60,.18);border-radius:var(--r);background:var(--bg3);grid-column:1/-1;overflow:hidden;}
+.lim{border:1px solid rgba(174,172,168,.25);border-radius:var(--r);background:rgba(243,242,239,.7);backdrop-filter:blur(12px);grid-column:1/-1;overflow:hidden;}
 .lim-head{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;cursor:pointer;}
-.lim-title{display:flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#A07070;}
+.lim-title{display:flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);}
 .lim-chev{transition:transform .3s;flex-shrink:0;}
 .lim-body{max-height:0;overflow:hidden;transition:max-height .42s ease;}
 .lim-body.o{max-height:600px;}
 .lim-inner{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;padding:0 1.5rem 1.5rem;}
 .lim-item{display:flex;gap:.7rem;}
-.lim-bar{width:2px;border-radius:2px;background:#7A3C3C;flex-shrink:0;}
+.lim-bar{width:2px;border-radius:2px;background:rgba(174,172,168,.5);flex-shrink:0;}
 .lim-t{font-size:.76rem;font-weight:600;color:var(--ink);margin-bottom:.2rem;}
 .lim-b{font-size:.75rem;color:var(--ink2);line-height:1.62;}
 
@@ -449,79 +580,96 @@ body::before{
 ═══════════════════════════════════════ */
 #usuarios{background:var(--bg);}
 .usr-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:2.8rem;}
-.usr-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-lg);padding:2.2rem 1.8rem;transition:border-color .3s,transform .3s;}
-.usr-card:hover{border-color:rgba(74,140,78,.2);transform:translateY(-2px);}
-.usr-role{font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;color:var(--g);margin-bottom:.5rem;letter-spacing:.04em;}
+.usr-card{
+  background:rgba(248,247,245,.75);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--line);border-radius:var(--r-lg);padding:2.2rem 1.8rem;
+  transition:border-color .3s,transform .3s,box-shadow .3s;
+  box-shadow:0 2px 20px rgba(26,25,23,.03);
+}
+.usr-card:hover{border-color:rgba(26,25,23,.14);transform:translateY(-2px);box-shadow:0 12px 40px rgba(26,25,23,.07);}
+.usr-role{font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;color:var(--ink3);margin-bottom:.5rem;letter-spacing:.04em;opacity:.85;}
 .usr-t{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.5rem;color:var(--ink);}
 .usr-desc{font-size:.83rem;color:var(--ink2);line-height:1.76;margin-bottom:1.3rem;}
-.usr-ico-wrap{width:48px;height:48px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:1.3rem;}
-.usr-acc{background:var(--bg3);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1.1rem;}
+.usr-ico-wrap{width:48px;height:48px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:1.3rem;border:1px solid var(--line);}
+.usr-acc{background:rgba(237,236,234,.7);backdrop-filter:blur(8px);border-radius:var(--r);padding:.9rem 1.1rem;margin-bottom:1.1rem;border:1px solid var(--line);}
 .usr-acc-lbl{font-family:'DM Mono',monospace;font-size:.54rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:.55rem;}
 .usr-chips{display:flex;flex-direction:column;gap:.38rem;}
 .usr-chip{display:flex;align-items:flex-start;gap:.45rem;font-size:.78rem;color:var(--ink2);}
-.usr-dot{width:4px;height:4px;border-radius:50%;background:var(--g3);flex-shrink:0;margin-top:6px;}
+.usr-dot{width:4px;height:4px;border-radius:50%;background:var(--ink4);flex-shrink:0;margin-top:6px;}
 
 /* ═══════════════════════════════════════
-   MONETIZACIÓN — 2 planes limpios
+   MONETIZACIÓN
 ═══════════════════════════════════════ */
 #monetizacion{background:var(--bg2);}
 .plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2.5rem;}
 .plan{
-  background:var(--bg3);border:1px solid var(--line);
+  background:rgba(248,247,245,.75);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--line);
   border-radius:var(--r-lg);padding:2.2rem 2rem;
   display:flex;flex-direction:column;gap:1.1rem;
-  transition:border-color .3s;
+  transition:border-color .3s,box-shadow .3s;
 }
-.plan:hover{border-color:rgba(74,140,78,.2);}
+.plan:hover{border-color:rgba(26,25,23,.14);box-shadow:0 8px 32px rgba(26,25,23,.06);}
 .plan.feat{
-  border-color:rgba(74,140,78,.35);
-  background:rgba(74,140,78,.05);
+  border-color:rgba(26,25,23,.14);
+  background:rgba(255,254,252,.8);
   position:relative;
 }
 .plan-badge{
   position:absolute;top:-1px;left:50%;transform:translateX(-50%);
   font-family:'DM Mono',monospace;font-size:.54rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
-  background:var(--g);color:var(--bg);padding:4px 16px;border-radius:0 0 8px 8px;white-space:nowrap;
+  background:var(--ink);color:var(--bg);padding:4px 16px;border-radius:0 0 8px 8px;white-space:nowrap;
 }
-.plan-seg{font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--g5);margin-bottom:.3rem;}
+.plan-seg{font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:.3rem;opacity:.85;}
 .plan-who{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;color:var(--ink);line-height:1.15;}
 .plan-tagline{font-size:.78rem;color:var(--ink3);line-height:1.6;}
-/* Value proposition */
-.plan-value{background:var(--bg4);border-radius:var(--r);padding:1.1rem 1.2rem;}
+.plan-value{background:rgba(237,236,234,.7);backdrop-filter:blur(8px);border-radius:var(--r);padding:1.1rem 1.2rem;border:1px solid var(--line);}
 .plan-value-lbl{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--ink4);letter-spacing:.09em;text-transform:uppercase;margin-bottom:.5rem;}
-.plan-price{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;color:var(--g5);line-height:1;margin-bottom:.25rem;}
+.plan-price{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;color:var(--ink);line-height:1;margin-bottom:.25rem;}
 .plan-price-sub{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink4);}
-/* ROI callout */
 .plan-roi{
-  background:rgba(74,140,78,.06);border:1px solid rgba(74,140,78,.15);
+  background:rgba(248,246,242,.6);border:1px solid rgba(156,144,128,.15);
   border-radius:var(--r);padding:.85rem 1rem;
+  backdrop-filter:blur(8px);
 }
 .plan-roi-lbl{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--ink4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;}
-.plan-roi-val{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:300;color:var(--g5);margin-bottom:.2rem;}
+.plan-roi-val{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:300;color:var(--ink2);margin-bottom:.2rem;}
 .plan-roi-sub{font-size:.72rem;color:var(--ink3);}
-/* Features */
 .plan-features{list-style:none;display:flex;flex-direction:column;gap:.45rem;}
 .plan-feat{display:flex;align-items:flex-start;gap:.5rem;font-size:.77rem;color:var(--ink3);}
 .pf-icon{flex-shrink:0;margin-top:2px;}
 
-/* Segments table */
-.segs-wrap{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:1.8rem;}
+.segs-wrap{
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:1.8rem;
+  background:rgba(255,254,252,.6);backdrop-filter:blur(12px);
+}
 .segs-scroll{overflow-x:auto;}
 .segs{width:100%;border-collapse:collapse;min-width:420px;}
-.segs th{font-family:'DM Mono',monospace;font-size:.57rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--g5);background:var(--bg4);padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);}
+.segs th{font-family:'DM Mono',monospace;font-size:.57rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);background:rgba(237,236,234,.8);padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);opacity:.85;}
 .segs td{font-size:.79rem;color:var(--ink3);padding:10px 14px;border-bottom:1px solid var(--line2);}
 .segs tr:last-child td{border-bottom:none;}
 .segs td strong{color:var(--ink2);font-weight:600;}
-.segs-tag{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--g5);background:rgba(74,140,78,.09);border:1px solid rgba(74,140,78,.18);border-radius:40px;padding:2px 8px;}
+.segs-tag{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink2);background:rgba(26,25,23,.06);border:1px solid rgba(26,25,23,.1);border-radius:40px;padding:2px 8px;}
 
-.callout{border:1px solid rgba(74,140,78,.2);border-radius:var(--r);background:rgba(74,140,78,.04);padding:1.2rem 1.4rem;display:flex;align-items:flex-start;gap:.9rem;margin-top:1.4rem;}
+.callout{
+  border:1px solid rgba(26,25,23,.1);border-radius:var(--r);
+  background:rgba(248,246,242,.6);backdrop-filter:blur(12px);
+  padding:1.2rem 1.4rem;display:flex;align-items:flex-start;gap:.9rem;margin-top:1.4rem;
+}
 .callout-t{font-size:.81rem;color:var(--ink3);line-height:1.76;}
-.callout-t strong{color:var(--g5);font-weight:600;}
+.callout-t strong{color:var(--ink2);font-weight:600;}
 
 /* ═══════════════════════════════════════
    FOOTER
 ═══════════════════════════════════════ */
-footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem;position:relative;z-index:1;}
+footer{
+  background:rgba(237,236,234,.8);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--line);padding:3.5rem 4rem;position:relative;z-index:1;
+}
 .ft-inner{max-width:1000px;margin:0 auto;}
 .ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.8rem;margin-bottom:2.5rem;}
 .ft-brand{font-family:'Fraunces',serif;font-size:1rem;font-weight:300;color:var(--ink);margin-bottom:.45rem;}
@@ -529,11 +677,11 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
 .ft-col-t{font-family:'DM Mono',monospace;font-size:.56rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:.9rem;}
 .ft-links{display:flex;flex-direction:column;gap:.55rem;}
 .ft-a{font-size:.75rem;color:var(--ink4);transition:color .2s;}
-.ft-a:hover{color:var(--g5);}
+.ft-a:hover{color:var(--ink);}
 .ft-bot{border-top:1px solid var(--line);padding-top:1.8rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
 .ft-copy{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--ink4);}
 .ft-live{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink4);}
-.live-dot{width:4px;height:4px;border-radius:50%;background:var(--g);animation:blink 2.5s ease-in-out infinite;}
+.live-dot{width:4px;height:4px;border-radius:50%;background:var(--ink3);animation:blink 3s ease-in-out infinite;}
 
 /* ═══════════════════════════════════════
    RESPONSIVE
@@ -577,10 +725,10 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
   <a href="#" class="nav-brand">
     <div class="nav-mark">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <ellipse cx="7" cy="9" rx="4" ry="2.6" fill="rgba(12,14,11,.88)"/>
-        <line x1="7" y1="9" x2="7" y2="4" stroke="rgba(12,14,11,.55)" stroke-width="1" stroke-linecap="round"/>
-        <path d="M7 6C8.3 4.6 10 4.5 11 5.8" stroke="rgba(12,14,11,.5)" stroke-width=".85" stroke-linecap="round" fill="none"/>
-        <path d="M7 6C5.7 4.6 4 4.5 3 5.8" stroke="rgba(12,14,11,.5)" stroke-width=".85" stroke-linecap="round" fill="none"/>
+        <ellipse cx="7" cy="9" rx="4" ry="2.6" fill="rgba(26,25,23,.55)"/>
+        <line x1="7" y1="9" x2="7" y2="4" stroke="rgba(26,25,23,.35)" stroke-width="1" stroke-linecap="round"/>
+        <path d="M7 6C8.3 4.6 10 4.5 11 5.8" stroke="rgba(26,25,23,.3)" stroke-width=".85" stroke-linecap="round" fill="none"/>
+        <path d="M7 6C5.7 4.6 4 4.5 3 5.8" stroke="rgba(26,25,23,.3)" stroke-width=".85" stroke-linecap="round" fill="none"/>
       </svg>
     </div>
     <span class="nav-name">AgroGraph-MAS</span>
@@ -661,24 +809,24 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
     <div class="prob-grid rv d3">
       <div class="prob-card">
         <div class="prob-n">01</div>
-        <div class="prob-ico" style="background:rgba(140,60,60,.1);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A07070" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div class="prob-ico" style="background:rgba(174,172,168,.12);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
         <h3 class="prob-t">Conectividad inexistente</h3>
         <p class="prob-b">El 60% de zonas rurales carece de cobertura 3G. Las plataformas cloud son inoperables en campo. El agricultor no puede acceder a diagnósticos remotos.</p>
       </div>
       <div class="prob-card">
         <div class="prob-n">02</div>
-        <div class="prob-ico" style="background:rgba(122,84,56,.1);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A08060" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="prob-ico" style="background:rgba(156,144,128,.1);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <h3 class="prob-t">Escasez de especialistas</h3>
         <p class="prob-b">Menos del 5% de parcelas recibe visita de agrónomo certificado al año. Imposible escalar la asesoría presencial a 470M de productores.</p>
       </div>
       <div class="prob-card">
         <div class="prob-n">03</div>
-        <div class="prob-ico" style="background:rgba(74,140,78,.08);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g3)" stroke-width="1.8" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <div class="prob-ico" style="background:rgba(26,25,23,.05);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
         <h3 class="prob-t">Tratamientos incompletos</h3>
         <p class="prob-b">Sin seguimiento, el productor abandona los protocolos a mitad. Fungicidas mal aplicados, dosis incorrectas, fechas equivocadas — el problema regresa y se agrava.</p>
@@ -724,8 +872,8 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
     <div class="pilares-grid rv d3">
       <div class="pilar">
         <div class="pilar-num">01 — núcleo</div>
-        <div class="pilar-ico" style="background:rgba(74,140,78,.09);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <div class="pilar-ico" style="background:rgba(26,25,23,.05);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
         </div>
         <p class="pilar-t">Diagnóstico CNN</p>
         <p class="pilar-d">Foto a enfermedad identificada. 10+ cultivos, 40+ patologías. Funciona sin conexión.</p>
@@ -733,8 +881,8 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
       </div>
       <div class="pilar">
         <div class="pilar-num">02 — núcleo</div>
-        <div class="pilar-ico" style="background:rgba(74,140,78,.09);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.7" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div class="pilar-ico" style="background:rgba(26,25,23,.05);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.7" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
         <p class="pilar-t">LLM agronómico</p>
         <p class="pilar-d">Recomendación en español simple, contextualizada por cultivo, región y etapa fenológica.</p>
@@ -742,8 +890,8 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
       </div>
       <div class="pilar new">
         <div class="pilar-num">03 — diferenciador</div>
-        <div class="pilar-ico" style="background:rgba(74,140,78,.13);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g5)" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <div class="pilar-ico" style="background:rgba(26,25,23,.07);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </div>
         <p class="pilar-t">Alertas y seguimiento</p>
         <p class="pilar-d">Calendario automático de tratamiento. Recordatorios móviles. El sistema acompaña, no abandona.</p>
@@ -751,8 +899,8 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
       </div>
       <div class="pilar new">
         <div class="pilar-num">04 — diferenciador</div>
-        <div class="pilar-ico" style="background:rgba(74,140,78,.13);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--g5)" stroke-width="1.7" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>
+        <div class="pilar-ico" style="background:rgba(26,25,23,.07);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="1.7" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>
         </div>
         <p class="pilar-t">Optimización económica</p>
         <p class="pilar-d">Costo vs pérdida estimada. Alternativas más baratas. Decisión financiera antes de actuar.</p>
@@ -760,8 +908,8 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
       </div>
       <div class="pilar uniq">
         <div class="pilar-num">05 — único</div>
-        <div class="pilar-ico" style="background:rgba(176,120,48,.1);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber2)" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="5" r="3"/><circle cx="4" cy="19" r="3"/><circle cx="20" cy="19" r="3"/><line x1="12" y1="8" x2="4" y2="16"/><line x1="12" y1="8" x2="20" y2="16"/></svg>
+        <div class="pilar-ico" style="background:rgba(156,144,128,.08);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="5" r="3"/><circle cx="4" cy="19" r="3"/><circle cx="20" cy="19" r="3"/><line x1="12" y1="8" x2="4" y2="16"/><line x1="12" y1="8" x2="20" y2="16"/></svg>
         </div>
         <p class="pilar-t">Inteligencia regional</p>
         <p class="pilar-d">Mapa epidemiológico colectivo. Alertas preventivas a productores cercanos. Trazabilidad exportable.</p>
@@ -796,13 +944,13 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
         <span class="flow-chip chip-g">LLM</span>
       </div>
       <div class="flow-step hi">
-        <span class="flow-num" style="color:var(--g5);">paso 03 ★</span>
+        <span class="flow-num" style="color:var(--ink2);opacity:.8;">paso 03 ★</span>
         <p class="flow-name">Análisis económico</p>
         <p class="flow-sub">Costo de intervención vs pérdida estimada. Alternativa más barata si existe.</p>
         <span class="flow-chip chip-a">Motor econ.</span>
       </div>
       <div class="flow-step hi">
-        <span class="flow-num" style="color:var(--g5);">paso 04 ★</span>
+        <span class="flow-num" style="color:var(--ink2);opacity:.8;">paso 04 ★</span>
         <p class="flow-name">Calendario automático</p>
         <p class="flow-sub">Fechas, recordatorios móviles y registro de cumplimiento generados automáticamente.</p>
         <span class="flow-chip chip-a">Alertas</span>
@@ -825,224 +973,129 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
     <div class="t-label rv">04 — Microservicios de IA</div>
     <h2 class="t-h2 rv d1" style="max-width:480px;">Tres modelos de IA<br/><em>en contenedores independientes</em></h2>
 
-    <!-- MS1 -->
     <style>
 /* ── Visual CNN pipeline ── */
 .cnn-vis{
-  background:var(--bg2);
-  border:1px solid var(--line);
-  border-radius:var(--r-lg);
-  padding:1.6rem 1.4rem;
-  display:flex;
-  flex-direction:column;
-  gap:0;
-  position:relative;
-  overflow:hidden;
+  background:rgba(243,242,239,.75);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:1.6rem 1.4rem;display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;
+  box-shadow:0 4px 32px rgba(26,25,23,.04);
 }
 .cnn-vis-header{
-  font-family:'DM Mono',monospace;
-  font-size:.56rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink4);margin-bottom:1.2rem;
-  display:flex;align-items:center;justify-content:space-between;
+  font-family:'DM Mono',monospace;font-size:.56rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink4);margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;
 }
-.cnn-vis-header span{
-  display:flex;align-items:center;gap:5px;
-}
-.cnn-live-dot{
-  width:5px;height:5px;border-radius:50%;background:var(--g);
-  animation:blink 2.5s ease-in-out infinite;
-}
-.cnn-pipeline{
-  display:flex;align-items:center;gap:0;
-  margin-bottom:1.2rem;
-}
-.cnn-stage{
-  display:flex;flex-direction:column;align-items:center;gap:.45rem;
-  flex:1;
-}
+.cnn-vis-header span{display:flex;align-items:center;gap:5px;}
+.cnn-live-dot{width:5px;height:5px;border-radius:50%;background:var(--ink3);animation:blink 3s ease-in-out infinite;}
+.cnn-pipeline{display:flex;align-items:center;gap:0;margin-bottom:1.2rem;}
+.cnn-stage{display:flex;flex-direction:column;align-items:center;gap:.45rem;flex:1;}
 .cnn-stage-box{
-  width:100%;border-radius:6px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:.65rem .4rem;gap:.3rem;
-  border:1px solid var(--line);
-  background:var(--bg3);
-  transition:border-color .25s;
+  width:100%;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:.65rem .4rem;gap:.3rem;border:1px solid var(--line);
+  background:rgba(248,247,245,.8);transition:border-color .25s;
 }
-.cnn-stage-box:hover{border-color:rgba(74,140,78,.28);}
-.cnn-stage-box.inp{background:rgba(74,140,78,.05);border-color:rgba(74,140,78,.15);}
-.cnn-stage-box.out{background:rgba(74,140,78,.07);border-color:rgba(74,140,78,.22);}
-.cnn-stage-lbl{
-  font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink4);
-  text-align:center;line-height:1.4;
-}
-.cnn-arrow{
-  flex-shrink:0;padding:0 3px;
-  display:flex;align-items:center;
-}
-.fmap{
-  display:grid;grid-template-columns:repeat(4,7px);
-  grid-template-rows:repeat(4,7px);gap:1px;
-}
+.cnn-stage-box:hover{border-color:rgba(26,25,23,.16);}
+.cnn-stage-box.inp{background:rgba(252,250,246,.85);border-color:rgba(26,25,23,.1);}
+.cnn-stage-box.out{background:rgba(255,254,252,.85);border-color:rgba(26,25,23,.12);}
+.cnn-stage-lbl{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink4);text-align:center;line-height:1.4;}
+.cnn-arrow{flex-shrink:0;padding:0 3px;display:flex;align-items:center;}
+.fmap{display:grid;grid-template-columns:repeat(4,7px);grid-template-rows:repeat(4,7px);gap:1px;}
 .fmap-cell{border-radius:1px;}
-.cnn-output-bars{
-  display:flex;flex-direction:column;gap:.45rem;
-  width:100%;padding:.2rem 0;
-}
-.cnn-bar-row{
-  display:flex;align-items:center;gap:.5rem;
-}
-.cnn-bar-name{
-  font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink3);
-  width:72px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.cnn-bar-track{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.cnn-output-bars{display:flex;flex-direction:column;gap:.45rem;width:100%;padding:.2rem 0;}
+.cnn-bar-row{display:flex;align-items:center;gap:.5rem;}
+.cnn-bar-name{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink3);width:72px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cnn-bar-track{flex:1;height:4px;background:rgba(26,25,23,.07);border-radius:2px;overflow:hidden;}
 .cnn-bar-fill{height:100%;border-radius:2px;}
 .cnn-bar-val{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink3);width:28px;text-align:right;flex-shrink:0;}
-.cnn-bar-fill.hi {background:var(--g);}
+.cnn-bar-fill.hi {background:var(--ink);}
 .cnn-bar-fill.mid{background:var(--amber);}
 .cnn-bar-fill.lo {background:var(--ink4);}
-.cnn-stack-row{
-  display:flex;align-items:center;gap:.5rem;
-  padding:.75rem 0 0;
-  border-top:1px solid var(--line);
-  flex-wrap:wrap;
-}
-.cnn-stack-lbl{
-  font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink4);
-}
+.cnn-stack-row{display:flex;align-items:center;gap:.5rem;padding:.75rem 0 0;border-top:1px solid var(--line);flex-wrap:wrap;}
+.cnn-stack-lbl{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink4);}
 .cnn-result-chip{
   display:inline-flex;align-items:center;gap:5px;
-  background:rgba(74,140,78,.1);border:1px solid rgba(74,140,78,.22);
-  border-radius:40px;padding:3px 10px;
-  font-family:'DM Mono',monospace;font-size:.58rem;color:var(--g5);
-  white-space:nowrap;
+  background:rgba(26,25,23,.06);border:1px solid rgba(26,25,23,.1);
+  border-radius:40px;padding:3px 10px;font-family:'DM Mono',monospace;font-size:.58rem;color:var(--ink2);white-space:nowrap;
 }
-.cnn-result-dot{width:5px;height:5px;border-radius:50%;background:var(--g);}
+.cnn-result-dot{width:5px;height:5px;border-radius:50%;background:var(--ink3);}
 </style>
 
 <div class="sol-row" style="margin-top:4rem;">
-
-  <!-- VISUAL — CNN inference pipeline -->
   <div class="rvl">
     <div class="cnn-vis">
       <div class="cnn-vis-header">
         <span>Pipeline de inferencia · CNN</span>
         <span><div class="cnn-live-dot"></div>on-device · FastAPI</span>
       </div>
-
       <div class="cnn-pipeline">
-
-        <!-- Input -->
         <div class="cnn-stage">
           <div class="cnn-stage-box inp">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <rect x="3" y="3" width="22" height="22" rx="4" fill="var(--bg4)" stroke="rgba(74,140,78,.3)" stroke-width="1"/>
-              <path d="M9 20 C9 14 14 8 20 8 C20 14 16 20 9 20Z" fill="rgba(74,140,78,.35)" stroke="var(--g3)" stroke-width=".8"/>
-              <line x1="14" y1="8" x2="11" y2="19" stroke="var(--g3)" stroke-width=".7" stroke-linecap="round"/>
+              <rect x="3" y="3" width="22" height="22" rx="4" fill="var(--bg4)" stroke="rgba(26,25,23,.15)" stroke-width="1"/>
+              <path d="M9 20 C9 14 14 8 20 8 C20 14 16 20 9 20Z" fill="rgba(26,25,23,.1)" stroke="rgba(26,25,23,.2)" stroke-width=".8"/>
+              <line x1="14" y1="8" x2="11" y2="19" stroke="rgba(26,25,23,.2)" stroke-width=".7" stroke-linecap="round"/>
             </svg>
             <span class="cnn-stage-lbl">Imagen<br/>224×224</span>
           </div>
         </div>
-
-        <div class="cnn-arrow">
-          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
-        </div>
-
-        <!-- Conv 32ch -->
+        <div class="cnn-arrow"><svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg></div>
         <div class="cnn-stage">
           <div class="cnn-stage-box">
             <div class="fmap">
-              <div class="fmap-cell" style="background:rgba(74,140,78,.6)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.3)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.7)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.2)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.4)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.8)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.3)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.5)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.5)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.2)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.9)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.3)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.6)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.4)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.2)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.7)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.4)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.2)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.5)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.12)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.28)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.55)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.2)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.35)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.35)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.12)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.6)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.2)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.4)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.28)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.12)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.45)"></div>
             </div>
             <span class="cnn-stage-lbl">Conv<br/>32ch</span>
           </div>
         </div>
-
-        <div class="cnn-arrow">
-          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
-        </div>
-
-        <!-- Conv 96ch -->
+        <div class="cnn-arrow"><svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg></div>
         <div class="cnn-stage">
           <div class="cnn-stage-box">
             <div class="fmap">
-              <div class="fmap-cell" style="background:rgba(176,120,48,.7)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.4)"></div>
-              <div class="fmap-cell" style="background:rgba(176,120,48,.4)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.6)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.3)"></div>
-              <div class="fmap-cell" style="background:rgba(176,120,48,.8)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.5)"></div>
-              <div class="fmap-cell" style="background:rgba(176,120,48,.3)"></div>
-              <div class="fmap-cell" style="background:rgba(176,120,48,.5)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.7)"></div>
-              <div class="fmap-cell" style="background:rgba(176,120,48,.3)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.4)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.6)"></div>
-              <div class="fmap-cell" style="background:rgba(176,120,48,.6)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.2)"></div>
-              <div class="fmap-cell" style="background:rgba(176,120,48,.4)"></div>
+              <div class="fmap-cell" style="background:rgba(156,144,128,.5)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.25)"></div>
+              <div class="fmap-cell" style="background:rgba(156,144,128,.28)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.4)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.2)"></div><div class="fmap-cell" style="background:rgba(156,144,128,.55)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.32)"></div><div class="fmap-cell" style="background:rgba(156,144,128,.2)"></div>
+              <div class="fmap-cell" style="background:rgba(156,144,128,.35)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.45)"></div>
+              <div class="fmap-cell" style="background:rgba(156,144,128,.2)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.28)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.4)"></div><div class="fmap-cell" style="background:rgba(156,144,128,.4)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.12)"></div><div class="fmap-cell" style="background:rgba(156,144,128,.3)"></div>
             </div>
             <span class="cnn-stage-lbl">Conv<br/>96ch</span>
           </div>
         </div>
-
-        <div class="cnn-arrow">
-          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
-        </div>
-
-        <!-- MBConv B4 -->
+        <div class="cnn-arrow"><svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg></div>
         <div class="cnn-stage">
           <div class="cnn-stage-box">
             <div class="fmap">
-              <div class="fmap-cell" style="background:rgba(74,140,78,.85)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.9)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.95)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.85)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.9)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.8)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.9)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.1)"></div>
-              <div class="fmap-cell" style="background:rgba(74,140,78,.85)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.6)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.06)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.06)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.65)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.06)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.7)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.6)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.06)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.06)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.65)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.06)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.55)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.65)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.06)"></div>
+              <div class="fmap-cell" style="background:rgba(26,25,23,.06)"></div><div class="fmap-cell" style="background:rgba(26,25,23,.6)"></div>
             </div>
             <span class="cnn-stage-lbl">MBConv<br/>B4</span>
           </div>
         </div>
-
-        <div class="cnn-arrow">
-          <svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
-        </div>
-
-        <!-- Softmax output -->
+        <div class="cnn-arrow"><svg width="14" height="10" viewBox="0 0 14 10"><path d="M0 5 H11 M8 2 L11 5 L8 8" stroke="var(--ink4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg></div>
         <div class="cnn-stage">
           <div class="cnn-stage-box out">
             <div class="cnn-output-bars">
               <div class="cnn-bar-row">
                 <span class="cnn-bar-name">Tizón tardío</span>
                 <div class="cnn-bar-track"><div class="cnn-bar-fill hi" style="width:91%"></div></div>
-                <span class="cnn-bar-val" style="color:var(--g5);">91%</span>
+                <span class="cnn-bar-val" style="color:var(--ink);">91%</span>
               </div>
               <div class="cnn-bar-row">
                 <span class="cnn-bar-name">Antracnosis</span>
@@ -1058,19 +1111,11 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
             <span class="cnn-stage-lbl">Softmax<br/>output</span>
           </div>
         </div>
-
       </div>
-
-      <!-- Result chip + timing -->
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.85rem;">
-        <div class="cnn-result-chip">
-          <div class="cnn-result-dot"></div>
-          Diagnóstico: Tizón tardío · 91% confianza
-        </div>
+        <div class="cnn-result-chip"><div class="cnn-result-dot"></div>Diagnóstico: Tizón tardío · 91% confianza</div>
         <span style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--ink4);">~1.8s · Snapdragon 665</span>
       </div>
-
-      <!-- Stack pills -->
       <div class="cnn-stack-row">
         <span class="cnn-stack-lbl">Stack:</span>
         <span class="tag" style="font-size:.54rem;padding:2px 8px;">EfficientNetB4</span>
@@ -1081,8 +1126,6 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
       </div>
     </div>
   </div>
-
-  <!-- TEXT -->
   <div class="rvr">
     <div class="sol-badge badge-g">Microservicio 01 — Diagnóstico</div>
     <h3 class="t-h3">Visión por computadora fitopatológica</h3>
@@ -1106,22 +1149,14 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
       <span class="tag">REST API</span>
       <span class="tag">40+ patologías</span>
     </div>
-
-    <!-- Cultivos cubiertos -->
-    <div style="margin-top:1.4rem;padding:1.1rem 1.2rem;background:var(--bg3);border:1px solid var(--line);border-radius:var(--r);">
+    <div style="margin-top:1.4rem;padding:1.1rem 1.2rem;background:rgba(243,242,239,.7);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:var(--r);">
       <p style="font-family:'DM Mono',monospace;font-size:.56rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:.7rem;">Cultivos cubiertos</p>
       <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
-        <span class="tag">Jitomate</span>
-        <span class="tag">Maíz</span>
-        <span class="tag">Frijol</span>
-        <span class="tag">Chile</span>
-        <span class="tag">Calabaza</span>
-        <span class="tag">Papa</span>
-        <span class="tag">+ extensible</span>
+        <span class="tag">Jitomate</span><span class="tag">Maíz</span><span class="tag">Frijol</span>
+        <span class="tag">Chile</span><span class="tag">Calabaza</span><span class="tag">Papa</span><span class="tag">+ extensible</span>
       </div>
     </div>
   </div>
-
 </div>
 
     <!-- MS2 -->
@@ -1133,17 +1168,17 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
         <div class="tags"><span class="tag">LLM fine-tuned</span><span class="tag">FastAPI</span><span class="tag">Docker</span><span class="tag">CIMMYT</span><span class="tag">INIFAP</span></div>
       </div>
       <div class="rvr" style="order:1;">
-        <div class="sol-vis" style="background:var(--bg3);">
+        <div class="sol-vis" style="background:rgba(243,242,239,.7);">
           <svg width="190" height="190" viewBox="0 0 190 190" fill="none">
-            <rect x="14" y="26" width="58" height="26" rx="5" fill="none" stroke="var(--earth)" stroke-width="1" opacity=".45"/>
-            <text x="43" y="44" font-family="DM Mono" font-size="7" fill="var(--earth)" text-anchor="middle" opacity=".65">Notas campo</text>
-            <rect x="112" y="26" width="58" height="26" rx="5" fill="none" stroke="var(--earth)" stroke-width="1" opacity=".45"/>
-            <text x="141" y="44" font-family="DM Mono" font-size="7" fill="var(--earth)" text-anchor="middle" opacity=".65">Literatura</text>
-            <path d="M72 39 L112 39" stroke="var(--earth)" stroke-width=".75" stroke-dasharray="3 2" opacity=".3"/>
-            <path d="M95 52 L95 78" stroke="var(--g3)" stroke-width="1" stroke-dasharray="3 2" opacity=".45"/>
-            <rect x="45" y="78" width="100" height="38" rx="7" fill="none" stroke="var(--g)" stroke-width="1.1" opacity=".55"/>
-            <text x="95" y="102" font-family="DM Mono" font-size="7.5" fill="var(--g5)" text-anchor="middle" opacity=".85">LLM Agronómico</text>
-            <path d="M95 116 L95 142" stroke="var(--g3)" stroke-width="1" opacity=".35"/>
+            <rect x="14" y="26" width="58" height="26" rx="5" fill="none" stroke="var(--amber)" stroke-width="1" opacity=".35"/>
+            <text x="43" y="44" font-family="DM Mono" font-size="7" fill="var(--amber)" text-anchor="middle" opacity=".55">Notas campo</text>
+            <rect x="112" y="26" width="58" height="26" rx="5" fill="none" stroke="var(--amber)" stroke-width="1" opacity=".35"/>
+            <text x="141" y="44" font-family="DM Mono" font-size="7" fill="var(--amber)" text-anchor="middle" opacity=".55">Literatura</text>
+            <path d="M72 39 L112 39" stroke="var(--amber)" stroke-width=".75" stroke-dasharray="3 2" opacity=".25"/>
+            <path d="M95 52 L95 78" stroke="var(--ink4)" stroke-width="1" stroke-dasharray="3 2" opacity=".38"/>
+            <rect x="45" y="78" width="100" height="38" rx="7" fill="none" stroke="var(--ink3)" stroke-width="1.1" opacity=".45"/>
+            <text x="95" y="102" font-family="DM Mono" font-size="7.5" fill="var(--ink2)" text-anchor="middle" opacity=".75">LLM Agronómico</text>
+            <path d="M95 116 L95 142" stroke="var(--ink4)" stroke-width="1" opacity=".28"/>
             <text x="95" y="157" font-family="DM Mono" font-size="7" fill="var(--ink3)" text-anchor="middle">Recomendación contextualizada</text>
           </svg>
         </div>
@@ -1155,12 +1190,12 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
       <div class="rvl">
         <div class="sol-vis">
           <svg width="190" height="190" viewBox="0 0 190 190" fill="none">
-            <rect x="18" y="125" width="15" height="50" rx="3" fill="var(--g4)" opacity=".35"/>
-            <rect x="43" y="103" width="15" height="72" rx="3" fill="var(--g3)" opacity=".45"/>
-            <rect x="68" y="82"  width="15" height="93" rx="3" fill="var(--g)" opacity=".58"/>
-            <rect x="93" y="59"  width="15" height="116" rx="3" fill="var(--g)" opacity=".72"/>
-            <rect x="118" y="37" width="15" height="138" rx="3" fill="var(--g5)" opacity=".85"/>
-            <path d="M25 125 C50 103 75 82 100 59 L125 37" stroke="var(--g5)" stroke-width="1.2" stroke-dasharray="4 2" fill="none" opacity=".45"/>
+            <rect x="18" y="125" width="15" height="50" rx="3" fill="rgba(26,25,23,.1)" opacity=".5"/>
+            <rect x="43" y="103" width="15" height="72" rx="3" fill="rgba(26,25,23,.2)" opacity=".55"/>
+            <rect x="68" y="82"  width="15" height="93" rx="3" fill="rgba(26,25,23,.3)" opacity=".6"/>
+            <rect x="93" y="59"  width="15" height="116" rx="3" fill="rgba(26,25,23,.45)" opacity=".65"/>
+            <rect x="118" y="37" width="15" height="138" rx="3" fill="rgba(26,25,23,.6)" opacity=".7"/>
+            <path d="M25 125 C50 103 75 82 100 59 L125 37" stroke="var(--ink3)" stroke-width="1.2" stroke-dasharray="4 2" fill="none" opacity=".38"/>
             <text x="95" y="182" font-family="DM Mono" font-size="7.5" fill="var(--ink4)" text-anchor="middle">Rendimiento por parcela</text>
           </svg>
         </div>
@@ -1271,7 +1306,7 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
                 </div>
               </div>
               <div style="display:flex;justify-content:center;padding:.1rem 0;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </div>
               <div class="econ-opt good">
                 <div>
@@ -1284,7 +1319,6 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
                   <div class="econ-opt-cur">MXN / ha</div>
                 </div>
               </div>
-              <!-- Bars -->
               <div class="econ-bars">
                 <div class="econ-bar-lbl">Comparación de costos</div>
                 <div class="ebar-row">
@@ -1360,7 +1394,6 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
             <tr class="data-row"><td>Recordatorios móviles por aplicación</td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td class="ours"><span class="yes">✓</span></td></tr>
             <tr class="data-row"><td>Análisis costo-beneficio de intervención</td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td class="ours"><span class="yes">✓</span></td></tr>
             <tr class="data-row"><td>Comparación de alternativas económicas</td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td><span class="no">✗</span></td><td class="ours"><span class="yes">✓</span></td></tr>
-           
           </tbody>
         </table>
       </div>
@@ -1380,30 +1413,30 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
     <div class="arch-box rv d3">
       <div class="arch-lbl">Capa de clientes</div>
       <div class="arch-row arch-3">
-        <div class="arch-nd"><div class="arch-nd-t"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Agricultor · Android</div><div class="arch-nd-s">Fotos offline · diagnósticos · recordatorios · análisis económico</div></div>
-        <div class="arch-nd"><div class="arch-nd-t"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Gestor · Android</div><div class="arch-nd-s">Administra parcelas · supervisa alertas · mapa epidemiológico</div></div>
-        <div class="arch-nd"><div class="arch-nd-t"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--earth)" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>Gestor · Portal Web</div><div class="arch-nd-s">Reportes económicos · mapa regional · trazabilidad certificación</div></div>
+        <div class="arch-nd"><div class="arch-nd-t"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Agricultor · Android</div><div class="arch-nd-s">Fotos offline · diagnósticos · recordatorios · análisis económico</div></div>
+        <div class="arch-nd"><div class="arch-nd-t"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Gestor · Android</div><div class="arch-nd-s">Administra parcelas · supervisa alertas · mapa epidemiológico</div></div>
+        <div class="arch-nd"><div class="arch-nd-t"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>Gestor · Portal Web</div><div class="arch-nd-s">Reportes económicos · mapa regional · trazabilidad certificación</div></div>
       </div>
-      <div class="arch-arr"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="10" stroke="var(--g3)" stroke-width="1" stroke-dasharray="3 2"/><polygon points="1,10 11,10 6,16" fill="var(--g3)" opacity=".5"/></svg></div>
+      <div class="arch-arr"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="10" stroke="var(--ink4)" stroke-width="1" stroke-dasharray="3 2"/><polygon points="1,10 11,10 6,16" fill="var(--ink4)" opacity=".45"/></svg></div>
       <div class="arch-lbl">API Gateway y autenticación</div>
       <div class="arch-row arch-3">
         <div class="arch-nd g"><div class="arch-nd-t">API Gateway · REST/HTTPS</div><div class="arch-nd-s">Enrutamiento y control de acceso centralizado</div></div>
         <div class="arch-nd g"><div class="arch-nd-t">Auth · JWT + OAuth 2.0</div><div class="arch-nd-s">Ningún servicio expuesto directamente</div></div>
         <div class="arch-nd g"><div class="arch-nd-t">Load Balancer</div><div class="arch-nd-s">Distribuye tráfico · escala bajo demanda</div></div>
       </div>
-      <div class="arch-arr"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="10" stroke="var(--g3)" stroke-width="1" stroke-dasharray="3 2"/><polygon points="1,10 11,10 6,16" fill="var(--g3)" opacity=".5"/></svg></div>
+      <div class="arch-arr"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="10" stroke="var(--ink4)" stroke-width="1" stroke-dasharray="3 2"/><polygon points="1,10 11,10 6,16" fill="var(--ink4)" opacity=".45"/></svg></div>
       <div class="arch-lbl">Microservicios de IA — Docker containers</div>
       <div class="arch-row arch-3">
-        <div class="arch-nd g"><div class="arch-nd-t" style="color:var(--g5);">Diagnóstico · CNN</div><div class="arch-nd-s">FastAPI · EfficientNetB4 · PlantVillage</div></div>
-        <div class="arch-nd g"><div class="arch-nd-t" style="color:var(--g5);">Recomendaciones · LLM</div><div class="arch-nd-s">FastAPI · Fine-tuning agronómico · INIFAP</div></div>
-        <div class="arch-nd g"><div class="arch-nd-t" style="color:var(--g5);">Predicción · ML</div><div class="arch-nd-s">FastAPI · Regresión + árboles · Sklearn</div></div>
+        <div class="arch-nd g"><div class="arch-nd-t" style="color:var(--ink2);">Diagnóstico · CNN</div><div class="arch-nd-s">FastAPI · EfficientNetB4 · PlantVillage</div></div>
+        <div class="arch-nd g"><div class="arch-nd-t" style="color:var(--ink2);">Recomendaciones · LLM</div><div class="arch-nd-s">FastAPI · Fine-tuning agronómico · INIFAP</div></div>
+        <div class="arch-nd g"><div class="arch-nd-t" style="color:var(--ink2);">Predicción · ML</div><div class="arch-nd-s">FastAPI · Regresión + árboles · Sklearn</div></div>
       </div>
       <div class="arch-lbl" style="margin-top:.8rem;">Módulos diferenciadores — Pilares 3 y 4</div>
       <div class="arch-row arch-2">
-        <div class="arch-nd hi"><div class="arch-nd-t" style="color:var(--amber2);">Alertas y seguimiento</div><div class="arch-nd-s">Calendarios automáticos · Notificaciones · RabbitMQ</div></div>
-        <div class="arch-nd hi"><div class="arch-nd-t" style="color:var(--amber2);">Motor económico</div><div class="arch-nd-s">Costo-beneficio · Alternativas de tratamiento · ROI</div></div>
+        <div class="arch-nd hi"><div class="arch-nd-t" style="color:var(--amber);">Alertas y seguimiento</div><div class="arch-nd-s">Calendarios automáticos · Notificaciones · RabbitMQ</div></div>
+        <div class="arch-nd hi"><div class="arch-nd-t" style="color:var(--amber);">Motor económico</div><div class="arch-nd-s">Costo-beneficio · Alternativas de tratamiento · ROI</div></div>
       </div>
-      <div class="arch-arr"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="10" stroke="var(--g3)" stroke-width="1" stroke-dasharray="3 2"/><polygon points="1,10 11,10 6,16" fill="var(--g3)" opacity=".5"/></svg></div>
+      <div class="arch-arr"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="10" stroke="var(--ink4)" stroke-width="1" stroke-dasharray="3 2"/><polygon points="1,10 11,10 6,16" fill="var(--ink4)" opacity=".45"/></svg></div>
       <div class="arch-lbl">Almacenamiento y mensajería</div>
       <div class="arch-row arch-4">
         <div class="arch-nd"><div class="arch-nd-t">S3 Object Storage</div><div class="arch-nd-s">Imágenes y notas</div></div>
@@ -1423,26 +1456,12 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
     <div class="t-label rv">09 — Alcances y limitaciones</div>
     <h2 class="t-h2 rv d1" style="max-width:440px;">Alcance definido.<br/><em>Expectativas realistas.</em></h2>
     <div class="alc-grid">
-      <div class="alc-card rv d1"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><h3 class="alc-t">Dos perfiles de usuario</h3><p class="alc-b">Agricultor (Android) y Gestor (Android + portal web). Flujos diferenciados con permisos específicos por rol.</p></div>
-      <div class="alc-card rv d2"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><h3 class="alc-t">Sincronización asincrónica</h3><p class="alc-b">Fotos y notas se almacenan localmente y se envían via cola de mensajes al recuperar red. Sin pérdida de datos.</p></div>
-      <div class="alc-card rv d3"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3 class="alc-t">Seguimiento automático</h3><p class="alc-b">Recordatorios programables, agenda agrícola integrada y seguimiento básico de tratamientos inicial.</p></div>
-      <div class="alc-card rv d4"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></div><h3 class="alc-t">Módulo económico básico</h3><p class="alc-b">Comparación de costos aproximados y estimación de impacto. Sin predicción exacta de mercado en esta fase.</p></div>
-      <div class="alc-card rv d5"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><h3 class="alc-t">10+ cultivos soportados</h3><p class="alc-b">Maíz, frijol, jitomate, chile, papa,  y más. Extensible mediante reentrenamiento incremental.</p></div>
-      <div class="alc-card rv d6"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3 class="alc-t">Gama media sin extras</h3><p class="alc-b">Funcional en Android de gama media con cámara estándar. Sin hardware adicional ni sensores especializados.</p></div>
-      <!-- <div class="lim rv d2">
-        <div class="lim-head" onclick="limT(this)">
-          <div class="lim-title"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#A07070" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Limitaciones declaradas del MVP</div>
-          <svg class="lim-chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A07070" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="lim-body o" id="limb">
-          <div class="lim-inner">
-            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">Entrada manual de datos</div><div class="lim-b">Sin sensores IoT automáticos en esta fase. La calidad del diagnóstico depende del registro del agricultor.</div></div></div>
-            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">Variedades locales no representadas</div><div class="lim-b">El modelo puede fallar con patologías poco frecuentes. Requiere reentrenamiento con datos regionales.</div></div></div>
-            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">Economía sin precios en tiempo real</div><div class="lim-b">Los costos del módulo económico son aproximados. Sin integración de APIs de precios de agroinsumos en MVP.</div></div></div>
-            <div class="lim-item"><div class="lim-bar"></div><div><div class="lim-t">No sustituye al agrónomo</div><div class="lim-b">Herramienta de apoyo a la decisión. La validación crítica requiere especialista certificado en casos complejos.</div></div></div>
-          </div>
-        </div>
-      </div> -->
+      <div class="alc-card rv d1"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><h3 class="alc-t">Dos perfiles de usuario</h3><p class="alc-b">Agricultor (Android) y Gestor (Android + portal web). Flujos diferenciados con permisos específicos por rol.</p></div>
+      <div class="alc-card rv d2"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><h3 class="alc-t">Sincronización asincrónica</h3><p class="alc-b">Fotos y notas se almacenan localmente y se envían via cola de mensajes al recuperar red. Sin pérdida de datos.</p></div>
+      <div class="alc-card rv d3"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3 class="alc-t">Seguimiento automático</h3><p class="alc-b">Recordatorios programables, agenda agrícola integrada y seguimiento básico de tratamientos inicial.</p></div>
+      <div class="alc-card rv d4"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></div><h3 class="alc-t">Módulo económico básico</h3><p class="alc-b">Comparación de costos aproximados y estimación de impacto. Sin predicción exacta de mercado en esta fase.</p></div>
+      <div class="alc-card rv d5"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><h3 class="alc-t">10+ cultivos soportados</h3><p class="alc-b">Maíz, frijol, jitomate, chile, papa, y más. Extensible mediante reentrenamiento incremental.</p></div>
+      <div class="alc-card rv d6"><div class="alc-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3 class="alc-t">Gama media sin extras</h3><p class="alc-b">Funcional en Android de gama media con cámara estándar. Sin hardware adicional ni sensores especializados.</p></div>
     </div>
   </div>
 </section>
@@ -1456,8 +1475,8 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
     <h2 class="t-h2 rv d1" style="max-width:440px;">Dos actores.<br/><em>Un flujo sin fricción.</em></h2>
     <div class="usr-grid">
       <div class="usr-card rv d1">
-        <div class="usr-ico-wrap" style="background:rgba(74,140,78,.08);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <div class="usr-ico-wrap" style="background:rgba(26,25,23,.04);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         </div>
         <div class="usr-role">Rol 01 — Usuario final — Campo</div>
         <h3 class="usr-t">Agricultor</h3>
@@ -1476,24 +1495,24 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
         <div class="tags"><span class="tag">Android App</span><span class="tag">Offline-first</span><span class="tag">Sync asincrónica</span></div>
       </div>
       <div class="usr-card rv d2">
-        <div class="usr-ico-wrap" style="background:rgba(122,84,56,.09);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--earth)" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="usr-ico-wrap" style="background:rgba(156,144,128,.07);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
-        <div class="usr-role" style="color:var(--earth);">Rol 02 — Administrador — Gestión</div>
+        <div class="usr-role" style="color:var(--amber);">Rol 02 — Administrador — Gestión</div>
         <h3 class="usr-t">Gestor</h3>
-        <p class="usr-desc">Responsable operativo de la cooperativa, ministerio u organización adoptante. Supervisa diagnósticos, alertas y el mapa epidemiológico desde Android .</p>
+        <p class="usr-desc">Responsable operativo de la cooperativa, ministerio u organización adoptante. Supervisa diagnósticos, alertas y el mapa epidemiológico desde Android.</p>
         <div class="usr-acc">
           <div class="usr-acc-lbl">Capacidades administrativas</div>
           <div class="usr-chips">
-            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Gestiona agricultores del programa</span></div>
-            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Supervisa el mapa epidemiológico regional</span></div>
-            <div class="usr-chip"><div class="usr-dot" style="background:var(--earth);"></div><span>Configura alertas y umbrales del sistema</span></div>
-            </div>
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--amber2);"></div><span>Gestiona agricultores del programa</span></div>
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--amber2);"></div><span>Supervisa el mapa epidemiológico regional</span></div>
+            <div class="usr-chip"><div class="usr-dot" style="background:var(--amber2);"></div><span>Configura alertas y umbrales del sistema</span></div>
+          </div>
         </div>
         <div class="tags">
-          <span class="tag" style="color:var(--earth);border-color:rgba(122,84,56,.25);">Android App</span>
-          <span class="tag" style="color:var(--earth);border-color:rgba(122,84,56,.25);">Portal Web</span>
-          <span class="tag" style="color:var(--earth);border-color:rgba(122,84,56,.25);">Reportes</span>
+          <span class="tag" style="color:var(--amber);border-color:rgba(156,144,128,.25);">Android App</span>
+          <span class="tag" style="color:var(--amber);border-color:rgba(156,144,128,.25);">Portal Web</span>
+          <span class="tag" style="color:var(--amber);border-color:rgba(156,144,128,.25);">Reportes</span>
         </div>
       </div>
     </div>
@@ -1502,185 +1521,72 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
 
 <hr class="rule"/>
 
-<!-- ══ MONETIZACIÓN — 2 PLANES ══ -->
-
+<!-- ══ MONETIZACIÓN ══ -->
 <section id="monetizacion" class="sec monetizacion-sec">
-
   <div class="inn">
-
     <div class="mono-top">
-
-      <div class="t-label rv">
-        11 — Modelo de negocio
-      </div>
-
-      <h2 class="mono-title rv d1">
-        Suscripción flexible.<br>
-        <em>Sin plazos forzosos.</em>
-      </h2>
-
+      <div class="t-label rv">11 — Modelo de negocio</div>
+      <h2 class="mono-title rv d1">Suscripción flexible.<br><em>Sin plazos forzosos.</em></h2>
       <p class="mono-desc rv d2">
-        AgroGraph elimina las barreras económicas del campo con un modelo diseñado para el agricultor real. 
-        Cualquier productor puede iniciar gratis desde la aplicación móvil de forma permanente. 
+        AgroGraph elimina las barreras económicas del campo con un modelo diseñado para el agricultor real.
+        Cualquier productor puede iniciar gratis desde la aplicación móvil de forma permanente.
         Para quienes buscan maximizar su rendimiento o gestionar varias parcelas en conjunto, ofrecemos un esquema flexible que se adapta a los ciclos de siembra, sin contratos forzosos.
       </p>
-
     </div>
 
     <div class="pricing-grid rv d3">
-
       <div class="price-card free">
-
         <div class="pc-head">
-
-          <div class="pc-badge free-b">
-            Gratis Permanente
-          </div>
-
-          <div class="pc-seg">
-            Uso individual básico
-          </div>
-
-          <h3 class="pc-title">
-            Plan Free
-          </h3>
-
-          <p class="pc-text">
-            Diseñado para pequeños agricultores que desean comenzar a digitalizar la información de sus parcelas y consultar problemas fitosanitarios básicos desde la aplicación móvil.
-          </p>
-
+          <div class="pc-badge free-b">Gratis Permanente</div>
+          <div class="pc-seg">Uso individual básico</div>
+          <h3 class="pc-title">Plan Free</h3>
+          <p class="pc-text">Diseñado para pequeños agricultores que desean comenzar a digitalizar la información de sus parcelas y consultar problemas fitosanitarios básicos desde la aplicación móvil.</p>
         </div>
-
         <div class="pc-price-wrap">
-
-          <div class="pc-price">
-            $0 <span class="pc-period">/ siempre</span>
-          </div>
-
-          <div class="pc-price-sub">
-            Acceso básico sin costo desde un dispositivo móvil
-          </div>
-
+          <div class="pc-price">$0 <span class="pc-period">/ siempre</span></div>
+          <div class="pc-price-sub">Acceso básico sin costo desde un dispositivo móvil</div>
         </div>
-
         <ul class="pc-list">
-          <li>
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Consulta básica de enfermedades y plagas
-          </li>
-          <li>
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Registro de cultivos y bitácora fotográfica
-          </li>
-          <li>
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Aplicación móvil Android de uso individual
-          </li>
-          <li class="disabled">
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            Análisis predictivo de rendimiento con IA
-          </li>
-          <li class="disabled">
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            Monitoreo macro de la salud de la tierra
-          </li>
+          <li><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Consulta básica de enfermedades y plagas</li>
+          <li><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Registro de cultivos y bitácora fotográfica</li>
+          <li><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink3)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Aplicación móvil Android de uso individual</li>
+          <li class="disabled"><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(26,25,23,.18)" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Análisis predictivo de rendimiento con IA</li>
+          <li class="disabled"><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(26,25,23,.18)" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Monitoreo macro de la salud de la tierra</li>
         </ul>
-
         <div class="pc-bottom">
-
-          <div class="pc-bottom-title">
-            ¿Cuándo pasar a Pro?
-          </div>
-
-          <p>
-            Cuando requeras herramientas avanzadas basadas en IA para calcular costos de producción, anticipar pérdidas masivas en la región y optimizar tus ganancias.
-          </p>
-
+          <div class="pc-bottom-title">¿Cuándo pasar a Pro?</div>
+          <p>Cuando requeras herramientas avanzadas basadas en IA para calcular costos de producción, anticipar pérdidas masivas en la región y optimizar tus ganancias.</p>
         </div>
-
       </div>
 
       <div class="price-card coop featured">
-
-        <div class="pc-pop">
-          Mayor rendimiento
-        </div>
-
+        <div class="pc-pop">Mayor rendimiento</div>
         <div class="pc-head">
-
-          <div class="pc-badge">
-            Productores · Ejidos · Cooperativas
-          </div>
-
-          <div class="pc-seg">
-            Suscripción Colectiva o Individual Flexible
-          </div>
-
-          <h3 class="pc-title">
-            Plan Pro / Productivo
-          </h3>
-
-          <p class="pc-text">
-            Pensado para productores independientes con visión comercial, ejidos y sociedades rurales que quieren dotar de tecnología avanzada de IA a sus tierras y gestionar reportes de salud del suelo.
-          </p>
-
+          <div class="pc-badge">Productores · Ejidos · Cooperativas</div>
+          <div class="pc-seg">Suscripción Colectiva o Individual Flexible</div>
+          <h3 class="pc-title">Plan Pro / Productivo</h3>
+          <p class="pc-text">Pensado para productores independientes con visión comercial, ejidos y sociedades rurales que quieren dotar de tecnología avanzada de IA a sus tierras y gestionar reportes de salud del suelo.</p>
         </div>
-
         <div class="pc-price-wrap">
-
-          <div class="pc-price">
-            Pago Mensual <span class="pc-period">/ por volumen</span>
-          </div>
-
-          <div class="pc-price-sub">
-            Se calcula según el rango de agricultores activos o hectáreas, y se puede pausar fuera de temporada de siembra.
-          </div>
-
+          <div class="pc-price">Pago Mensual <span class="pc-period">/ por volumen</span></div>
+          <div class="pc-price-sub">Se calcula según el rango de agricultores activos o hectáreas, y se puede pausar fuera de temporada de siembra.</div>
         </div>
-
         <ul class="pc-list">
-          <li>
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            <strong>Acceso Premium total</strong> en la aplicación móvil
-          </li>
-          <li>
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            <strong> Microservicios de IA</strong> (Detección avanzada y predicción de cosechas)
-          </li>
-          <li>
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            <strong>Reportes macro</strong> de salud  y alertas de riesgos
-          </li>
-          <li>
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Módulo económico con análisis de costo-beneficio
-          </li>
-          <li>
-            <svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86d486" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Soporte técnico integrado
-          </li>
+          <li><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Acceso Premium total</strong> en la aplicación móvil</li>
+          <li><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Microservicios de IA</strong> (Detección avanzada y predicción de cosechas)</li>
+          <li><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Reportes macro</strong> de salud y alertas de riesgos</li>
+          <li><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Módulo económico con análisis de costo-beneficio</li>
+          <li><svg class="pc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Soporte técnico integrado</li>
         </ul>
-
         <div class="pc-bottom">
-
-          <div class="pc-bottom-title">
-            Rentabilidad inmediata
-          </div>
-
-          <p>
-            El costo mensual se puede pagar de manera individual o distribuirse colectivamente en el fondo ejidal. Mitigar una sola plaga a tiempo paga meses completos del servicio.
-          </p>
-
+          <div class="pc-bottom-title">Rentabilidad inmediata</div>
+          <p>El costo mensual se puede pagar de manera individual o distribuirse colectivamente en el fondo ejidal. Mitigar una sola plaga a tiempo paga meses completos del servicio.</p>
         </div>
-
       </div>
-
     </div>
 
     <div class="mono-table-wrap rv d4">
-
       <table class="mono-table">
-
         <thead>
           <tr>
             <th>Nivel de Acceso</th>
@@ -1689,346 +1595,104 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:3.5rem 4rem
             <th>Flexibilidad Temporal</th>
           </tr>
         </thead>
-
         <tbody>
-
           <tr>
             <td><strong>Plan Free</strong></td>
             <td>Gratuito permanente ($0)</td>
             <td>Agricultores independientes</td>
             <td>Sin vigencia, uso libre individual</td>
           </tr>
-
           <tr>
             <td><strong>Plan Pro / Productivo</strong></td>
             <td>Mensualidad escalonada por volumen o área</td>
             <td>Productores grandes, Ejidos y Cooperativas</td>
             <td><strong>Cancelable o activable</strong> por ciclos de siembra</td>
           </tr>
-
         </tbody>
-
       </table>
-
     </div>
 
     <div class="mono-callout rv d5">
-
       <div class="mono-line"></div>
-
-      <p>
-        <strong>¿Cómo se adapta el modelo a la realidad agrícola?</strong> Quitamos las barreras burocráticas. Si eres un productor independiente que quiere invertir en su cultivo por separado, puedes contratar la suscripción Pro directo en tu app. Si eres un ejido, pueden contratar en grupo para reducir el costo por usuario. En ambos casos, el servicio se puede pausar en los meses donde la tierra descansa sin perder tus datos históricos.
-      </p>
-
+      <p><strong>¿Cómo se adapta el modelo a la realidad agrícola?</strong> Quitamos las barreras burocráticas. Si eres un productor independiente que quiere invertir en su cultivo por separado, puedes contratar la suscripción Pro directo en tu app. Si eres un ejido, pueden contratar en grupo para reducir el costo por usuario. En ambos casos, el servicio se puede pausar en los meses donde la tierra descansa sin perder tus datos históricos.</p>
     </div>
-
   </div>
-
 </section>
 
 <style>
-
-/* =========================
-   MONETIZACION
-========================= */
-
-.monetizacion-sec {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at top right,
-    rgba(74,140,78,.08),
-    transparent 30%),
-    linear-gradient(to bottom,
-    #0d1110,
-    #101512);
-  padding: 5rem 0;
+/* ═══════════════════════════════════════
+   MONETIZACIÓN — estilos refinados acromáticos
+═══════════════════════════════════════ */
+.monetizacion-sec{
+  position:relative;overflow:hidden;
+  background:radial-gradient(circle at top right,rgba(248,244,236,.8),transparent 35%),var(--bg2);
+  padding:5rem 0;
 }
-
-/* TOP */
-
-.mono-top {
-  max-width: 760px;
-  margin-bottom: 3.5rem;
+.mono-top{max-width:760px;margin-bottom:3.5rem;}
+.mono-title{
+  margin-top:1rem;
+  font-family:'Fraunces',serif;
+  font-size:clamp(2rem,4vw,3.4rem);
+  line-height:1.08;letter-spacing:-.025em;color:var(--ink);
 }
-
-.mono-title {
-  margin-top: 1rem;
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  line-height: 1.05;
-  letter-spacing: -.03em;
-  color: #f5f7f4;
+.mono-title em{color:var(--g5);font-style:italic;}
+.mono-desc{margin-top:1.4rem;max-width:640px;color:var(--ink2);line-height:1.82;font-size:.9rem;}
+.pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.price-card{
+  position:relative;padding:2.2rem 1.8rem;border-radius:var(--r-lg);
+  background:rgba(248,247,245,.75);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--line);
+  transition:.32s ease;display:flex;flex-direction:column;gap:1.1rem;
+  box-shadow:0 2px 20px rgba(26,25,23,.04);
 }
-
-.mono-title em {
-  color: #86d486;
-  font-style: normal;
+.price-card:hover{transform:translateY(-5px);border-color:rgba(26,25,23,.14);box-shadow:0 18px 44px rgba(26,25,23,.08);}
+.featured{
+  background:rgba(255,254,252,.82);
+  border-color:rgba(26,25,23,.12);
 }
-
-.mono-desc {
-  margin-top: 1.4rem;
-  max-width: 640px;
-  color: rgba(255, 255, 255, .72);
-  line-height: 1.8;
-  font-size: 1.02rem;
+.pc-pop{
+  position:absolute;top:-12px;right:20px;
+  padding:.35rem .9rem;border-radius:999px;
+  background:var(--ink);color:var(--bg);
+  font-family:'DM Mono',monospace;font-size:.58rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
 }
-
-/* GRID */
-
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+.pc-head{margin-bottom:.8rem;}
+.pc-badge{
+  display:inline-flex;align-items:center;padding:.4rem .85rem;border-radius:999px;
+  background:rgba(26,25,23,.06);color:var(--ink2);font-family:'DM Mono',monospace;
+  font-size:.6rem;font-weight:500;letter-spacing:.04em;margin-bottom:.9rem;border:1px solid var(--line);
 }
+.free-b{background:rgba(26,25,23,.03);color:var(--ink3);border-color:var(--line);}
+.pc-seg{color:var(--ink3);font-size:.78rem;margin-bottom:.5rem;font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.pc-title{color:var(--ink);font-family:'Fraunces',serif;font-size:1.7rem;font-weight:300;line-height:1.12;margin-bottom:.85rem;letter-spacing:-.02em;}
+.pc-text{color:var(--ink2);line-height:1.72;font-size:.83rem;}
+.pc-price-wrap{padding:1.2rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:1.4rem;}
+.pc-price{color:var(--ink);font-family:'Fraunces',serif;font-size:1.7rem;font-weight:300;}
+.pc-period{font-size:1rem;font-weight:300;color:var(--ink3);}
+.pc-price-sub{margin-top:.4rem;color:var(--ink3);font-size:.78rem;line-height:1.5;}
+.pc-list{list-style:none;padding:0;margin:0 0 1.5rem;display:flex;flex-direction:column;gap:.85rem;flex-grow:1;}
+.pc-list li{color:var(--ink2);line-height:1.45;font-size:.83rem;display:flex;align-items:flex-start;gap:.65rem;}
+.pc-list li.disabled{color:var(--ink4);text-decoration:line-through;}
+.pc-icon{margin-top:2px;flex-shrink:0;}
+.pc-bottom{margin-top:auto;padding-top:1.2rem;border-top:1px solid var(--line);}
+.pc-bottom-title{color:var(--ink2);font-weight:600;margin-bottom:.4rem;font-size:.83rem;}
+.pc-bottom p{color:var(--ink3);line-height:1.68;font-size:.8rem;margin:0;}
 
-/* CARD */
+.mono-table-wrap{margin-top:3.5rem;overflow:auto;border-radius:var(--r-lg);border:1px solid var(--line);background:rgba(255,254,252,.6);backdrop-filter:blur(16px);}
+.mono-table{width:100%;min-width:620px;border-collapse:collapse;}
+.mono-table thead{background:rgba(237,236,234,.8);}
+.mono-table th{padding:1rem 1.1rem;text-align:left;color:var(--ink2);font-size:.8rem;font-weight:600;border-bottom:1px solid var(--line);}
+.mono-table td{padding:1rem 1.1rem;border-top:1px solid var(--line2);color:var(--ink3);line-height:1.55;font-size:.83rem;}
+.mono-table strong{color:var(--ink2);}
 
-.price-card {
-  position: relative;
-  padding: 2.5rem 2rem;
-  border-radius: 30px;
-  background: rgba(255, 255, 255, .02);
-  border: 1px solid rgba(255, 255, 255, .06);
-  backdrop-filter: blur(12px);
-  transition: .35s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+.mono-callout{margin-top:2.5rem;padding:1.6rem 1.8rem;border-radius:var(--r-lg);background:rgba(248,246,242,.7);backdrop-filter:blur(16px);border:1px solid rgba(156,144,128,.18);}
+.mono-line{width:40px;height:3px;border-radius:999px;background:var(--ink4);margin-bottom:.9rem;opacity:.4;}
+.mono-callout p{color:var(--ink3);line-height:1.76;font-size:.85rem;margin:0;}
+.mono-callout strong{color:var(--ink2);font-weight:600;}
 
-.price-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(134, 212, 134, .35);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, .3);
-}
-
-/* FEATURED */
-
-.featured {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(134, 212, 134, .08),
-      rgba(255, 255, 255, .02)
-    );
-  border: 1px solid rgba(134, 212, 134, .25);
-}
-
-.pc-pop {
-  position: absolute;
-  top: -12px;
-  right: 22px;
-  padding: .4rem .9rem;
-  border-radius: 999px;
-  background: #86d486;
-  color: #0d140e;
-  font-size: .78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-/* HEAD */
-
-.pc-head {
-  margin-bottom: 1.5rem;
-}
-
-.pc-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: .45rem .9rem;
-  border-radius: 999px;
-  background: rgba(134, 212, 134, .12);
-  color: #8fe28f;
-  font-size: .78rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.free-b {
-  background: rgba(255, 255, 255, .07);
-  color: #fff;
-}
-
-.pc-seg {
-  color: rgba(255, 255, 255, .45);
-  font-size: .88rem;
-  margin-bottom: .6rem;
-  font-weight: 500;
-}
-
-.pc-title {
-  color: #fff;
-  font-size: 2rem;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-}
-
-.pc-text {
-  color: rgba(255, 255, 255, .65);
-  line-height: 1.6;
-  font-size: .95rem;
-}
-
-/* PRICE */
-
-.pc-price-wrap {
-  padding: 1.5rem 0;
-  border-top: 1px solid rgba(255, 255, 255, .08);
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-  margin-bottom: 1.8rem;
-}
-
-.pc-price {
-  color: #fff;
-  font-size: 1.9rem;
-  font-weight: 700;
-}
-
-.pc-period {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, .5);
-}
-
-.pc-price-sub {
-  margin-top: .4rem;
-  color: rgba(255, 255, 255, .5);
-  font-size: .9rem;
-  line-height: 1.4;
-}
-
-/* LIST */
-
-.pc-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 2rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  flex-grow: 1;
-}
-
-.pc-list li {
-  color: rgba(255, 255, 255, .8);
-  line-height: 1.4;
-  font-size: .95rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-}
-
-.pc-list li.disabled {
-  color: rgba(255, 255, 255, .35);
-  text-decoration: line-through;
-}
-
-.pc-icon {
-  margin-top: 3px;
-  flex-shrink: 0;
-}
-
-/* BOTTOM */
-
-.pc-bottom {
-  margin-top: auto;
-  padding-top: 1.4rem;
-  border-top: 1px dashed rgba(255, 255, 255, .08);
-}
-
-.pc-bottom-title {
-  color: #86d486;
-  font-weight: 600;
-  margin-bottom: .4rem;
-  font-size: .95rem;
-}
-
-.pc-bottom p {
-  color: rgba(255, 255, 255, .55);
-  line-height: 1.6;
-  font-size: .9rem;
-  margin: 0;
-}
-
-/* TABLE */
-
-.mono-table-wrap {
-  margin-top: 4rem;
-  overflow: auto;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, .06);
-}
-
-.mono-table {
-  width: 100%;
-  min-width: 680px;
-  border-collapse: collapse;
-}
-
-.mono-table thead {
-  background: rgba(255, 255, 255, .03);
-}
-
-.mono-table th {
-  padding: 1.2rem 1rem;
-  text-align: left;
-  color: #fff;
-  font-size: .9rem;
-  font-weight: 600;
-}
-
-.mono-table td {
-  padding: 1.2rem 1rem;
-  border-top: 1px solid rgba(255, 255, 255, .06);
-  color: rgba(255, 255, 255, .7);
-  line-height: 1.5;
-  font-size: .95rem;
-}
-
-.mono-table strong {
-  color: #fff;
-}
-
-/* CALLOUT */
-
-.mono-callout {
-  margin-top: 3rem;
-  padding: 2rem;
-  border-radius: 26px;
-  background: rgba(134, 212, 134, .04);
-  border: 1px solid rgba(134, 212, 134, .1);
-}
-
-.mono-line {
-  width: 60px;
-  height: 4px;
-  border-radius: 999px;
-  background: #86d486;
-  margin-bottom: 1rem;
-}
-
-.mono-callout p {
-  color: rgba(255, 255, 255, .75);
-  line-height: 1.7;
-  font-size: 0.98rem;
-  margin: 0;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 980px) {
-  .pricing-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-
-  .pc-title {
-    font-size: 1.8rem;
-  }
-}
-
+@media(max-width:980px){.pricing-grid{grid-template-columns:1fr;gap:2rem;}.pc-title{font-size:1.5rem;}}
 </style>
 
 <hr class="rule"/>
